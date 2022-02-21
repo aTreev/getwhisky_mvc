@@ -1,0 +1,60 @@
+:root {
+    --bg-primary:hsl(0deg 0% 18%);
+    --btn-save-green: #3d9970;
+    --btn-proceed-green-light: #00af6c;
+    --btn-action-blue: #3b8cc3;
+    --btn-hover-colour: #95b0c2;
+    --btn-delete-red: #db4c3c; 
+}
+
+header {
+    background-color: var(--bg-primary);
+}
+.header-container {
+    display:flex;
+    flex-direction: column;
+}
+.header-top {
+    align-self: flex-end;
+    display: flex;
+    gap: 20px;
+}
+.header-center {
+    padding-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header-center-menu {
+    display: flex;
+    gap: 15px;
+}
+.header-center a {
+    color: white;
+    text-decoration: none;
+}
+.header-center a:hover {
+    opacity: 0.8;
+    color:white;
+}
+.site-logo {
+    max-width: 200px;
+}
+.header-bottom-menu {
+    display: flex;
+    padding-top: 40px;
+    justify-content: space-between;
+    
+}
+.header-bottom-menu a {
+    color: white;
+    text-decoration: none;
+    font-weight: 300;
+    user-select: none;
+    opacity: 1;
+    padding: 10px;
+}
+.header-bottom-menu a:hover {
+    color:white;
+    opacity: 0.8;
+}

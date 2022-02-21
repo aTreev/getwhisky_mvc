@@ -43,6 +43,28 @@ class UserView
         return $html;
     }
 
+    public function login()
+    {
+        $html = 
+        "
+        <div class='col-8 m-auto p-5 mt-5 bg-white rounded border'>
+            <h1>Getwhisky Login</h1>
+            <form action='processlogin.php' method='post'>
+                <div class='mb-3'>
+                    <label for='email'>Email Address</label>
+                    <input type='email' class='form-control' name='email' id='email'>
+                </div>
+                <div class='mb-3'>
+                    <label for='password'>Password</label>
+                    <input type='password' class='form-control' name='password' id='password'>
+                </div> 
+                <input type='submit' class='btn btn-primary' value='Submit'>
+            </form>
+        </div>
+        ";
+        return $html;
+    }
+
     public function index()
     {
         $html = 

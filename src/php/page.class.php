@@ -1,5 +1,6 @@
 <?php
 require_once('usercontroller.class.php');
+require_once('categorycontroller.class.php');
 require_once('unique-id-generator.class.php');
 /******************
  * The page class
@@ -9,17 +10,16 @@ require_once('unique-id-generator.class.php');
 class Page {
     private $requiredAccessLevel;
     private $user;
+    private $categories = [];
     private $authenticated;
 
     public function __construct($requiredAccessLevel=0) {
         if (!isset($_SESSION)) session_start();
         $this->user = new UserController();
-        $this->userview = new UserController();
         $this->setRequiredAccessLevel($requiredAccessLevel);
         $this->setAuthenticated(false);
         $this->checkUser();
-
-
+        $this->initCategories();
     }
 
 
@@ -30,7 +30,8 @@ class Page {
     public function isAuthenticated() { return $this->authenticated; }
     public function getUser() { return $this->user; }
 
-    private function checkUser() {
+    private function checkUser() 
+    {
         // check for user session
         // logout if session not same as db session
         
@@ -43,9 +44,10 @@ class Page {
         }
     }
 
-    public function login($email, $password, $autoRedirect=false) {
+    public function login($email, $password, $autoRedirect=false) 
+    {
         $authenticated = 0;
-        $location = '';
+        $location = 'user/';
 		session_regenerate_id();
 
 		if($this->getUser()->authByLogin($email,$password)) {
@@ -57,13 +59,13 @@ class Page {
 			// userlevel logic here
 			switch($this->getUser()->getAccessLevel()) {
 				case 1:
-					$location = 'suspended.php';
+					$location.= 'suspended';
 					break;
 				case 2:
-					$location = 'user.php';
+					$location.= 'account';
 					break;
 				case 3:
-					$location = 'admin.php';
+					$location.= 'admin';
 					break;
 			}
 		} 
@@ -71,7 +73,8 @@ class Page {
 		return ['authenticated' => $authenticated, 'redirect_location' => $location];
     }
 
-    public function registerUser($email, $password, $firstName, $surname, $dob) {
+    public function registerUser($email, $password, $firstName, $surname, $dob) 
+    {
         $uniqueIdGen = new UniqueIdGenerator();
         $userid = $uniqueIdGen->setIdProperties("userid", [])->getUniqueId();
         $verificationKey = $uniqueIdGen->setIdProperties("userid", [])->getUniqueId();
@@ -83,7 +86,8 @@ class Page {
         return $result;
     }
 
-    public function logout() {
+    public function logout() 
+    {
         if(isset($_SESSION['userid']) && $_SESSION['userid']!='') {
 			$this->getUser()->storeSession($_SESSION['userid']);
 		}
@@ -91,11 +95,42 @@ class Page {
         session_destroy();
         session_start();
         session_regenerate_id();
-        header('location: login.php');
+        header('location: /login.php');
         exit();
     }
 
 
+    private function initCategories()
+    {
+        $categoryController = new CategoryController();
+        $categories = $categoryController->getCategories();
+
+        foreach($categories as $category) {
+            $categoryObj = new CategoryController();
+            $categoryObj->initCategory($category['id']);
+            array_push($this->categories, $categoryObj);
+        }
+    }
+
+    public function productMenu()
+    {
+        $html = "";
+        foreach($this->categories as $category) {
+            $html.=$category->getView()->menu();
+        }
+        return $html;
+    }
+    public function dynamicMenu() 
+    {
+        $html = "";
+        if ($this->getUser()->getAccessLevel() > 0) {
+            $html.="<div><a href='/user/account'><i class='fas fa-user' style='font-size:24px;color:white;'></i> Account</a></div>";
+        }
+        if ($this->getUser()->getAccessLevel() == 3) {
+            $html.="<div><a href='/admin/home'><i class='fas fa-database' style='font-size:24px;color:white;'></i> Admin</a></div>";
+        }
+        return $html;
+    }
     /*****************
      * Displays the page html
      * Takes in a view as parameter which can either be passed
@@ -103,7 +138,10 @@ class Page {
      * 
      * Takes optional page title
      ******************************************/
-    public function displayPage($view, $title="getwhisky") {
+    public function displayPage($view, $title="getwhisky") 
+    {
+        $dynamicMenu = $this->dynamicMenu();
+        $productMenu = $this->productMenu();
         $html = "
         <!doctype html>
         <html lang='en'>
@@ -111,47 +149,36 @@ class Page {
                 <!-- Required meta tags -->
                 <meta charset='utf-8'>
                 <meta name='viewport' content='width=device-width, initial-scale=1'>
+                <!-- Site CSS -->
+                <link rel='stylesheet' href='/style/app.css'>
                 <!-- Bootstrap CSS -->
                 <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3' crossorigin='anonymous'>
+                <!-- Font awesome -->
+                <script src='https://kit.fontawesome.com/1942d39d14.js' crossorigin='anonymous'></script>
+                <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'/>
+
                 <title>$title</title>
             </head>
             <body style='background-color:#f8fafc;'>
-                <nav class='navbar navbar-expand-lg navbar-light bg-white shadow-sm'>
-                    <div class='container-fluid'>
-                        <a class='navbar-brand' href='#'>Navbar</a>
-                        <button class='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>
-                            <span class='navbar-toggler-icon'></span>
-                        </button>
-                        <div class='collapse navbar-collapse' id='navbarSupportedContent'>
-                            <ul class='navbar-nav me-auto mb-2 mb-lg-0'>
-                                <li class='nav-item'>
-                                    <a class='nav-link active' aria-current='page' href='/'>Home</a>
-                                </li>
-                                <li class='nav-item'>
-                                    <a class='nav-link' href='/user.php'>Profile</a>
-                                </li>
-                                <li class='nav-item dropdown'>
-                                    <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-bs-toggle='dropdown' aria-expanded='false'>
-                                    Dropdown
-                                    </a>
-                                    <ul class='dropdown-menu' aria-labelledby='navbarDropdown'>
-                                        <li><a class='dropdown-item' href='#'>Action</a></li>
-                                        <li><a class='dropdown-item' href='#'>Another action</a></li>
-                                        <li><hr class='dropdown-divider'></li>
-                                        <li><a class='dropdown-item' href='#'>Something else here</a></li>
-                                    </ul>
-                                </li>
-                                <li class='nav-item'>
-                                    <a class='nav-link disabled'>Disabled</a>
-                                </li>
-                            </ul>
-                            <form class='d-flex'>
-                                <input class='form-control me-2' type='search' placeholder='Search' aria-label='Search'>
-                                <button class='btn btn-outline-success' type='submit'>Search</button>
-                            </form>
+                <header>
+                    <div class='container header-container'>
+                        <div class='header-top'>
+                            <a href='/about'>About</a>
+                            <a href='/contact'>Contact</a>
                         </div>
+                        <div class='header-center'>
+                        <a href='/'>
+                            <img src='/assets/getwhisky-logo-lowercase.png' class='site-logo' alt='getwhisky-logo'/>
+                        </a>
+                        <div class='header-center-menu'>
+                            $dynamicMenu
+                        </div>
+                        </div>
+                        <nav class='header-bottom-menu'>
+                            $productMenu
+                        </nav>
                     </div>
-                </nav>
+                </header>
                 <div class='container'>
                     $view
                 </div>
