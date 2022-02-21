@@ -1,8 +1,9 @@
 <?php 
 require_once("crud/usercrud.class.php");
 require_once("userhash.class.php");
-require_once("userview.class.php");
-require_once("util.class.php");
+require_once("views/userview.class.php");
+require_once("util/util.class.php");
+require_once("util/unique-id-generator.class.php");
 
 
 class UserController extends UserCRUD

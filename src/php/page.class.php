@@ -1,7 +1,6 @@
 <?php
 require_once('usercontroller.class.php');
 require_once('categorycontroller.class.php');
-require_once('unique-id-generator.class.php');
 /******************
  * The page class
  * This class handles authentication
@@ -29,6 +28,7 @@ class Page {
     private function getRequiredAccessLevel() { return $this->requiredAccessLevel; }
     public function isAuthenticated() { return $this->authenticated; }
     public function getUser() { return $this->user; }
+    public function getCategories() { return $this->categories; }
 
     private function checkUser() 
     {
@@ -73,18 +73,6 @@ class Page {
 		return ['authenticated' => $authenticated, 'redirect_location' => $location];
     }
 
-    public function registerUser($email, $password, $firstName, $surname, $dob) 
-    {
-        $uniqueIdGen = new UniqueIdGenerator();
-        $userid = $uniqueIdGen->setIdProperties("userid", [])->getUniqueId();
-        $verificationKey = $uniqueIdGen->setIdProperties("userid", [])->getUniqueId();
-        return $userid;
-        $result = $this->getUser()->registerUser($email, $password, $firstName, $surname, $dob, $verificationKey);
-        if ($result['insert']==1) {
-            $this->login($email, $password, true);
-        }
-        return $result;
-    }
 
     public function logout() 
     {
@@ -120,9 +108,11 @@ class Page {
         }
         return $html;
     }
+
     public function dynamicMenu() 
     {
         $html = "";
+        if ($this->getUser()->getAccessLevel() == 0) { $html.="<div><a href='/login'>Sign in</a></div>"; }
         if ($this->getUser()->getAccessLevel() > 0) {
             $html.="<div><a href='/user/account'><i class='fas fa-user' style='font-size:24px;color:white;'></i> Account</a></div>";
         }
@@ -131,6 +121,17 @@ class Page {
         }
         return $html;
     }
+
+    public function generateCategoryView($categoryName)
+    {
+        $found = false;
+        foreach($this->categories as $category) {
+            if ($category->getName() == $categoryName) {
+                return $category->getView()->index();
+            }
+        }
+        return "<h1>Sorry that category doesn't exist</h1>";
+    }
     /*****************
      * Displays the page html
      * Takes in a view as parameter which can either be passed
@@ -138,7 +139,7 @@ class Page {
      * 
      * Takes optional page title
      ******************************************/
-    public function displayPage($view, $title="getwhisky") 
+    public function displayPage($view="", $title="getwhisky") 
     {
         $dynamicMenu = $this->dynamicMenu();
         $productMenu = $this->productMenu();
@@ -150,12 +151,14 @@ class Page {
                 <meta charset='utf-8'>
                 <meta name='viewport' content='width=device-width, initial-scale=1'>
                 <!-- Site CSS -->
-                <link rel='stylesheet' href='/style/app.css'>
+                <link rel='stylesheet' href='/assets/style/app.css'>
                 <!-- Bootstrap CSS -->
                 <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3' crossorigin='anonymous'>
                 <!-- Font awesome -->
                 <script src='https://kit.fontawesome.com/1942d39d14.js' crossorigin='anonymous'></script>
                 <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'/>
+                <!-- jQuery -->
+                <script src='https://code.jquery.com/jquery-3.6.0.min.js' integrity='sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=' crossorigin='anonymous'></script>
 
                 <title>$title</title>
             </head>
@@ -185,6 +188,14 @@ class Page {
                 <!-- Option 1: Bootstrap Bundle with Popper -->
                 <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js' integrity='sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p' crossorigin='anonymous'></script>
             </body>
+            <script src='/assets/js/app.js'></script>
+            <script>
+                document.onreadystatechange = function() {
+                    if(document.readyState==='complete') {
+                        prepareApp();
+                    }
+                }
+            </script>
         </html>
         ";
         return $html;

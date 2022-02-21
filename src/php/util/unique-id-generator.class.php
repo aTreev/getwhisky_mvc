@@ -1,7 +1,4 @@
 <?php 
-    require_once("crud/usercrud.class.php");
-   
-
     class UniqueIdGenerator {
     /**********************************
      * Unique ID generator, used as an extra security measure,

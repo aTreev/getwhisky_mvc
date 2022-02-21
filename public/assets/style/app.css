@@ -46,6 +46,9 @@ header {
     justify-content: space-between;
     
 }
+.header-bottom-menu .product-menu-item {
+    padding: 10px;
+}
 .header-bottom-menu a {
     color: white;
     text-decoration: none;
@@ -57,4 +60,35 @@ header {
 .header-bottom-menu a:hover {
     color:white;
     opacity: 0.8;
+}
+
+.product-menu-item-filters {
+    position: absolute;
+    max-height: 0px;
+    overflow: hidden;
+    background-color: white;
+    margin-top: 10px;
+    width: 1280px;
+    transition: max-height 200ms ease-in-out;
+}
+.product-menu-item-filters a {
+    color: black;
+}
+
+@media screen and (max-width: 1400px) {
+    .product-menu-item-filters {
+        width: 1100px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .product-menu-item-filters {
+        width: 910px;
+    }
+}
+@media screen and (max-width: 992px) {
+    .product-menu-item-filters {
+        width: 100%;
+        left: 0;
+    }
 }
