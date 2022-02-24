@@ -15,7 +15,7 @@ class CategoryView
     {
         $html = "
         <div class='product-menu-item' categoryid='".$this->category->getId()."'>
-            <a href='/products/category?c=".str_replace(" ", "_", $this->category->getName())."'>".$this->category->getName()."</a>
+            <a href='/products/category?c=".str_replace(" ", "-", $this->category->getName())."'>".$this->category->getName()."</a>
         </div>
             ";
 
@@ -36,7 +36,7 @@ class CategoryView
 
         <div class='break-container p-3 bg-white shadow-sm'>
             <div style='max-width:1280px;' class='m-auto d-flex align-items-center justify-content-between'>
-            <div id='product-count'>Showing 5 of 5 products</div>
+            <div>Showing <span id='product-count'>".count($this->category->getProducts())."</span> of ".$this->category->getProductCount()." products</div>
             <button class='btn btn-danger'><i class='fa-solid fa-filter'></i> Product Filters</button>
             </div>
         </div>

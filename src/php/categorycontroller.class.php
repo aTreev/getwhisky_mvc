@@ -115,9 +115,9 @@ class CategoryController extends CategoryCRUD
      * 
      *  No products retrieved
      */
-    public function getCategoryProducts($offset=0, $limit=2)
+    public function getProductsByOffsetLimit($offset=0, $limit=2)
     {
-        if ($offset >= $this->getProductCount()) return false;
+        
         $productController = new ProductController();
         $products = $productController->getProductsByCategoryId($this->getId(), $offset, $limit);
         if (!$products) return false;

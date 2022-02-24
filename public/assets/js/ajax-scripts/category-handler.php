@@ -14,21 +14,27 @@ if (isset($_POST['function'])) {
 }
 
 
+/******
+ * Initializes a category and retrieves the products
+ * between the offset and limit
+ *  offset increments by limit on each successful product retrieval
+ */
 function loadMoreProducts() 
 {
     if (!util::valInt($_POST["offset"]) || !util::valStr($_POST['category'])) return;
     $categoryName = util::sanStr($_POST['category']);
-    $offset = util::sanInt($_POST['offset']);
+    $offset = (int)util::sanInt($_POST['offset']);
+    $limit = 20;
 
     $category = new CategoryController();
 
     $category->initCategoryByName($categoryName);
 
-    if ($category->getCategoryProducts($offset)) {
+    if ($category->getProductsByOffsetLimit($offset, $limit)) {
         $html = $category->getView()->productsOnly();
-        echo json_encode($html);
+        echo json_encode(['html' => $html, 'newOffset' => $offset+$limit]);
     } else {
-        echo json_encode("");
+        echo json_encode(['newOffset' => $offset]);
     }
 }
 ?>

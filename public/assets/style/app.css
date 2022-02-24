@@ -9,6 +9,7 @@
 }
 body {
     background-color: #f7f7f7!important;
+    overflow-x: hidden;
 }
 header {
     background-color: var(--bg-primary);

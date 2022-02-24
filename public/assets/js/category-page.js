@@ -1,4 +1,19 @@
-let offset = 0;
+/**********
+ * Global variables
+ ********/
+
+
+/*******
+ * @offset integer
+ *  used to retrieve products by pagination
+ *  initial value is the number of products loaded on the page
+ *********/
+let offset = document.getElementsByClassName("product").length;
+
+/*********
+ * @category string
+ *  Name of the current category
+ *****/
 const category = $("#category").val();
 
 function prepareCategoryPage()
@@ -9,7 +24,6 @@ function prepareCategoryPage()
 
 function loadMoreProducts()
 {
-    offset += 20
     console.log("fired");
     return new Promise(function(resolve){
         $.ajax({
@@ -33,8 +47,13 @@ function handlePagination()
             $(window).off();
 
             loadMoreProducts().then(function(result){
-                $("#product-root").append(result);
+                // Append returned products view
+                $("#product-root").append(result.html);
+                // Update count to number of products on page
+                $("#product-count").html(document.getElementsByClassName("product").length);
+                offset = result.newOffset;
                 // recursive call to add the listener again
+                
                 handlePagination();
             });
         }
