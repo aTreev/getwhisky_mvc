@@ -1,0 +1,20 @@
+.product-c {
+    flex: 1;
+    min-width: 250px;
+    position: relative;
+ }
+ .product-c:hover {
+     box-shadow: 2px 2px 15px lightgrey;
+ }
+ .product-c-image {
+     max-height: 300px;
+ }
+ .product-c-name {
+     margin-top: 10px;
+     font-size: 18px;
+     color: var(--bg-secondary);
+ }
+ .product-c-price {
+     color: var(--bg-secondary);
+     font-weight: 600;
+ }

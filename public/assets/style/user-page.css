@@ -1,0 +1,22 @@
+.account-option:hover {
+    box-shadow: 2px 2px 15px lightgrey;
+    cursor: pointer;
+}
+.profile-icon {
+    font-size: 26px;
+    background-color:var(--bg-primary);
+    border-radius:128px;
+    width:60px;
+    height:60px;
+    display:flex;
+    align-items:center;
+    margin:auto;
+    justify-content:center;
+    color:white;
+}
+
+@media screen and (max-width:1200px) {
+    .user-sidebar {
+        display: none!important;
+    }
+}

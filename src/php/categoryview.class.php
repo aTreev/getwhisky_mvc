@@ -22,20 +22,24 @@ class CategoryView
         return $html;
     }
 
-    public function categoryPage()
+    public function categoryPageFullView()
     {
+        $script = "/assets/js/category-page.js";
+        $style = "/assets/style/category-page.css";
+        $title = $this->category->getName();
+
         $html = "";
         $html.="
         <div class='break-container' style='background: rgba(0, 0, 0, 0.8)!important;'>
-            <div style='max-width: 300px; position: absolute; left: 30%; top: 20%; transform: translate(-30%, -10%);z-index:4;'>
-                <h1 style='color:white;'>".$this->category->getName()."</h1>
-                <p style='color:white;'>".$this->category->getDescription()."</p>
+            <div class='hero-text'>
+                <h1 class='text-white'>".$this->category->getName()."</h1>
+                <p class='text-white-faded'>".$this->category->getDescription()."</p>
             </div>
-            <img src='".$this->category->getImage()."' style='width:100%;min-height: 200px;max-height: 300px;object-fit:cover;background: rgba(0, 0, 0, 0.8);opacity: 0.4;' />
+            <img src='".$this->category->getImage()."' class='hero-image' />
         </div>
 
         <div class='break-container p-3 bg-white shadow-sm'>
-            <div style='max-width:1280px;' class='m-auto d-flex align-items-center justify-content-between'>
+            <div style='max-width:1280px;' class='px-2 m-auto d-flex align-items-center justify-content-between flex-wrap'>
             <div>Showing <span id='product-count'>".count($this->category->getProducts())."</span> of ".$this->category->getProductCount()." products</div>
             <button class='btn btn-danger'><i class='fa-solid fa-filter'></i> Product Filters</button>
             </div>
@@ -48,31 +52,9 @@ class CategoryView
         foreach($this->category->getProducts() as $product) {
             if ($product->isActive()) $html.=$product->getView()->categoryPageView();
         }
-        $html.="</div>
-        <style>
-            .product {
-               flex: 1;
-               min-width: 250px;
-               position: relative;
-            }
-            .product:hover {
-                box-shadow: 2px 2px 15px lightgrey;
-            }
-            .product-image {
-                max-height: 300px;
-            }
-            .product-name {
-                margin-top: 10px;
-                font-size: 18px;
-                color: var(--bg-secondary);
-            }
-            .product-price {
-                color: var(--bg-secondary);
-                font-weight: 600;
-            }
-        </style>
-        ";
-        return $html;
+        $html.="</div>";
+        
+        return ['html' => $html, 'script' => $script, 'style' => $style, 'title' => $title];
     }
 
     public function productsOnly()

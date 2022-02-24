@@ -153,10 +153,16 @@ class Page {
      * 
      * Takes optional page title
      ******************************************/
-    public function displayPage($view="",$script="",$title="getwhisky") 
+    public function displayPage($view=['html', 'script', 'style', 'title']) 
     {
         $dynamicMenu = $this->dynamicMenu();
         $productMenu = $this->productMenu();
+        if (array_key_exists('html',$view)) $viewHtml = $view['html']; else $viewHtml = "";
+        if (array_key_exists('script',$view)) $viewScript = "<script defer src='".$view['script']."'></script>"; else $viewScript = "";
+        if (array_key_exists('style',$view)) $viewStyle = "<link rel='stylesheet' href='".$view['style']."' />"; else $viewStyle = "";
+        if (array_key_exists('title',$view)) $viewTitle = $view['title']; else $viewTitle = "Getwhisky";
+        
+        
         $html = "
         <!doctype html>
         <html lang='en'>
@@ -166,6 +172,7 @@ class Page {
                 <meta name='viewport' content='width=device-width, initial-scale=1'>
                 <!-- Site CSS -->
                 <link rel='stylesheet' href='/assets/style/app.css'>
+                $viewStyle
                 <!-- Bootstrap CSS -->
                 <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3' crossorigin='anonymous'>
                 <!-- Font awesome -->
@@ -174,7 +181,7 @@ class Page {
                 <!-- jQuery -->
                 <script src='https://code.jquery.com/jquery-3.6.0.min.js' integrity='sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=' crossorigin='anonymous'></script>
 
-                <title>$title</title>
+                <title>$viewTitle</title>
             </head>
             <body>
                 <header>
@@ -197,14 +204,13 @@ class Page {
                     </div>
                 </header>
                 <div class='container mb-5' id='page-root'>
-                    $view
+                    $viewHtml
                 </div>
                 <!-- Option 1: Bootstrap Bundle with Popper -->
                 <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js' integrity='sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p' crossorigin='anonymous'></script>
             </body>
-            <script src='/assets/js/app.js'></script>";
-            if ($script) $html.="<script src='$script' defer></script>";
-            $html.="
+            <script src='/assets/js/app.js'></script>
+            $viewScript
             <script>
                 document.onreadystatechange = function() {
                     if(document.readyState==='complete') {

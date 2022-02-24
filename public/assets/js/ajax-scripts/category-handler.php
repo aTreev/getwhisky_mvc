@@ -34,7 +34,7 @@ function loadMoreProducts()
         $html = $category->getView()->productsOnly();
         echo json_encode(['html' => $html, 'newOffset' => $offset+$limit]);
     } else {
-        echo json_encode(['newOffset' => $offset]);
+        echo json_encode(['newOffset' => $offset+$limit]);
     }
 }
 ?>

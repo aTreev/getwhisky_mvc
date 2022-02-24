@@ -6,9 +6,9 @@
 /*******
  * @offset integer
  *  used to retrieve products by pagination
- *  initial value is the number of products loaded on the page
+ *  initial value is the number of elements with class='product-c' loaded on the page
  *********/
-let offset = document.getElementsByClassName("product").length;
+let offset = document.getElementsByClassName("product-c").length;
 
 /*********
  * @category string
@@ -60,4 +60,6 @@ function handlePagination()
      });
 }
 
+setTimeout(() => {
 prepareCategoryPage();
+}, 500);

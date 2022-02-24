@@ -14,7 +14,7 @@ if (isset($_GET['c'])) {
         $category->getProductsByOffsetLimit($offset=0, $limit=5);
         
         // call the page's view and pass the category's view
-        echo $page->displayPage($category->getView()->categoryPage(), '/assets/js/category-page.js'); 
+        echo $page->displayPage($category->getView()->categoryPageFullView()); 
     } else {
         echo $page->displayPage("<h1>Category not found</h1>");
     }

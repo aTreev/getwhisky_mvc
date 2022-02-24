@@ -185,7 +185,7 @@ class UserView
         </style>
         ";
         
-        return $html;
+        return ['html' => $html, 'style' => '/assets/style/user-page.css', 'script' => '', 'title' => 'account profile'];
     }
 }
 ?>
