@@ -10,6 +10,7 @@ class Page {
     private $requiredAccessLevel;
     private $user;
     private $categories = [];
+    private $category;
     private $authenticated;
 
     public function __construct($requiredAccessLevel=0) {
@@ -29,6 +30,7 @@ class Page {
     public function isAuthenticated() { return $this->authenticated; }
     public function getUser() { return $this->user; }
     public function getCategories() { return $this->categories; }
+    public function getCategory() { return $this->category; }
 
     private function checkUser() 
     {
@@ -47,7 +49,6 @@ class Page {
     public function login($email, $password, $autoRedirect=false) 
     {
         $authenticated = 0;
-        $location = 'user/';
 		session_regenerate_id();
 
 		if($this->getUser()->authByLogin($email,$password)) {
@@ -59,13 +60,13 @@ class Page {
 			// userlevel logic here
 			switch($this->getUser()->getAccessLevel()) {
 				case 1:
-					$location.= 'suspended';
+					$location= 'user/suspended';
 					break;
 				case 2:
-					$location.= 'account';
+					$location= 'user/account';
 					break;
 				case 3:
-					$location.= 'admin';
+					$location= 'admin/home';
 					break;
 			}
 		} 
@@ -88,8 +89,17 @@ class Page {
     }
 
 
-    private function initCategories()
+    /****************
+     * Method retrieves the product categories
+     * Contains and passes required variables for pagination
+     * 
+     * @getProducts boolean - Whether products should also be loaded
+     * @productLimit integer - The number of products to show
+     * @page integer - The current page number
+     ***********************************************/
+    public function initCategories()
     {
+        $this->categories = [];
         $categoryController = new CategoryController();
         $categories = $categoryController->getCategories();
 
@@ -103,9 +113,11 @@ class Page {
     public function productMenu()
     {
         $html = "";
+        $html.="<div class='product-menu'>";
         foreach($this->categories as $category) {
             $html.=$category->getView()->menu();
         }
+        $html.="</div>";
         return $html;
     }
 
@@ -122,15 +134,17 @@ class Page {
         return $html;
     }
 
-    public function generateCategoryView($categoryName)
+    public function getCurrentCategoryByName($categoryName)
     {
         $found = false;
         foreach($this->categories as $category) {
             if ($category->getName() == $categoryName) {
-                return $category->getView()->index();
+                $this->category = $category;
+                $found = true;
+                break;
             }
         }
-        return "<h1>Sorry that category doesn't exist</h1>";
+        return $found;
     }
     /*****************
      * Displays the page html
@@ -139,7 +153,7 @@ class Page {
      * 
      * Takes optional page title
      ******************************************/
-    public function displayPage($view="", $title="getwhisky") 
+    public function displayPage($view="",$script="",$title="getwhisky") 
     {
         $dynamicMenu = $this->dynamicMenu();
         $productMenu = $this->productMenu();
@@ -162,14 +176,14 @@ class Page {
 
                 <title>$title</title>
             </head>
-            <body style='background-color:#f8fafc;'>
+            <body>
                 <header>
                     <div class='container header-container'>
                         <div class='header-top'>
                             <a href='/about'>About</a>
                             <a href='/contact'>Contact</a>
                         </div>
-                        <div class='header-center'>
+                        <div class='header-center  pb-5'>
                         <a href='/'>
                             <img src='/assets/getwhisky-logo-lowercase.png' class='site-logo' alt='getwhisky-logo'/>
                         </a>
@@ -177,18 +191,20 @@ class Page {
                             $dynamicMenu
                         </div>
                         </div>
-                        <nav class='header-bottom-menu'>
+                        <nav class='header-bottom-menu break-container'>
                             $productMenu
                         </nav>
                     </div>
                 </header>
-                <div class='container'>
+                <div class='container mb-5' id='page-root'>
                     $view
                 </div>
                 <!-- Option 1: Bootstrap Bundle with Popper -->
                 <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js' integrity='sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p' crossorigin='anonymous'></script>
             </body>
-            <script src='/assets/js/app.js'></script>
+            <script src='/assets/js/app.js'></script>";
+            if ($script) $html.="<script src='$script' defer></script>";
+            $html.="
             <script>
                 document.onreadystatechange = function() {
                     if(document.readyState==='complete') {

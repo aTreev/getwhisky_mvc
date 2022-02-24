@@ -29,9 +29,28 @@ class CategoryCRUD
     {
         self::$db = db::getInstance();
 
-        $this->sql = "SELECT * FROM categories WHERE id = ?;";
+        $this->sql = "SELECT categories.*, 
+        (SELECT COUNT(DISTINCT products.name) FROM products WHERE products.category_id = ?) AS 'product_count' 
+        FROM categories
+        WHERE categories.id = ?;";
         $this->stmt = self::$db->prepare($this->sql);
-        $this->stmt->bind_param("i", $id);
+        $this->stmt->bind_param("ii", $id, $id);
+        $this->stmt->execute();
+        $result = $this->stmt->get_result();
+        $resultset=$result->fetch_all($style);
+        return $resultset;
+    }
+
+    protected function getCategoryByName($name, $style=MYSQLI_ASSOC)
+    {
+        self::$db = db::getInstance();
+        
+        $this->sql = "SELECT categories.*, 
+                    (SELECT COUNT(DISTINCT products.name) FROM products WHERE products.category_id = (SELECT id FROM categories WHERE `name` = ?)) AS 'product_count' 
+                    FROM categories
+                    WHERE categories.name = ?;";
+        $this->stmt = self::$db->prepare($this->sql);
+        $this->stmt->bind_param("ss", $name, $name);
         $this->stmt->execute();
         $result = $this->stmt->get_result();
         $resultset=$result->fetch_all($style);

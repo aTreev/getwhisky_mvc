@@ -10,8 +10,11 @@
 
         try {
             $result = $page->getUser()->regUser($email, $password, $firstName, $surname, $dob);
-            $page->login($email, $password);
-            echo var_dump($result);
+            
+            if ($result) {
+                $page->login($email, $password, true);
+            }
+            
             if (!$result) {
                 echo "Something went wrong";
             }

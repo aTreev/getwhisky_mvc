@@ -7,7 +7,9 @@ class CategoryController extends CategoryCRUD
     private $id;
     private $name;
     private $description;
+    private $image;
     private $categoryView;
+    private $productCount;
     private $filters = [];
     private $products = [];
 
@@ -20,6 +22,8 @@ class CategoryController extends CategoryCRUD
     private function setId($id) { $this->id = $id; return $this; }
     private function setName($name) { $this->name = $name; return $this; }
     private function setDescription($desc) { $this->description = $desc; return $this; }
+    private function setImage($image) { $this->image = $image; return $this; }
+    private function setProductCount($productCount) { $this->productCount = $productCount; return $this; }
 
     public function getId() { return $this->id; }
     public function getName() { return $this->name; }
@@ -27,6 +31,8 @@ class CategoryController extends CategoryCRUD
     public function getFilters() { return $this->filters; }
     public function getView() { return $this->categoryView = new CategoryView($this); }
     public function getProducts() { return $this->products; }
+    public function getImage() { return $this->image; }
+    public function getProductCount() { return $this->productCount; }
     
     
     public function initCategory($id)
@@ -35,15 +41,27 @@ class CategoryController extends CategoryCRUD
         $categoryData = parent::getCategoryById($id)[0];
 
         if ($categoryData) {
-            $this->setId($categoryData['id'])->setName($categoryData['name'])->setDescription($categoryData['description']);
+            $this->setId($categoryData['id'])->setName($categoryData['name'])->setDescription($categoryData['description'])->setImage($categoryData['image'])->setProductCount($categoryData['product_count']);
             $this->getCategoryFilters();
-            $this->getCategoryProducts();
             $categoryExists = true;
         }
 
         return $categoryExists;
     }
 
+    public function initCategoryByName($name)
+    {
+        $categoryExists = false;
+        $categoryData = parent::getCategoryByName($name)[0];
+        
+        if ($categoryData) {
+            $this->setId($categoryData['id'])->setName($categoryData['name'])->setDescription($categoryData['description'])->setImage($categoryData['image'])->setProductCount($categoryData['product_count']);
+            $this->getCategoryFilters();
+            $categoryExists = true;
+        }
+
+        return $categoryExists;
+    }
     private function getCategoryFilters()
     {
         $filters = parent::getCategoryFiltersModel($this->getId());
@@ -88,17 +106,29 @@ class CategoryController extends CategoryCRUD
         
     }
 
-    public function getCategoryProducts()
+    /*****************
+     * retrieves category's products
+     * 
+     * Returns false on the following conditions
+     *  @offset is equal to the product count meaning no more
+     *  products to retrieve
+     * 
+     *  No products retrieved
+     */
+    public function getCategoryProducts($offset=0, $limit=2)
     {
+        if ($offset >= $this->getProductCount()) return false;
         $productController = new ProductController();
-        $products = $productController->getProductsByCategoryId($this->getId());
-        if (!$products) return;
+        $products = $productController->getProductsByCategoryId($this->getId(), $offset, $limit);
+        if (!$products) return false;
 
         foreach($products as $product) {
             $productObj = new ProductController();
             $productObj->initProduct($product['id']);
             array_push($this->products, $productObj);
         }
+
+        return true;
     }
 
     public function getCategories()

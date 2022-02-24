@@ -1,12 +1,15 @@
 :root {
     --bg-primary:hsl(0deg 0% 18%);
+    --bg-secondary: hsl(0, 100%, 20%);
     --btn-save-green: #3d9970;
     --btn-proceed-green-light: #00af6c;
     --btn-action-blue: #3b8cc3;
     --btn-hover-colour: #95b0c2;
     --btn-delete-red: #db4c3c; 
 }
-
+body {
+    background-color: #f7f7f7!important;
+}
 header {
     background-color: var(--bg-primary);
 }
@@ -41,53 +44,69 @@ header {
     max-width: 200px;
 }
 .header-bottom-menu {
+    background-color: #fff;
+    box-shadow: 2px 2px 5px lightgray;
+}
+.header-bottom-menu .product-menu {
     display: flex;
-    padding-top: 40px;
     justify-content: space-between;
-    
+    width: 1280px;
+    padding: 10px 0px;
+    margin: auto;
+    font-weight: 500;
+}
+.product-menu .product-menu-item a {
+    font-weight: 400;
+    text-transform: uppercase;
 }
 .header-bottom-menu .product-menu-item {
     padding: 10px;
 }
+.product-menu-item a:hover {
+    opacity: 0.8;
+    border-bottom: 3px solid var(--bg-secondary);
+    color: var(--bg-secondary);
+}
 .header-bottom-menu a {
-    color: white;
+    color: black;
     text-decoration: none;
     font-weight: 300;
     user-select: none;
     opacity: 1;
     padding: 10px;
 }
-.header-bottom-menu a:hover {
-    color:white;
-    opacity: 0.8;
+
+.wrapper-link {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 12;
+    background-image: url(empty.gif);
+    cursor: pointer;
 }
 
-.product-menu-item-filters {
-    position: absolute;
-    max-height: 0px;
-    overflow: hidden;
-    background-color: white;
-    margin-top: 10px;
-    width: 1280px;
-    transition: max-height 200ms ease-in-out;
+.break-container{
+    width:100vw;
+    position:relative;
+    left:calc(-1 * (100vw - 100%)/2);
 }
-.product-menu-item-filters a {
-    color: black;
-}
+
 
 @media screen and (max-width: 1400px) {
-    .product-menu-item-filters {
+    .header-bottom-menu .product-menu {
         width: 1100px;
     }
 }
 
 @media screen and (max-width: 1200px) {
-    .product-menu-item-filters {
+    .header-bottom-menu .product-menu {
         width: 910px;
     }
 }
 @media screen and (max-width: 992px) {
-    .product-menu-item-filters {
+    .header-bottom-menu .product-menu {
         width: 100%;
         left: 0;
     }

@@ -11,12 +11,12 @@ class ProductCRUD
     }
 
 
-    protected function getProductsByCategoryIdModel($categoryid, $style=MYSQLI_ASSOC) {
+    protected function getProductsByCategoryIdModel($categoryid, $offset, $limit, $style=MYSQLI_ASSOC) {
         self::$db = db::getInstance();
 
-        $this->sql = "SELECT * FROM products WHERE category_id = ?;";
+        $this->sql = "SELECT * FROM products WHERE category_id = ? LIMIT ?,?;";
         $this->stmt = self::$db->prepare($this->sql);
-        $this->stmt->bind_param("i", $categoryid);
+        $this->stmt->bind_param("iii", $categoryid, $offset, $limit);
         $this->stmt->execute();
         $result = $this->stmt->get_result();
         $resultset=$result->fetch_all($style);
