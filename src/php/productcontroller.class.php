@@ -75,6 +75,12 @@ class ProductController extends ProductCRUD
         return $products;
     }
 
+    public function getFilteredProducts($filters, $offset, $limit)
+    {
+        $products = parent::getFilteredProductsModel($filters, $offset, $limit);
+        return $products;
+    }
+
 
     public function initProduct($id)
     {

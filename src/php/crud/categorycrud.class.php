@@ -44,7 +44,7 @@ class CategoryCRUD
     protected function getCategoryByName($name, $style=MYSQLI_ASSOC)
     {
         self::$db = db::getInstance();
-        
+
         $this->sql = "SELECT categories.*, 
                     (SELECT COUNT(DISTINCT products.name) FROM products WHERE products.category_id = (SELECT id FROM categories WHERE `name` = ?)) AS 'product_count' 
                     FROM categories
@@ -74,7 +74,13 @@ class CategoryCRUD
     {
         self::$db = db::getInstance();
 
-        $this->sql = "SELECT `id`, `value` FROM filter_values WHERE filter_values.filter_id = ?;";
+        $this->sql = "SELECT filter_values.id, `value`, 
+        (SELECT COUNT(*) FROM filter_value_products WHERE filter_value_products.filter_value_id = filter_values.id) AS 'count_products_with_value' 
+        FROM filter_values 
+        JOIN filters
+        ON filter_values.filter_id = filters.id
+        
+        WHERE filter_values.filter_id =? AND (SELECT COUNT(*) FROM filter_value_products WHERE filter_value_products.filter_value_id = filter_values.id) > 0;";
         $this->stmt = self::$db->prepare($this->sql);
         $this->stmt->bind_param("i", $filterId);
         $this->stmt->execute();

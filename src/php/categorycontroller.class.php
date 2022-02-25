@@ -131,6 +131,22 @@ class CategoryController extends CategoryCRUD
         return true;
     }
 
+    public function getFilteredProductsByOffsetLimit($filterIds, $offset=0, $limit=2)
+    {
+        $productController = new ProductController();
+        $products = $productController->getFilteredProducts($filterIds, $offset, $limit);
+        $products = array_unique($products,SORT_REGULAR);
+        if (!$products) return false;
+        foreach($products as $product) {
+            
+            $productObj = new ProductController();
+            $productObj->initProduct($product['id']);
+            array_push($this->products, $productObj);
+        }
+
+        return true;
+    }
+
     public function getCategories()
     {
         $categories = parent::getCategoriesModel();

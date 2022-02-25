@@ -7,6 +7,9 @@ if (isset($_POST['function'])) {
         case 1:
             loadMoreProducts();
         break;
+        case 2:
+            loadFilteredProducts();
+        break;
         default:
             echo json_encode(0);
         break;
@@ -31,6 +34,30 @@ function loadMoreProducts()
     $category->initCategoryByName($categoryName);
 
     if ($category->getProductsByOffsetLimit($offset, $limit)) {
+        $html = $category->getView()->productsOnly();
+        echo json_encode(['html' => $html, 'newOffset' => $offset+$limit]);
+    } else {
+        echo json_encode(['newOffset' => $offset+$limit]);
+    }
+}
+
+function loadFilteredProducts()
+{
+    if (!util::valInt($_POST['offset']) || !util::valStr($_POST['category'])) return;
+    $offset = (int)util::sanInt($_POST['offset']);
+    $limit = 20;
+    $categoryName = (string)util::sanStr($_POST['category']);
+    $filters = [];
+    foreach($_POST['filters'] as $filter) {
+        if (util::valInt($filter)) {
+            array_push($filters, (int)util::sanInt($filter));
+        }
+    }
+
+    $category = new CategoryController();
+    $category->initCategoryByName($categoryName);
+
+    if ($category->getFilteredProductsByOffsetLimit($filters, $offset, $limit)) {
         $html = $category->getView()->productsOnly();
         echo json_encode(['html' => $html, 'newOffset' => $offset+$limit]);
     } else {

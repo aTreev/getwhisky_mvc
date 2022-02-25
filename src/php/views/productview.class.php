@@ -21,7 +21,7 @@ class ProductView
         }
         $html.="
             <p class='product-c-price'>£".$this->product->getPrice()."</p>
-            <a href='/products/product?p=".str_replace(" ", "_", $this->product->getName())."' class='wrapper-link'><span></span></a>
+            <a href='/products/product?p=".str_replace(" ", "-", $this->product->getName())."' class='wrapper-link'><span></span></a>
         </div>
         ";
 

@@ -23,6 +23,26 @@ class ProductCRUD
         return $resultset;
     }
 
+    protected function getFilteredProductsModel($filterIds, $offset, $limit, $style=MYSQLI_ASSOC) {
+        self::$db = db::getInstance();
+        $fullResultset = [];
+        foreach($filterIds as $filterId) {
+            $this->sql = "SELECT products.* FROM products
+            JOIN filter_value_products
+            ON filter_value_products.product_id = products.id
+            WHERE filter_value_products.filter_value_id = ? LIMIT ?,?;";
+            $this->stmt = self::$db->prepare($this->sql);
+            $this->stmt->bind_param("iii", $filterId, $offset, $limit);
+            $this->stmt->execute();
+            $result = $this->stmt->get_result();
+            $resultset=$result->fetch_all($style);
+            foreach($resultset as $rs) {
+                array_push($fullResultset, $rs);
+            }
+        }
+        return $fullResultset;
+    }
+
     protected function getProductByIdModel($id, $style=MYSQLI_ASSOC) {
         self::$db = db::getInstance();
 

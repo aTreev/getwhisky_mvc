@@ -117,6 +117,8 @@ class Page {
         foreach($this->categories as $category) {
             $html.=$category->getView()->menu();
         }
+        
+        $html.="<i class='fa-solid fa-xmark product-menu-close' id='product-menu-close'></i>";
         $html.="</div>";
         return $html;
     }
@@ -126,11 +128,13 @@ class Page {
         $html = "";
         if ($this->getUser()->getAccessLevel() == 0) { $html.="<div><a href='/login'>Sign in</a></div>"; }
         if ($this->getUser()->getAccessLevel() > 0) {
-            $html.="<div><a href='/user/account'><i class='fas fa-user' style='font-size:24px;color:white;'></i> Account</a></div>";
+            $html.="<div><a href='/user/account'><i class='fas fa-user site-icon-white'></i> <span class='site-icon-text'>Account</span></a></div>";
         }
         if ($this->getUser()->getAccessLevel() == 3) {
-            $html.="<div><a href='/admin/home'><i class='fas fa-database' style='font-size:24px;color:white;'></i> Admin</a></div>";
+            $html.="<div><a href='/admin/home'><i class='fas fa-database site-icon-white'></i> <span class='site-icon-text'>Admin</span></a></div>";
         }
+        $html.="<div><a href='/cart'><i class='fa-solid fa-basket-shopping site-icon-white'></i> <span class='site-icon-text'>Basket</span></a></i></div>";
+        $html.="<i class='fa-solid fa-bars product-menu-open' id='product-menu-open'></i>";
         return $html;
     }
 
@@ -185,12 +189,9 @@ class Page {
             </head>
             <body>
                 <header>
-                    <div class='container header-container'>
-                        <div class='header-top'>
-                            <a href='/about'>About</a>
-                            <a href='/contact'>Contact</a>
-                        </div>
-                        <div class='header-center  pb-5'>
+                    <div class='page-overlay'></div>
+                    <div class=' header-container'>
+                        <div class='header-center'>
                         <a href='/'>
                             <img src='/assets/getwhisky-logo-lowercase.png' class='site-logo' alt='getwhisky-logo'/>
                         </a>
@@ -198,7 +199,7 @@ class Page {
                             $dynamicMenu
                         </div>
                         </div>
-                        <nav class='header-bottom-menu break-container'>
+                        <nav class='header-bottom-menu'>
                             $productMenu
                         </nav>
                     </div>

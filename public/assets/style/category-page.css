@@ -13,8 +13,41 @@
      margin-top: 10px;
      font-size: 18px;
      color: var(--bg-secondary);
+     text-transform: capitalize;
  }
  .product-c-price {
      color: var(--bg-secondary);
      font-weight: 600;
  }
+.product-filters {
+    transform: translateX(100%);
+    overflow: hidden;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 30vw;
+    height: 100vh;
+    z-index: 15;
+    transition: transform 200ms ease-in-out;
+    z-index: 99;
+}
+.show-filters {
+    transform: translateX(0%)!important;
+}
+
+@media screen and (max-width: 1200px) {
+    .product-filters {
+        width: 50vw;
+    }
+}
+@media screen and (max-width: 992px) {
+    .product-filters {
+        width: 60vw;
+    }
+}
+@media screen and (max-width: 736px) {
+    .product-filters {
+        width: 75vw;
+    }
+}
