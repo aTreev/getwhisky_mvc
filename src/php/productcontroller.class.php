@@ -20,8 +20,9 @@ class ProductController extends ProductCRUD
     private $type;
     private $featured;
     private $categoryId;
-    private $attributes = [];
+    private $filters = [];
     private $overviews = [];
+    private $reviews = [];
 
     private $productView;
 
@@ -39,13 +40,15 @@ class ProductController extends ProductCRUD
     public function getBottleSize() { return $this->bottleSize; }
     public function getType(){ return $this->type; }
     public function getCategoryId(){ return $this->categoryId; }
-    public function getAttributes(){ return $this->attributes; }
+    public function getFilters(){ return $this->filters; }
     public function getOverviews() { return $this->overviews; }
+    public function getReviews() { return $this->reviews; }
     public function isFeatured() { return $this->featured; }
 
     public function getView() { return $this->productView = new ProductView($this);}
 
-    
+    public function getActivePrice() { return $this->isDiscounted() ? $this->getDiscountPrice() : $this->getPrice(); }
+
     private function setId($id) { $this->id = $id; return $this; }
     private function setName($name) { $this->name = $name; return $this; }
     private function setDescription($description) { $this->description = $description; return $this; }
@@ -60,7 +63,7 @@ class ProductController extends ProductCRUD
     private function setBottleSize($bottleSize) { $this->bottleSize = $bottleSize; return $this;}
     private function setType($type) { $this->type = $type; return $this; }
     private function setCategoryId($categoryId) { $this->categoryId = $categoryId; return $this; }
-    private function setAttributes($attributes) { $this->attributes = $attributes; return $this; }
+    private function setFilters($filters) { $this->filters = $filters; return $this; }
     public function setFeatured($featured) { $this->featured = $featured; return $this; }
 
     public function __construct()
@@ -81,6 +84,31 @@ class ProductController extends ProductCRUD
         return $products;
     }
 
+    private function getProductFilters()
+    {
+        $filters = parent::getProductFiltersModel($this->getId());
+        if (!$filters) return;
+        $this->filters = $filters;
+    }
+
+    private function getProductOverviews()
+    {
+        $overviews = parent::getProductOverviewsModel($this->getId());
+        if (!$overviews) return;
+        $this->overviews = $overviews;
+    }
+
+    // Checks whether a discount has reached its end datetime
+    // Ends the discount on database & object state
+    private function checkDiscountEnded()
+    {
+        if (!$this->isDiscounted()) return;
+
+        if (strtotime($this->getDiscountEndDatetime()) < time()) {
+            parent::endProductDiscount($this->getId());
+            $this->setDiscounted(false);
+        }
+    }
 
     public function initProduct($id)
     {
@@ -95,6 +123,29 @@ class ProductController extends ProductCRUD
             ->setStock($productData['stock'])->setActive($productData['active'])->setDiscountEndDatetime($productData['discount_end_datetime'])
             ->setType($productData['type'])->setCategoryId($productData['category_id'])->setAlcoholVolume($productData['alc_vol'])->setBottleSize($productData['bottle_size']);
 
+            $this->getProductFilters();
+            $this->getProductOverviews();
+            $this->checkDiscountEnded();
+        }
+
+        return $productExists;
+    }
+
+    public function initProductByName($name)
+    {
+        $productExists = false;
+        $productData = parent::getProductByNameModel($name)[0];
+
+        if ($productData) {
+            $productExists = true;
+            $this->setId($productData['id'])->setName($productData['name'])->setDescription($productData['description'])
+            ->setImage($productData['image'])->setPrice($productData['price'])->setDiscounted($productData['discounted'])->setDiscountPrice($productData['discount_price'])
+            ->setStock($productData['stock'])->setActive($productData['active'])->setDiscountEndDatetime($productData['discount_end_datetime'])
+            ->setType($productData['type'])->setCategoryId($productData['category_id'])->setAlcoholVolume($productData['alc_vol'])->setBottleSize($productData['bottle_size']);
+
+            $this->getProductFilters();
+            $this->getProductOverviews();
+            $this->checkDiscountEnded();
         }
 
         return $productExists;

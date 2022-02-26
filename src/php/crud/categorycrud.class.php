@@ -61,7 +61,7 @@ class CategoryCRUD
     {
         self::$db = db::getInstance();
 
-        $this->sql = "SELECT `id`, `title` FROM filters WHERE filters.category_id = ?;";
+        $this->sql = "SELECT `id`, `title` FROM filters WHERE filters.category_id = ? ORDER BY title ASC;";
         $this->stmt = self::$db->prepare($this->sql);
         $this->stmt->bind_param("i", $id);
         $this->stmt->execute();

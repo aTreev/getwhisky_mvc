@@ -3,6 +3,7 @@
     min-width: 250px;
     position: relative;
  }
+
  .product-c:hover {
      box-shadow: 2px 2px 15px lightgrey;
  }

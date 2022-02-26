@@ -49,6 +49,7 @@ function prepareProductFilters()
         // reset html and offset on filter click
         $("#product-root").html("");
         offset = 0;
+
         if ($(this).prop("checked")) {
             filters.push($(this).val())
         } else {
@@ -141,7 +142,7 @@ function handlePagination()
                      // update offset to new offset supplied via backend   
                     offset = result.newOffset;
                     // recursive call to add the listener again once ajax request resolved
-                    handlePagination();
+                    if(result.html)handlePagination();
                 });
             } else {
                 loadFilteredProducts(filters)
@@ -151,7 +152,7 @@ function handlePagination()
                     // update offset to new offset supplied via backend
                     offset = result.newOffset;
                     // recursive call to add the listener again once ajax request resolved
-                    handlePagination();
+                    if(result.html)handlePagination();
                 });
             }
             
@@ -159,6 +160,4 @@ function handlePagination()
      });
 }
 
-setTimeout(() => {
-    prepareCategoryPage();
-}, 500);
+prepareCategoryPage();

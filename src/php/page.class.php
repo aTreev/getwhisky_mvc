@@ -184,6 +184,10 @@ class Page {
                 <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'/>
                 <!-- jQuery -->
                 <script src='https://code.jquery.com/jquery-3.6.0.min.js' integrity='sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=' crossorigin='anonymous'></script>
+                <!-- Google Fonts -->
+                <link rel='preconnect' href='https://fonts.googleapis.com'>
+                <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+                <link href='https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;400;500;600;700&display=swap' rel='stylesheet'>
 
                 <title>$viewTitle</title>
             </head>

@@ -27,7 +27,6 @@ class CategoryView
         $script = "/assets/js/category-page.js";
         $style = "/assets/style/category-page.css";
         $title = $this->category->getName();
-        $filters = $this->category->getFilters();
         $filterView = $this->filterView();
 
         $html = "";
