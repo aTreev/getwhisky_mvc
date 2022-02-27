@@ -13,12 +13,40 @@ class CategoryView
 
     public function menu()
     {
-        $html = "
-        <div class='product-menu-item' categoryid='".$this->category->getId()."'>
-            <a href='/products/category?c=".str_replace(" ", "-", $this->category->getName())."'>".$this->category->getName()."</a>
-        </div>
-            ";
+        $html = "";
+        $html.="<div class='product-menu-item'>";
+            $html.="<a href='/products/category?c=".str_replace(" ", "-", $this->category->getName())."' categoryid='".$this->category->getId()."'>".$this->category->getName()."</a>";
 
+            $html.="<div class='subcategory-menus'>";
+                if ($this->category->getDistilleries()) {
+                    $html.="<div class='subcategory-menu' category='".$this->category->getId()."'>";
+                        $html.="<a href='/products/distillery?c=".$this->category->getId()."' class='subcategory-menu-heading'>Distillery</a>";
+                        foreach($this->category->getDistilleries() as $distillery) {
+                            $html.=$distillery->getView()->menu();
+                        }
+                    $html.="</div>";
+                }
+
+                if ($this->category->getRegions()) {
+                    $html.="<div class='subcategory-menu' category='".$this->category->getId()."'>";
+                        $html.="<a href='/products/region?c=".$this->category->getId()."' class='subcategory-menu-heading'>Region</a>";
+                        foreach($this->category->getRegions() as $region) {
+                            $html.=$region->getView()->menu();
+                        }
+                    $html.="</div>";
+                }
+
+                if ($this->category->getTypes()) {
+                    $html.="<div class='subcategory-menu' category='".$this->category->getId()."'>";
+                        $html.="<a href='/products/type?c=".$this->category->getId()."' class='subcategory-menu-heading'>Type</a>";
+                        foreach($this->category->getTypes() as $type) {
+                            $html.=$type->getView()->menu();
+                        }
+                    $html.="</div>";
+                }
+            $html.="</div>";
+        $html.="</div>";
+        
         return $html;
     }
 
@@ -26,7 +54,7 @@ class CategoryView
     {
         $script = "/assets/js/category-page.js";
         $style = "/assets/style/category-page.css";
-        $title = $this->category->getName();
+        $title = ucwords($this->category->getName());
         $filterView = $this->filterView();
 
         $html = "";
@@ -87,7 +115,8 @@ class CategoryView
         $html = "";
 
         foreach($filters as $filter) {
-            $html.="<div class='p-2 ms-2'>";
+            if (array_key_exists('values', $filter)) {
+                $html.="<div class='p-2 ms-2'>";
                 $html.= "<div filter-id='".$filter['id']."'>".$filter['title']."</div>";
                 foreach($filter['values'] as $value) {
                     $html.="<div class='d-flex flex-row align-items-center'>";
@@ -95,7 +124,8 @@ class CategoryView
                     $html.="<label for='filter-id-".$value['id']."' class='p-2' filter-value-id='".$value['id']."'>".$value['value']."</label>";
                     $html.="</div>";
                 }
-            $html.="</div>";
+                $html.="</div>";
+            }
         }
 
         return $html;

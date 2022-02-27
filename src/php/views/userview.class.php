@@ -41,7 +41,7 @@ class UserView
             </form>
         </div>
         ";
-        return $html;
+        return ['html' => $html, 'title' => 'Getwhisky sign up'];
     }
 
     public function login()
@@ -66,7 +66,7 @@ class UserView
             </form>
         </div>
         ";
-        return $html;
+        return ['html' => $html, 'title' => 'Login'];
     }
 
     public function sidebar($activePage="profile")

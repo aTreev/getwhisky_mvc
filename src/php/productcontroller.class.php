@@ -8,6 +8,7 @@ class ProductController extends ProductCRUD
     private $name;
     private $description;
     private $image;
+    private $additionalImages = [];
     private $price;
     private $discounted;
     private $discountPrice;
@@ -30,6 +31,7 @@ class ProductController extends ProductCRUD
     public function getName(){ return $this->name; }
     public function getDescription(){ return $this->description; }
     public function getImage(){ return $this->image; }
+    public function getAdditionalImages() { return $this->additionalImages; }
     public function getPrice(){ return $this->price; }
     public function isDiscounted(){ return $this->discounted; }
     public function getDiscountPrice(){ return $this->discountedPrice; }
@@ -84,6 +86,14 @@ class ProductController extends ProductCRUD
         return $products;
     }
 
+    private function getAdditionalProductImages()
+    {
+        $images = parent::getAdditionalProductImagesModel($this->getId());
+
+        if ($images) {
+            $this->additionalImages = $images;
+        }
+    }
     private function getProductFilters()
     {
         $filters = parent::getProductFiltersModel($this->getId());
@@ -125,6 +135,7 @@ class ProductController extends ProductCRUD
 
             $this->getProductFilters();
             $this->getProductOverviews();
+            $this->getAdditionalProductImages();
             $this->checkDiscountEnded();
         }
 
@@ -145,6 +156,7 @@ class ProductController extends ProductCRUD
 
             $this->getProductFilters();
             $this->getProductOverviews();
+            $this->getAdditionalProductImages();
             $this->checkDiscountEnded();
         }
 

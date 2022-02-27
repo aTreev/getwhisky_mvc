@@ -82,11 +82,17 @@ header {
 .product-menu-mobile-show {
     transform: translateX(0%)!important;
 }
-.product-menu .product-menu-item a {
-    font-weight: 400;
+.product-menu-item > a {
+    font-weight: 400!important;
     text-transform: uppercase;
     display: block;
     width: 100%;
+    color: black;
+    text-decoration: none;
+    font-weight: 300;
+    user-select: none;
+    opacity: 1;
+    padding: 10px;
 }
 .header-bottom-menu .product-menu-item {
     padding: 5px 10px;
@@ -95,15 +101,46 @@ header {
     opacity: 0.8;
     color: var(--bg-secondary);
 }
-.header-bottom-menu a {
-    color: black;
-    text-decoration: none;
-    font-weight: 300;
-    user-select: none;
-    opacity: 1;
-    padding: 10px;
-}
 
+
+.subcategory-menus {
+    display: flex;
+    position: absolute;
+    z-index: 14;
+    background: white;
+    width: 1280px;
+    margin-top: 5px;
+    padding: 0px 10px;
+    gap: 85px;
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 300ms ease-in-out;
+}
+.subcategory-menu {
+    margin: 0px 20px;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+}
+.subcategory-menu a {
+    text-transform: capitalize;
+    text-decoration: none;
+    color: black;
+    opacity: 0.8;
+    font-weight: 400;
+    padding: 5px 10px;
+}
+.subcategory-menu-heading {
+    font-weight: 600!important;
+    text-transform: uppercase!important;
+    font-size: 14px;
+    opacity: 0.95;
+}
+@media screen and (min-width: 736px) {
+    .product-menu-item:hover .subcategory-menus { max-height: 1400px;}
+
+}
 
 /***************
 ***********
@@ -166,18 +203,21 @@ header {
     .header-center {
         width: 100%;
     }
-    .header-bottom-menu .product-menu {
+    .header-bottom-menu .product-menu, .subcategory-menus {
+        width: 1100px;
+    }
+    .subcategory-menus {
         width: 1100px;
     }
 }
 
 @media screen and (max-width: 1200px) {
-    .header-bottom-menu .product-menu {
+    .header-bottom-menu .product-menu, .subcategory-menus {
         width: 910px;
     }
 }
 @media screen and (max-width: 992px) {
-    .header-bottom-menu .product-menu {
+    .header-bottom-menu .product-menu, .subcategory-menus {
         width: 100%;
         left: 0;
     }

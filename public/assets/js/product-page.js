@@ -2,6 +2,7 @@ function prepareProductPage()
 {
     prepareSaleTimer();
     prepareTabs();
+    prepareProductImages();
 }
 
 function prepareSaleTimer()
@@ -54,5 +55,56 @@ function prepareTabs()
     });
 }
 
+
+/**********
+ * Adds the interactive functionality to product page images
+ * 
+ */
+function prepareProductImages()
+{
+    // Get gallery images
+    const images = $("[name=gallery-image]");
+
+    // Add click events to each
+    images.each(function() {
+        $(this).click(function() {
+            // Remove selected class from all and add to clicked
+            images.removeClass("gallery-image-selected");
+            $(this).addClass("gallery-image-selected");
+            // Swap main img src with clicked image src
+            $("#main-image").attr("src", $(this).attr("src"));
+        });
+    });
+
+
+    // Main image click
+    $("#main-image").click(function() {
+        // Populate the modal img src
+        $("#popup-image").attr("src", $(this).attr("src"));
+        // Add transition class
+        $("#popup-image").addClass("popup-image-show");
+        // show overlay
+        $(".page-overlay").show();
+        
+
+        // Overlay click remove src to hide modal
+        $(".page-overlay").click(function(){
+            $("#popup-image").removeClass("popup-image-show");
+            setTimeout(() => {
+                $("#popup-image").attr("src", "");
+                $(this).hide();
+                $(this).off();
+            }, 300);
+            
+        });
+        // Trigger click overlay click on escape
+        $(document).on("keydown",function(ev){
+            if (ev.keyCode == 27) {
+                $(".page-overlay").click();
+                $(this).off();
+            }
+        });
+    });
+}
 
 prepareProductPage();

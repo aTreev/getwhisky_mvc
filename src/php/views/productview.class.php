@@ -37,9 +37,25 @@ class ProductView
         $html = "";
 
         $html.="<div class='product'>";
+
+            // Container for all things product images
             $html.="<div class='product-left'>";
-                $html.="<img src='".$this->product->getImage()."' alt='".$this->product->getName()."' class='product-image'/>";
+                // Main product Image
+                $html.="<img src='".$this->product->getImage()."' alt='".$this->product->getName()."' class='product-image' id='main-image' />";
+                $html.="<div class='image-popup-modal'>";
+                    $html.="<img src='' id='popup-image'/>";
+                $html.="</div>";
+                // Image gallery
+                $html.="<div class='gallery-images'>";
+                    // Main currently active image
+                    $html.="<img src='".$this->product->getImage()."' alt='".$this->product->getName()."' class='gallery-image gallery-image-selected' name='gallery-image'/>";
+                    foreach($this->product->getAdditionalImages() as $image) {
+                        $html.="<img src='".$image['image']."' alt='".$this->product->getName()."' class='gallery-image' name='gallery-image'/>";
+                    }
+                $html.="</div>";
             $html.="</div>";
+
+            // Main product details
             $html.="<div class='product-right'>";
                 $html.="<div class='product-right-top'>";
                 if ($this->product->isDiscounted()) $html.="<p class='sale'>sale</p>";

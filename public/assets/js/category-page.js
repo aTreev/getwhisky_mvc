@@ -43,6 +43,7 @@ function prepareCategoryPage()
 }
 
 // resets the pagination, freshly retrieves products
+//TODO: Change filters to limit to only products that match all inputs
 function prepareProductFilters()
 {
     $("[name=filter]").click(function(){

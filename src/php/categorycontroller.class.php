@@ -2,6 +2,8 @@
 require_once("crud/categorycrud.class.php");
 require_once("categoryview.class.php");
 require_once("productcontroller.class.php");
+require_once("subcategorycontroller.class.php");
+
 class CategoryController extends CategoryCRUD
 {
     private $id;
@@ -12,6 +14,11 @@ class CategoryController extends CategoryCRUD
     private $productCount;
     private $filters = [];
     private $products = [];
+
+    // Subcategories
+    private $distilleries = [];
+    private $types = [];
+    private $regions = [];
 
     public function __construct()
     {
@@ -34,6 +41,9 @@ class CategoryController extends CategoryCRUD
     public function getImage() { return $this->image; }
     public function getProductCount() { return $this->productCount; }
     
+    public function getDistilleries() { return $this->distilleries; }
+    public function getRegions() { return $this->regions; }
+    public function getTypes() { return $this->types; }
     
     public function initCategory($id)
     {
@@ -43,6 +53,7 @@ class CategoryController extends CategoryCRUD
         if ($categoryData) {
             $this->setId($categoryData['id'])->setName($categoryData['name'])->setDescription($categoryData['description'])->setImage($categoryData['image'])->setProductCount($categoryData['product_count']);
             $this->getCategoryFilters();
+            $this->checkForSubcategories();
             $categoryExists = true;
         }
 
@@ -57,11 +68,48 @@ class CategoryController extends CategoryCRUD
         if ($categoryData) {
             $this->setId($categoryData['id'])->setName($categoryData['name'])->setDescription($categoryData['description'])->setImage($categoryData['image'])->setProductCount($categoryData['product_count']);
             $this->getCategoryFilters();
+            $this->checkForSubcategories();
             $categoryExists = true;
         }
-
         return $categoryExists;
     }
+
+
+    private function checkForSubcategories()
+    {
+        $tmp = new SubcategoryController();
+        $distilleries = $tmp->getSubcategoryDetails("distillery", $this->getId());
+        $regions = $tmp->getSubcategoryDetails("region", $this->getId());
+        $types = $tmp->getSubcategoryDetails("type", $this->getId());
+
+        if ($distilleries) {
+            foreach($distilleries as $distillery) {
+                $tmpObj = new SubcategoryController();
+                $tmpObj->initSubcategoryById("distillery", $distillery['id']);
+                array_push($this->distilleries, $tmpObj);
+            }
+            
+        }
+
+        if ($regions) {
+            foreach($regions as $region) {
+                $tmpObj = new SubcategoryController();
+                $tmpObj->initSubcategoryById("region", $region['id']);
+                array_push($this->regions, $tmpObj);
+            }
+        }
+
+        if ($types) {
+            foreach($types as $type) {
+                $tmpObj = new SubcategoryController();
+                $tmpObj->initSubcategoryById("type", $type['id']);
+                array_push($this->types, $tmpObj);
+            }
+        }
+    }
+
+
+
     private function getCategoryFilters()
     {
         $filters = parent::getCategoryFiltersModel($this->getId());
@@ -73,14 +121,6 @@ class CategoryController extends CategoryCRUD
             array_push($this->filters, $tmp);
         }
         $this->getFilterValues();
-        
-        /*
-        if($this->id == 1) {
-            foreach($this->filters as $filter){
-                echo var_dump($filter);
-            }
-        }
-        */
     }
 
     private function getFilterValues()
@@ -91,16 +131,19 @@ class CategoryController extends CategoryCRUD
         foreach($this->filters as $filter) {
             // get filter values
             $filter['values'] = [];
-            $valuesData = parent::getFilterValuesModel($filter['id']);
-            if (!$valuesData) return;
 
-            foreach($valuesData as $value) {
-                if (!$value['id']) return;
-                $tmp['id'] = $value['id'];
-                $tmp['value'] = $value['value'];
-                array_push($filter['values'], $tmp);
-            }
-            array_push($newFilters, $filter);
+            // query only retrieves values that have assigned products
+            // ideally should be changed to be handled here?
+            $valuesData = parent::getFilterValuesModel($filter['id']);
+            if ($valuesData) {
+                foreach($valuesData as $value) {
+                    if (!$value['id']) return;
+                    $tmp['id'] = $value['id'];
+                    $tmp['value'] = $value['value'];
+                    array_push($filter['values'], $tmp);
+                }
+                array_push($newFilters, $filter);
+            };
         }
         $this->filters = $newFilters;
         

@@ -43,10 +43,24 @@ class ProductCRUD
         return $fullResultset;
     }
 
-    protected function getProductByIdModel($id, $style=MYSQLI_ASSOC) {
+    protected function getProductByIdModel($id, $style=MYSQLI_ASSOC) 
+    {
         self::$db = db::getInstance();
 
         $this->sql = "SELECT * FROM products WHERE id = ?;";
+        $this->stmt = self::$db->prepare($this->sql);
+        $this->stmt->bind_param("i", $id);
+        $this->stmt->execute();
+        $result = $this->stmt->get_result();
+        $resultset=$result->fetch_all($style);
+        return $resultset;
+    }
+
+    protected function getAdditionalProductImagesModel($id, $style=MYSQLI_ASSOC)
+    {
+        self::$db = db::getInstance();
+
+        $this->sql = "SELECT `image` FROM product_extra_images WHERE product_id = ?;";
         $this->stmt = self::$db->prepare($this->sql);
         $this->stmt->bind_param("i", $id);
         $this->stmt->execute();

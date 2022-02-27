@@ -25,7 +25,6 @@ function prepareMenu()
             $(".product-menu").removeClass("product-menu-mobile-show");  
         }
         
-    })
+    });
     
-   
 }
