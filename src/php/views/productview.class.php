@@ -37,7 +37,6 @@ class ProductView
         $html = "";
 
         $html.="<div class='product'>";
-
             // Container for all things product images
             $html.="<div class='product-left'>";
                 // Main product Image

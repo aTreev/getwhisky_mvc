@@ -145,6 +145,17 @@ header {
 /***************
 ***********
 */
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    background-color: var(--border-colour);
+    padding: 10px;
+    gap: 10px;
+}
+.breadcrumbs p {
+    margin-bottom: 0;
+}
+
 .wrapper-link {
     position: absolute;
     width: 100%;
@@ -181,7 +192,7 @@ header {
 }
 
 .hero-text {
-    max-width: 300px; 
+    max-width: 550px; 
     position: absolute; 
     left: 30%; 
     top: 20%; 
@@ -197,7 +208,13 @@ header {
     background: rgba(0, 0, 0, 0.8);
     opacity: 0.4;
 }
-
+.backwards-navigation {
+    padding: 15px;
+    background-color: white;
+}
+.backwards-navigation a {
+    color: var(--bg-primary);
+}
 
 @media screen and (max-width: 1400px) {
     .header-center {
@@ -255,5 +272,12 @@ header {
     }
     .header-bottom-menu .product-menu-item {
         padding: 10px 10px;
+    }
+
+    .hero-image {
+        min-height: 350px;
+    }
+    .hero-text {
+        width: 85%;
     }
 }

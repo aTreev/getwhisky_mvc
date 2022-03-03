@@ -2,11 +2,11 @@
 require_once('../../src/php/page.class.php');
 $page = new Page(0);
 if (isset($_GET['c'])) {
-    $categoryName = util::sanStr(str_replace("-", " ", $_GET['c']));
+    $categoryId = util::sanInt(str_replace("-", " ", $_GET['c']));
 
     // Get current category
     $category = new CategoryController();
-    $exists = $category->initCategoryByName($categoryName);
+    $exists = $category->initCategory($categoryId);
 
     // Check if it exists
     if ($exists) {

@@ -23,6 +23,22 @@ class ProductCRUD
         return $resultset;
     }
 
+    protected function getProductsBySubcategoryModel($columnName, $subcategoryid, $offset, $limit, $style=MYSQLI_ASSOC)
+    {
+        self::$db = db::getInstance();
+
+        $this->sql = "  SELECT products.* FROM products
+                        JOIN product_attributes
+                        ON products.id = product_attributes.product_id
+                        WHERE product_attributes.$columnName = ? LIMIT ?,?;";
+        $this->stmt = self::$db->prepare($this->sql);
+        $this->stmt->bind_param("iii", $subcategoryid, $offset, $limit);
+        $this->stmt->execute();
+        $result = $this->stmt->get_result();
+        $resultset=$result->fetch_all($style);
+        return $resultset;
+    }
+
     protected function getFilteredProductsModel($filterIds, $offset, $limit, $style=MYSQLI_ASSOC) {
         self::$db = db::getInstance();
         $fullResultset = [];

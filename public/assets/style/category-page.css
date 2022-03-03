@@ -37,6 +37,23 @@
     transform: translateX(0%)!important;
 }
 
+.subcategory-heading {
+    padding: 15px 15px 0px 15px;
+}
+.subcategory-links {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.subcategory-links a {
+    display: block;
+    color: black;
+    padding: 10px 20px 10px 20px;
+    opacity: 0.8;
+    width: 100%;
+    border-bottom: 1px solid var(--border-colour);
+}
+
 @media screen and (max-width: 1200px) {
     .product-filters {
         width: 50vw;

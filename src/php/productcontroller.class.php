@@ -76,8 +76,13 @@ class ProductController extends ProductCRUD
 
     public function getProductsByCategoryId($categoryid, $offset, $limit)
     {
-        $products = parent::getProductsByCategoryIdModel($categoryid, $offset, $limit);
-        return $products;
+        return parent::getProductsByCategoryIdModel($categoryid, $offset, $limit);
+        
+    }
+
+    public function getProductsBySubcategory($columnName, $subcategoryid, $offset, $limit)
+    {
+        return parent::getProductsBySubcategoryModel($columnName, $subcategoryid, $offset, $limit);
     }
 
     public function getFilteredProducts($filters, $offset, $limit)

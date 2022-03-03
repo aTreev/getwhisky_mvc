@@ -126,7 +126,7 @@ class Page {
     public function dynamicMenu() 
     {
         $html = "";
-        if ($this->getUser()->getAccessLevel() == 0) { $html.="<div><a href='/login'>Sign in</a></div>"; }
+        if ($this->getUser()->getAccessLevel() == 0) { $html.="<div><a href='/login'><i class='fas fa-user site-icon-white'></i> <span class='site-icon-text'>Sign in</span></a></div>"; }
         if ($this->getUser()->getAccessLevel() > 0) {
             $html.="<div><a href='/user/account'><i class='fas fa-user site-icon-white'></i> <span class='site-icon-text'>Account</span></a></div>";
         }
