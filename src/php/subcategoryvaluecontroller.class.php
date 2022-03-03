@@ -60,9 +60,10 @@ class SubcategoryValueController extends SubcategoryValueCRUD
     public function initSubcategoryValue($id)
     {
         $exists = false;
-        $data = parent::getSubcategoryValueByIdModel($id)[0];
+        $data = parent::getSubcategoryValueByIdModel($id);
 
         if ($data) {
+            $data = $data[0];
             $exists = true;
             $this->setId($data['id'])->setSubcategoryid($data['subcategory_id'])->setName($data['name'])
             ->setDescription($data['description'])->setImage($data['image'])->setThumbnail($data['thumbnail'])

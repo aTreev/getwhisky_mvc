@@ -227,10 +227,10 @@ header {
     color: var(--bg-primary);
     display: block;
     text-decoration: none;
+    font-size: 14px;
 }
 .backwards-navigation a:hover {
-    text-decoration: underline;
-    color: var(--bg-secondary);
+    color: #db4c3c;
 }
 
 .backwards-navigation p {
@@ -242,6 +242,7 @@ header {
 }
 .backwards-navigation .current-page {
     opacity: 0.8;
+    font-size: 14px;
 }
 @media screen and (max-width: 1400px) {
     .header-center {

@@ -42,10 +42,11 @@ class CategoryController extends CategoryCRUD
     public function initCategory($id)
     {
         $categoryExists = false;
-        $categoryData = parent::getCategoryById($id)[0];
+        $data = parent::getCategoryById($id);
 
-        if ($categoryData) {
-            $this->setId($categoryData['id'])->setName($categoryData['name'])->setDescription($categoryData['description'])->setImage($categoryData['image'])->setProductCount($categoryData['product_count']);
+        if ($data) {
+            $data = $data[0];
+            $this->setId($data['id'])->setName($data['name'])->setDescription($data['description'])->setImage($data['image'])->setProductCount($data['product_count']);
             $this->checkForSubcategories();
             $categoryExists = true;
         }
@@ -56,10 +57,11 @@ class CategoryController extends CategoryCRUD
     public function initCategoryByName($name)
     {
         $categoryExists = false;
-        $categoryData = parent::getCategoryByName($name)[0];
+        $data = parent::getCategoryByName($name);
         
-        if ($categoryData) {
-            $this->setId($categoryData['id'])->setName($categoryData['name'])->setDescription($categoryData['description'])->setImage($categoryData['image'])->setProductCount($categoryData['product_count']);
+        if ($data) {
+            $data = $data[0];
+            $this->setId($data['id'])->setName($data['name'])->setDescription($data['description'])->setImage($data['image'])->setProductCount($data['product_count']);
             $this->checkForSubcategories();
             $categoryExists = true;
         }

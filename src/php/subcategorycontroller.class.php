@@ -47,8 +47,9 @@ class SubcategoryController extends SubcategoryCRUD
     public function initSubcategoryById($id)
     {
         $exists = false;
-        $data = parent::getSubcategoryByIdModel($id)[0];
+        $data = parent::getSubcategoryByIdModel($id);
         if ($data) {
+            $data = $data[0];
             $this->setId($data['id'])->setCategoryId($data['category_id'])->setName($data['name'])
             ->setDescription($data['description'])->setImage($data['image'])->setCategoryName($data['cat_name']);
 
