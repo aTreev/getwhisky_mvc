@@ -113,7 +113,7 @@ class Page {
     public function productMenu()
     {
         $html = "";
-        $html.="<div class='product-menu'>";
+        $html.="<div class='product-menu container'>";
         foreach($this->categories as $category) {
             $html.=$category->getView()->menu();
         }
@@ -195,7 +195,7 @@ class Page {
                 <header>
                     <div class='page-overlay'></div>
                     <div class=' header-container'>
-                        <div class='header-center'>
+                        <div class='header-center container'>
                         <a href='/'>
                             <img src='/assets/getwhisky-logo-lowercase.png' class='site-logo' alt='getwhisky-logo'/>
                         </a>

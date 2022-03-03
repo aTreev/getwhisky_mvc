@@ -38,8 +38,17 @@ class CategoryView
         $filterView = $this->filterView();
 
         $html = "";
+
+        $html.="<div class='backwards-navigation break-container'>";
+            $html.="<div class='container back-nav-content'>";
+                $html.="<a href='/'>Home</a>";
+                $html.="<p class='caret'>&#8250;</p>";
+                $html.="<p class='current-page'>".ucwords($this->category->getName())."</p>";
+            $html.="</div>";
+        $html.="</div>";
+
         $html.="
-        <div class='break-container' style='background: rgba(0, 0, 0, 0.8)!important;'>
+        <div class='break-container hero-container'>
             <div class='hero-text'>
                 <h1 class='text-white'>".ucwords($this->category->getName())."</h1>
                 <p class='text-white-faded'>".$this->category->getDescription()."</p>
@@ -48,7 +57,7 @@ class CategoryView
         </div>
 
         <div class='break-container p-3 bg-white shadow-sm'>
-            <div style='max-width:1280px;' class='px-2 m-auto d-flex align-items-center justify-content-between flex-wrap'>
+            <div class='container px-2 m-auto d-flex align-items-center justify-content-between gap-1 flex-wrap'>
             <div>Showing <span id='product-count'>".count($this->category->getProducts())."</span> of ".$this->category->getProductCount()." products</div>
             <button class='btn btn-danger' id='open-filters'><i class='fa-solid fa-filter'></i> Product Filters</button>
             </div>

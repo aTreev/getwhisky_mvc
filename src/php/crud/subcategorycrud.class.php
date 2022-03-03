@@ -31,7 +31,10 @@ class SubcategoryCRUD
         self::$db = db::getInstance();
         
       
-        $this->sql = "SELECT * FROM subcategories WHERE id = ?;";
+        $this->sql = "  SELECT subcategories.*, categories.name AS 'cat_name' FROM subcategories 
+                        JOIN categories
+                        ON subcategories.category_id = categories.id
+                        WHERE subcategories.id = ?;";
         $this->stmt = self::$db->prepare($this->sql);
         $this->stmt->bind_param("i", $id);
         $this->stmt->execute();

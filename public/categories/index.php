@@ -1,6 +1,10 @@
 <?php 
 require_once('../../src/php/page.class.php');
 $page = new Page(0);
+
+/*****************
+ * 
+ */
 if (isset($_GET['c'])) {
     $categoryId = util::sanInt(str_replace("-", " ", $_GET['c']));
 

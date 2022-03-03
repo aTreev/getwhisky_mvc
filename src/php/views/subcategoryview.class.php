@@ -23,6 +23,31 @@ class SubcategoryView
         return $html;
     }
 
+    private function bannerImage()
+    {
+        return "<div class='break-container hero-container'>
+        <div class='hero-text'>
+            <h1 class='text-white'>".ucwords($this->subcategory->getName())."</h1>
+            <p class='text-white-faded'>".$this->subcategory->getDescription()."</p>
+        </div>
+        <img src='".$this->subcategory->getImage()."' class='hero-image' />
+    </div>";
+    }
+
+    public function backwardsNavigation()
+    {
+        $html = "";
+        $html.="<div class='backwards-navigation break-container'>";
+            $html.="<div class='container back-nav-content'>";
+                $html.="<a href='/'>Home</a>";
+                $html.="<p class='caret'>&#8250;</p>";
+                $html.="<a href='/categories/?c=".$this->subcategory->getCategoryId()."'>".ucwords($this->subcategory->getCategoryName())."</a>";
+                $html.="<p class='caret'>&#8250;</p>";
+                $html.="<p class='current-page'>".ucwords($this->subcategory->getName())."</p>";
+            $html.="</div>";
+        $html.="</div>";
+        return $html;
+    }
 
     /*******
      * Full view subcategory page
@@ -66,22 +91,11 @@ class SubcategoryView
     public function distilleryPageView()
     {
         $html = "";
-        
-        $html.="
-        <div class='break-container' style='background: rgba(0, 0, 0, 0.8)!important;'>
-            <div class='hero-text'>
-                <h1 class='text-white'>".ucwords($this->subcategory->getName())."</h1>
-                <p class='text-white-faded'>".$this->subcategory->getDescription()."</p>
-            </div>
-            <img src='".$this->subcategory->getImage()."' class='hero-image' />
-        </div>";
 
-        $html.="<div class='backwards-navigation break-container'>";
-            $html.="<div class='container'>";
-                $html.="<a href='/categories/subcategories?s=".$this->subcategory->getCategoryId()."'>Back to category</a>";
-            $html.="</div>";
-        $html.="</div>";
+        $html.= $this->backwardsNavigation();
         
+        $html.=$this->bannerImage();
+
         $html.="<div class='distillery-items'>";
         foreach($this->subcategory->getValues() as $value) {
             $html.="<div class='distillery-item'>";

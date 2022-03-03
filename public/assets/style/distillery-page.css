@@ -47,7 +47,7 @@ img:hover {
   
 }
 
-@media screen and (max-width:365px) {
+@media screen and (max-width:380px) {
     .distillery-items {
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     }

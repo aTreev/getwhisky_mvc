@@ -5,14 +5,18 @@ require_once("subcategoryvaluecontroller.class.php");
 class SubcategoryController extends SubcategoryCRUD
 {
     private $id;
-    private $categoryid;
     private $name;
     private $description;
     private $image;
     private $values = [];
-
     private $subcategoryView;
     
+    /******
+     * backwards nav variables
+     */
+    private $categoryid;
+    private $categoryName;
+
     public function __construct()
     {
         //
@@ -24,15 +28,16 @@ class SubcategoryController extends SubcategoryCRUD
     private function setName($name) { $this->name = $name; return $this; }
     private function setDescription($desc) { $this->description = $desc; return $this; }
     private function setImage($image) { $this->image = $image; return $this; }
-
+    private function setCategoryName($categoryName) { $this->categoryName = $categoryName; return $this; }
 
     public function getId() { return $this->id; }
-    public function getCategoryId() { return $this->categoryid; }
     public function getName() { return $this->name; }
     public function getDescription() { return $this->description; }
     public function getImage() { return $this->image; }
     public function getValues() { return $this->values; }
     public function getView() { return $this->subcategoryView = new SubcategoryView($this); }
+    public function getCategoryId() { return $this->categoryid; }
+    public function getCategoryName() { return $this->categoryName; }
 
     public function getSubcategoryIds($categoryid)
     {
@@ -45,7 +50,7 @@ class SubcategoryController extends SubcategoryCRUD
         $data = parent::getSubcategoryByIdModel($id)[0];
         if ($data) {
             $this->setId($data['id'])->setCategoryId($data['category_id'])->setName($data['name'])
-            ->setDescription($data['description'])->setImage($data['image']);
+            ->setDescription($data['description'])->setImage($data['image'])->setCategoryName($data['cat_name']);
 
             $this->getSubcategoryValues();
             $exists = true;

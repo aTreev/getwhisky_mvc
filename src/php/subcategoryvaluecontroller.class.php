@@ -4,7 +4,7 @@ require_once("views/subcategoryvalueview.class.php");
 class SubcategoryValueController extends SubcategoryValueCRUD
 {
     private $id;
-    private $subcategoryid;
+    
     private $name;
     private $description;
     private $image;
@@ -13,6 +13,13 @@ class SubcategoryValueController extends SubcategoryValueCRUD
     private $subcategoryValueView;
     private $products = [];
 
+    /*******
+     * breadcrumb details
+     */
+    private $categoryid;
+    private $categoryName;
+    private $subcategoryid;
+    private $subcategoryName;
     public function __construct()
     {
         //
@@ -21,20 +28,26 @@ class SubcategoryValueController extends SubcategoryValueCRUD
     
 
     public function setId($id) { $this->id = $id; return $this; }
-    public function setSubcategoryid($subcategoryid) { $this->subcategoryid = $subcategoryid; return $this; }
     public function setName($name) { $this->name = $name; return $this; }
     public function setDescription($description) { $this->description = $description; return $this; }
     public function setImage($image) { $this->image = $image; return $this; }
     public function setThumbnail($thumbnail) { $this->thumbnail = $thumbnail;return $this; }
     private function setProductCount($productCount) { $this->productCount = $productCount;return $this; }
+    public function setSubcategoryid($subcategoryid) { $this->subcategoryid = $subcategoryid; return $this; }
+    private function setSubcategoryName($subcategoryName) { $this->subcategoryName = $subcategoryName; return $this; }
+    private function setCategoryId($categoryid) { $this->categoryid = $categoryid; return $this; }    
+    private function setCategoryName($categoryName) { $this->categoryName = $categoryName; return $this; }
 
     public function getId(){ return $this->id; }
-    public function getSubcategoryid() { return $this->subcategoryid; }
     public function getName() { return $this->name; }
     public function getDescription() { return $this->description; }
     public function getImage() { return $this->image; }
     public function getThumbnail() { return $this->thumbnail; }
     public function getProductCount() { return $this->productCount; }
+    public function getSubcategoryid() { return $this->subcategoryid; }
+    public function getSubcategoryName() { return $this->subcategoryName; }    
+    public function getCategoryId() { return $this->categoryid; }
+    public function getCategoryName() { return $this->categoryName; }
 
     public function getView() { return $this->subcategoryValueView = new SubcategoryValueView($this); }
     public function getProducts() { return $this->products; }
@@ -52,7 +65,8 @@ class SubcategoryValueController extends SubcategoryValueCRUD
         if ($data) {
             $exists = true;
             $this->setId($data['id'])->setSubcategoryid($data['subcategory_id'])->setName($data['name'])
-            ->setDescription($data['description'])->setImage($data['image'])->setThumbnail($data['thumbnail']);
+            ->setDescription($data['description'])->setImage($data['image'])->setThumbnail($data['thumbnail'])
+            ->setSubcategoryName($data['subcat_name'])->setCategoryId($data['cat_id'])->setCategoryName($data['cat_name']);
             
             // get product count
             $this->getSubcategoryValuesProductCount();

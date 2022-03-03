@@ -21,8 +21,7 @@ header {
 }
 
 .header-center {
-    padding: 20px;
-    width: 1280px;
+    padding: 20px 0px;
     margin: auto;
     padding-top: 40px;
     padding-bottom: 40px;
@@ -72,11 +71,9 @@ header {
     color:white;
     display: none !important;
 }
-.header-bottom-menu .product-menu {
+.product-menu {
     display: flex;
     justify-content: space-between;
-    width: 1280px;
-    margin: auto;
     font-weight: 500;
 }
 .product-menu-mobile-show {
@@ -92,10 +89,10 @@ header {
     font-weight: 300;
     user-select: none;
     opacity: 1;
-    padding: 10px;
+    padding: 10px 0px;
 }
-.header-bottom-menu .product-menu-item {
-    padding: 5px 10px;
+.product-menu-item {
+    padding: 5px 0px;
 }
 .product-menu-item a:hover {
     opacity: 0.8;
@@ -191,6 +188,11 @@ header {
     opacity: 0.8;
 }
 
+.hero-container {
+    background: rgba(0, 0, 0, 0.8)!important;
+    overflow-y: auto;
+}
+
 .hero-text {
     max-width: 550px; 
     position: absolute; 
@@ -198,6 +200,7 @@ header {
     top: 20%; 
     transform: translate(-30%, -10%);
     z-index:4;
+    padding-left: 10px;
 }
 
 .hero-image {
@@ -209,18 +212,42 @@ header {
     opacity: 0.4;
 }
 .backwards-navigation {
-    padding: 15px;
-    background-color: white;
+    padding: 10px 0px;
+    background-color: #f7f7f7!important;
+    border-top: 1px solid var(--border-colour);
+    user-select: none;
+}
+.back-nav-content {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
 }
 .backwards-navigation a {
     color: var(--bg-primary);
+    display: block;
+    text-decoration: none;
+}
+.backwards-navigation a:hover {
+    text-decoration: underline;
+    color: var(--bg-secondary);
 }
 
+.backwards-navigation p {
+    margin-bottom: 0;
+}
+.backwards-navigation .caret {
+    font-size: 20px;
+    color: var(--bg-secondary);
+}
+.backwards-navigation .current-page {
+    opacity: 0.8;
+}
 @media screen and (max-width: 1400px) {
     .header-center {
         width: 100%;
     }
-    .header-bottom-menu .product-menu, .subcategory-menus {
+    .subcategory-menus {
         width: 1100px;
     }
     .subcategory-menus {
@@ -229,12 +256,12 @@ header {
 }
 
 @media screen and (max-width: 1200px) {
-    .header-bottom-menu .product-menu, .subcategory-menus {
+    .subcategory-menus {
         width: 910px;
     }
 }
 @media screen and (max-width: 992px) {
-    .header-bottom-menu .product-menu, .subcategory-menus {
+    .subcategory-menus {
         width: 100%;
         left: 0;
     }
@@ -255,7 +282,6 @@ header {
         display: block!important;
         position: absolute;
         height: 100vh;
-        width: 100vw;
         z-index: 55;
         background-color: #f9f9f9;
         transform: translateX(-100%);
