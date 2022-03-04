@@ -4,7 +4,7 @@
 // display product page
 
 // get display related products
-require_once("../../src/php/page.class.php");
+require_once("/wamp64/www/getwhisky-mvc/src/php/page.class.php");
 $page = new Page(0);
 $product = new ProductController();
 $product->initProductByName(str_replace("-", " ", $_GET['p']));

@@ -74,6 +74,11 @@ class CategoryView
                 <div>
                     $filterView
                 </div>
+                <div>
+                    <button name='sort-option' id=''>Latest</button>
+                    <button name='sort-option' id='asc'>price (low)</button>
+                    <button name='sort-option' id='desc'>price (high)</button>
+                </div>
             </div>
         ";
 
@@ -101,6 +106,20 @@ class CategoryView
     public function filterView() 
     {
         $html = "";
+        foreach($this->category->getSubcategories() as $subcategory) {
+            $html.="<div class='filter-item'>";
+                $html.="<a class='subcategory-heading' href='/categories/subcategories/?s=".$subcategory->getId()."'>".ucwords($subcategory->getName())."</a>";
+                $html.="<div class='subcategory-links'>";
+                foreach($subcategory->getValues() as $value) {
+                    if ($value->getProductCount() > 0) {
+                        $html.="<div >";
+                            $html.="<a href='/categories/subcategories/subcategoryvalue/?s=".$value->getId()."'>".ucwords($value->getName())."</a>";
+                        $html.="</div>";
+                    }
+                }
+                $html.="</div>";
+            $html.="</div>";
+        }
         return $html;
     }
 

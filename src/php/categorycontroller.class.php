@@ -94,13 +94,17 @@ class CategoryController extends CategoryCRUD
      * 
      *  No products retrieved
      */
-    public function getProductsByOffsetLimit($offset=0, $limit=2)
+    public function getProductsByOffsetLimit($offset=0, $limit=20, $sorting=null)
     {
         
         $productController = new ProductController();
         $products = $productController->getProductsByCategoryId($this->getId(), $offset, $limit);
         if (!$products) return false;
 
+        if ($sorting) {
+            if ($sorting == "asc") uasort($products, function($data1, $data2){return $data1['price'] <=> $data2['price'];});
+            if ($sorting == "desc") uasort($products, function($data1, $data2){return $data2['price'] <=> $data1['price'];});
+        }
         foreach($products as $product) {
             $productObj = new ProductController();
             $productObj->initProduct($product['id']);

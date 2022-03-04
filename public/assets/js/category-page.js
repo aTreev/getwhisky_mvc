@@ -14,9 +14,8 @@ let offset = document.getElementsByClassName("product-c").length;
  *****/
 const category = $("#category").val();
 
-let filters = [];
 
-let paginateFilteredProducts = false;
+let sortOption = null;
 
 /**********
  * Initial function call - handles all functions necessary for the page
@@ -24,9 +23,10 @@ let paginateFilteredProducts = false;
 function prepareCategoryPage()
 {
     handlePagination();
-    
+    handleSortingOptions();
+
+
     $("body").click(function(ev){
-       
         if ($(ev.target).is("#open-filters")) {
             $("#filter-root").addClass("show-filters");
             $(".page-overlay").show();
@@ -39,49 +39,43 @@ function prepareCategoryPage()
         }
     });
 
-    prepareProductFilters();
 }
 
-// resets the pagination, freshly retrieves products
-//TODO: Change filters to limit to only products that match all inputs
-function prepareProductFilters()
-{
-    $("[name=filter]").click(function(){
-        // reset html and offset on filter click
-        $("#product-root").html("");
-        offset = 0;
+/**********
+ * Adds event listeners to the sort buttons
+ * Sets the global sorting option when a sort button is click
+ * Resets product offset and performs fresh products retrieval.  
+ ******/
+ function handleSortingOptions()
+ {
+     // Sort button clicked
+     $("[name=sort-option]").click(function(){
+         // set global sort option
+         sortOption = $(this).attr("id");
+         // Reset product offest to 0
+         offset = 0;
+         
+         // show loader image
+         $("#product-root").html("<img src='/assets/loader.gif' style='display:block;margin:auto;' />");
+ 
+         // Disable buttons until minimum 500ms delay
+         $("[name=sort-option]").off();
+ 
+         setTimeout(() => {
+             // Load products
+             loadMoreProducts()
+             .then(function(result){
+                 $("#product-root").html(result.html);
+                 offset = result.newOffset;
+                 $("#product-count").text($(".product-c").length);
+                 // Recursive call to add listeners
+                 handleSortingOptions();
+                 handlePagination();
+             });    
+         }, 500);
+     });
+ }
 
-        if ($(this).prop("checked")) {
-            filters.push($(this).val())
-        } else {
-            let index = filters.indexOf($(this).val());
-            filters.splice(index, 1);
-        }
-
-
-        // load filtered products
-        if (filters.length > 0) {
-            loadFilteredProducts(filters)
-            .then(function(result){
-                $("#product-root").html(result.html)
-                $("#product-count").html(document.getElementsByClassName("product-c").length);
-                offset = result.newOffset;
-                // Set the pagination to load more filtered products
-                paginateFilteredProducts = true;
-            });
-        }
-        else {
-            // Load non filter products
-            loadMoreProducts().then(function(result){
-                $("#product-root").append(result.html)
-                $("#product-count").html(document.getElementsByClassName("product-c").length);
-                offset = result.newOffset;
-                // Set the pagination to load more non-filtered products
-                paginateFilteredProducts = false;
-            })
-        }
-    });
-}
 
 /**************
  * retrieves additional products with pagination
@@ -93,7 +87,7 @@ function loadMoreProducts()
         $.ajax({
             url: "/assets/js/ajax-scripts/category-handler.php",
             method: "POST",
-            data: { function: 1, category: category, offset: offset}
+            data: { function: 1, category: category, offset: offset, sortOption: sortOption}
         })
         .done(function(result){
             resolve(JSON.parse(result));
@@ -102,20 +96,6 @@ function loadMoreProducts()
 
 }
 
-function loadFilteredProducts(filters)
-{
-    return new Promise(function(resolve){
-        $.ajax({
-            url: "/assets/js/ajax-scripts/category-handler.php",
-            method: "POST",
-            data: {function: 2, filters: filters, category: category, offset: offset}
-        })
-        .done(function(result){
-            resolve(JSON.parse(result));
-        });
-    })
-    
-}
 
 /**********
  * Detects scroll to bottom of page
@@ -127,35 +107,22 @@ function loadFilteredProducts(filters)
 function handlePagination()
 {
     // Add listener to the page
+    $(window).off();
     $(window).scroll(function() {
         if((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight-100) {
             // disable listener until after ajax resolves
             $(window).off();
 
-            // Check whether to retrieve filtered or non-filtered products
-            if (!paginateFilteredProducts) {
+
                 loadMoreProducts()
-                .then(function(result){
-                    // Append returned products view
-                    $("#product-root").append(result.html);
-                    // Update count to number of products on page
-                    $("#product-count").html(document.getElementsByClassName("product-c").length);
-                     // update offset to new offset supplied via backend   
-                    offset = result.newOffset;
-                    // recursive call to add the listener again once ajax request resolved
-                    if(result.html)handlePagination();
-                });
-            } else {
-                loadFilteredProducts(filters)
                 .then(function(result){
                     $("#product-root").append(result.html)
                     $("#product-count").html(document.getElementsByClassName("product-c").length);
                     // update offset to new offset supplied via backend
                     offset = result.newOffset;
                     // recursive call to add the listener again once ajax request resolved
-                    if(result.html)handlePagination();
+                    if(!result.end_of_products)handlePagination();
                 });
-            }
             
         }
      });

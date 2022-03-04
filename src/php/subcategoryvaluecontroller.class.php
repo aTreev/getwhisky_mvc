@@ -82,9 +82,21 @@ class SubcategoryValueController extends SubcategoryValueCRUD
         $this->setProductCount($productCount['product_count']);
     }
 
-    public function loadProductsByOffsetLimit($offset, $limit)
+
+    /************
+     * Loads subcategoryvalue's products by offset,limit
+     * optionally takes a sorting option for sorting by price
+     * Retrieves Ids and instaniates new products for the class
+     *******************************/
+    public function loadProductsByOffsetLimit($offset, $limit, $sorting=null)
     {
         $productData = parent::getProductsByOffsetLimit($this->getId(), $offset, $limit);
+
+        if ($sorting) {
+            if ($sorting == "asc") uasort($productData, function($data1, $data2){return $data1['price'] <=> $data2['price'];});
+            if ($sorting == "desc") uasort($productData, function($data1, $data2){return $data2['price'] <=> $data1['price'];});
+        }
+        
         foreach($productData as $product) {
             $tmpObj = new ProductController();
             $tmpObj->initProduct($product['id']);

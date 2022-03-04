@@ -27,7 +27,7 @@ class SubcategoryView
     {
         return "<div class='break-container hero-container'>
         <div class='hero-text'>
-            <h1 class='text-white'>".ucwords($this->subcategory->getName())."</h1>
+            <h1 class='text-white'>".ucwords($this->subcategory->getCategoryName())." ".ucwords($this->subcategory->getName())."</h1>
             <p class='text-white-faded'>".$this->subcategory->getDescription()."</p>
         </div>
         <img src='".$this->subcategory->getImage()."' class='hero-image' />
@@ -43,7 +43,7 @@ class SubcategoryView
                 $html.="<p class='caret'>&#8250;</p>";
                 $html.="<a href='/categories/?c=".$this->subcategory->getCategoryId()."'>".ucwords($this->subcategory->getCategoryName())."</a>";
                 $html.="<p class='caret'>&#8250;</p>";
-                $html.="<p class='current-page'>".ucwords($this->subcategory->getName())."</p>";
+                $html.="<p class='current-page'>".ucwords($this->subcategory->getCategoryName())." ".ucwords($this->subcategory->getName())."</p>";
             $html.="</div>";
         $html.="</div>";
         return $html;
@@ -59,16 +59,16 @@ class SubcategoryView
         $script = "";
         $style = "/assets/style/distillery-page.css";
         $html = "";
-        $title = "";
+        $title = ucwords($this->subcategory->getCategoryName())." ".ucwords($this->subcategory->getName());
 
         switch($this->subcategory->getName()) {
-            case "Distilleries": 
+            case "distilleries": 
                 $html = $this->distilleryPageView(); 
             break;
-            case "region": 
+            case "regionss": 
                 $html = $this->regionPageView(); 
             break;
-            case "type": 
+            case "typess": 
                 $html = $this->typePageView(); 
             break;
             default: 
@@ -83,8 +83,8 @@ class SubcategoryView
     public function defaultPageView()
     {
         $html = "";
-        $html.="<a href='/categories?c=".$this->subcategory->getCategoryId()."'>Back to category</a>";
-        $html.=$this->subcategory->getName();
+        $html.= $this->backwardsNavigation();
+        $html.=$this->bannerImage();
         return $html;
     }
 
@@ -93,16 +93,18 @@ class SubcategoryView
         $html = "";
 
         $html.= $this->backwardsNavigation();
-        
         $html.=$this->bannerImage();
 
         $html.="<div class='distillery-items'>";
         foreach($this->subcategory->getValues() as $value) {
-            $html.="<div class='distillery-item'>";
-                $html.="<img src='".$value->getThumbnail()."' />";
-                $html.="<p>".$value->getName()."</p>";
-                $html.="<a href='/categories/subcategories/subcategoryvalue/?s=".$value->getId()."'><span class='wrapper-link'></span></a>";
-            $html.="</div>";
+            if ($value->getProductCount() > 0) {
+                $html.="<div class='distillery-item'>";
+                    $html.="<img src='".$value->getThumbnail()."' />";
+                    $html.="<p>".$value->getName()."</p>";
+                    $html.="<a href='/categories/subcategories/subcategoryvalue/?s=".$value->getId()."'><span class='wrapper-link'></span></a>";
+                $html.="</div>";
+            }
+            
         }
         $html.="</div>";
         return $html;

@@ -1,0 +1,13 @@
+01. Style product filters
+02. Add sorting options to subcategoryvalue pages. 
+ 1. Add backwards navigation to products
+ 2. Rework product details
+ 3. add review system?
+ 4. Implement global cart system
+ 5. Implement add to cart
+ 6. Complete cart section, update, delete
+ 7. Implement user addresses with auto address lookup
+ 8. Implement shipping cost calculator if possible
+ 9. Create order/invoice system
+10. Integrate Stripe checkout
+11. 

@@ -1,6 +1,7 @@
 <?php
 require_once('usercontroller.class.php');
 require_once('categorycontroller.class.php');
+require_once('constants.php');
 /******************
  * The page class
  * This class handles authentication

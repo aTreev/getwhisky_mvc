@@ -14,7 +14,7 @@ class ProductCRUD
     protected function getProductsByCategoryIdModel($categoryid, $offset, $limit, $style=MYSQLI_ASSOC) {
         self::$db = db::getInstance();
 
-        $this->sql = "SELECT * FROM products WHERE category_id = ? LIMIT ?,?;";
+        $this->sql = "SELECT * FROM products WHERE category_id = ? ORDER BY id DESC LIMIT ?,?;";
         $this->stmt = self::$db->prepare($this->sql);
         $this->stmt->bind_param("iii", $categoryid, $offset, $limit);
         $this->stmt->execute();
@@ -23,41 +23,6 @@ class ProductCRUD
         return $resultset;
     }
 
-    protected function getProductsBySubcategoryModel($columnName, $subcategoryid, $offset, $limit, $style=MYSQLI_ASSOC)
-    {
-        self::$db = db::getInstance();
-
-        $this->sql = "  SELECT products.* FROM products
-                        JOIN product_attributes
-                        ON products.id = product_attributes.product_id
-                        WHERE product_attributes.$columnName = ? LIMIT ?,?;";
-        $this->stmt = self::$db->prepare($this->sql);
-        $this->stmt->bind_param("iii", $subcategoryid, $offset, $limit);
-        $this->stmt->execute();
-        $result = $this->stmt->get_result();
-        $resultset=$result->fetch_all($style);
-        return $resultset;
-    }
-
-    protected function getFilteredProductsModel($filterIds, $offset, $limit, $style=MYSQLI_ASSOC) {
-        self::$db = db::getInstance();
-        $fullResultset = [];
-        foreach($filterIds as $filterId) {
-            $this->sql = "SELECT products.* FROM products
-            JOIN filter_value_products
-            ON filter_value_products.product_id = products.id
-            WHERE filter_value_products.filter_value_id = ? LIMIT ?,?;";
-            $this->stmt = self::$db->prepare($this->sql);
-            $this->stmt->bind_param("iii", $filterId, $offset, $limit);
-            $this->stmt->execute();
-            $result = $this->stmt->get_result();
-            $resultset=$result->fetch_all($style);
-            foreach($resultset as $rs) {
-                array_push($fullResultset, $rs);
-            }
-        }
-        return $fullResultset;
-    }
 
     protected function getProductByIdModel($id, $style=MYSQLI_ASSOC) 
     {

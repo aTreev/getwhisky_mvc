@@ -66,11 +66,11 @@ class SubcategoryValueCRUD
     protected function getProductsByOffsetLimit($id, $offset, $limit, $style=MYSQLI_ASSOC) {
         self::$db = db::getInstance();
 
-        $this->sql = "  SELECT products.id 
+        $this->sql = "  SELECT products.id, products.price 
                         FROM products
                         JOIN subcategory_value_product
                         ON subcategory_value_product.product_id = products.id
-                        WHERE subcategory_value_product.subcategory_value_id = ? LIMIT ?,?;";
+                        WHERE subcategory_value_product.subcategory_value_id = ? ORDER BY products.id DESC LIMIT ?,?;";
         $this->stmt = self::$db->prepare($this->sql);
         $this->stmt->bind_param("iii", $id, $offset, $limit);
         $this->stmt->execute();

@@ -11,7 +11,7 @@ class ProductView
     public function categoryPageView()
     {
         $html = "
-        <div class='product-c bg-white text-center'>
+        <div class='product-c bg-white text-center' product-id='".$this->product->getId()."' price='".$this->product->getPrice()."'>
             <img src='".$this->product->getImage()."' class='product-c-image img-fluid' loading='lazy'/>
             <p class='product-c-name'>".$this->product->getName()."</p>
             <p class='text-uppercase text-muted'>".$this->product->getType()."</p>
@@ -21,7 +21,7 @@ class ProductView
         }
         $html.="
             <p class='product-c-price'>£".$this->product->getPrice()."</p>
-            <a href='/products/product?p=".str_replace(" ", "-", $this->product->getName())."' class='wrapper-link'><span></span></a>
+            <a href='/categories/subcategories/subcategoryvalue/product?p=".str_replace(" ", "-", $this->product->getName())."' class='wrapper-link'><span></span></a>
         </div>
         ";
 

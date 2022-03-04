@@ -15,7 +15,7 @@ if (isset($_GET['c']) && util::valInt($_GET['c'])) {
     // Check if it exists
     if ($exists) {
         // load first 20 products
-        $category->getProductsByOffsetLimit($offset=0, $limit=5);
+        $category->getProductsByOffsetLimit($offset=0, $limit=20);
         // call the page's view and pass the category's view
         echo $page->displayPage($category->getView()->categoryPageFullView()); 
     } else {

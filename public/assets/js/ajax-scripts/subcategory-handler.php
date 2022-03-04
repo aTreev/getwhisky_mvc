@@ -24,12 +24,13 @@ function loadMoreProducts()
     if (util::valInt($_POST['offset']) && util::valInt($_POST['subcatvalueid']))
     $subcatvalueid = (int)util::sanInt($_POST['subcatvalueid']);
     $offset = (int)util::sanInt($_POST['offset']);
+    $sortOption = util::sanStr($_POST['sortOption']);
     $limit = 20;
     $end = false;
 
     $subcategoryValueController = new SubcategoryValueController();
     $subcategoryValueController->initSubcategoryValue($subcatvalueid);
-    $subcategoryValueController->loadProductsByOffsetLimit($offset, $limit);
+    $subcategoryValueController->loadProductsByOffsetLimit($offset, $limit, $sortOption);
 
     if (!$subcategoryValueController->getProducts()) $end = true;
     $html = $subcategoryValueController->getView()->productsOnly();

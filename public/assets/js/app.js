@@ -20,15 +20,13 @@ function prepareMenu()
         $(".product-menu").removeClass("product-menu-mobile-show");
         $(".page-overlay").hide();
         $("body").removeClass("disable-scroll-y");
-    })
+    });
     
     $(window).resize(function(){
         if ($(".product-menu").hasClass("product-menu-mobile-show")) {
             $(".product-menu").removeClass("product-menu-mobile-show");  
             $(".page-overlay").hide();
             $("body").removeClass("disable-scroll-y");
-        }
-        
+        } 
     });
-    
 }
