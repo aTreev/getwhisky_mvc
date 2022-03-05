@@ -1,21 +1,24 @@
 <?php
-class ProductCRUD
+namespace Getwhisky\Model;
+use Getwhisky\Model\DatabaseConnection;
+
+class ProductModel
 {
-    private static $db;
+    private static $DatabaseConnection;
     private $sql;
     private $stmt;
 
     // gets the singleton instance of the database connection
     protected function __construct() {
-        self::$db = db::getInstance();
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
     }
 
 
     protected function getProductsByCategoryIdModel($categoryid, $offset, $limit, $style=MYSQLI_ASSOC) {
-        self::$db = db::getInstance();
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
 
         $this->sql = "SELECT * FROM products WHERE category_id = ? ORDER BY id DESC LIMIT ?,?;";
-        $this->stmt = self::$db->prepare($this->sql);
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
         $this->stmt->bind_param("iii", $categoryid, $offset, $limit);
         $this->stmt->execute();
         $result = $this->stmt->get_result();
@@ -26,10 +29,10 @@ class ProductCRUD
 
     protected function getProductByIdModel($id, $style=MYSQLI_ASSOC) 
     {
-        self::$db = db::getInstance();
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
 
         $this->sql = "SELECT * FROM products WHERE id = ?;";
-        $this->stmt = self::$db->prepare($this->sql);
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
         $this->stmt->bind_param("i", $id);
         $this->stmt->execute();
         $result = $this->stmt->get_result();
@@ -39,10 +42,10 @@ class ProductCRUD
 
     protected function getAdditionalProductImagesModel($id, $style=MYSQLI_ASSOC)
     {
-        self::$db = db::getInstance();
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
 
         $this->sql = "SELECT `image` FROM product_extra_images WHERE product_id = ?;";
-        $this->stmt = self::$db->prepare($this->sql);
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
         $this->stmt->bind_param("i", $id);
         $this->stmt->execute();
         $result = $this->stmt->get_result();
@@ -52,10 +55,10 @@ class ProductCRUD
 
     protected function getProductByNameModel($name, $style=MYSQLI_ASSOC) 
     {
-        self::$db = db::getInstance();
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
 
         $this->sql = "SELECT * FROM products WHERE name = ?;";
-        $this->stmt = self::$db->prepare($this->sql);
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
         $this->stmt->bind_param("s", $name);
         $this->stmt->execute();
         $result = $this->stmt->get_result();
@@ -63,20 +66,18 @@ class ProductCRUD
         return $resultset;
     }
 
-
-    protected function getProductFiltersModel($id, $style=MYSQLI_ASSOC)
+    protected function getProductAdditionalDetails($id, $style=MYSQLI_ASSOC)
     {
-        self::$db = db::getInstance();
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
 
-        $this->sql = "SELECT filters.title, filter_values.value
-        FROM filters
-        JOIN filter_values
-        ON filters.id = filter_values.filter_id
-        JOIN filter_value_products
-        ON filter_value_products.filter_value_id = filter_values.id
-        WHERE filter_value_products.product_id = ?
-        ORDER BY filters.title ASC;";
-        $this->stmt = self::$db->prepare($this->sql);
+        $this->sql = "  SELECT subcategories.name, subcategory_value.name AS 'value'
+                        FROM subcategories
+                        JOIN subcategory_value 
+                        ON subcategory_value.subcategory_id = subcategories.id
+                        JOIN subcategory_value_product
+                        ON subcategory_value_product.subcategory_value_id = subcategory_value.id
+                        WHERE subcategory_value_product.product_id = ?;";
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
         $this->stmt->bind_param("i", $id);
         $this->stmt->execute();
         $result = $this->stmt->get_result();
@@ -86,10 +87,10 @@ class ProductCRUD
 
     protected function getProductOverviewsModel($id, $style=MYSQLI_ASSOC)
     {
-        self::$db = db::getInstance();
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
 
         $this->sql = "SELECT id, image, heading, long_text FROM product_overviews WHERE product_id = ?;";
-        $this->stmt = self::$db->prepare($this->sql);
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
         $this->stmt->bind_param("i", $id);
         $this->stmt->execute();
         $result = $this->stmt->get_result();
@@ -99,10 +100,10 @@ class ProductCRUD
 
     protected function endProductDiscount($id)
     {
-        self::$db = db::getInstance();
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
 
         $this->sql = "UPDATE products SET discounted = 0, discount_price = NULL, discount_end_datetime = NULL WHERE id = ?;";
-        $this->stmt = self::$db->prepare($this->sql);
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
         $this->stmt->bind_param("i", $id);
         $this->stmt->execute();
         return $this->stmt->affected_rows;

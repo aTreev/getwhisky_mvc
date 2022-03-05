@@ -1,10 +1,14 @@
 <?php
-require_once("../src/php/page.class.php");
+
+use Getwhisky\Controllers\Page;
+use Getwhisky\Util\Util;
+
+require_once 'C:/wamp64/www/getwhisky-mvc/vendor/autoload.php';
 $page = new Page(0);
 
-if (isset($_POST['email']) && util::valEmail($_POST['email']) && isset($_POST['password']) && util::valStr($_POST['password'])) {
-    $email = util::sanEmail($_POST['email']);
-    $password = util::sanStr($_POST['password']);
+if (isset($_POST['email']) && Util::valEmail($_POST['email']) && isset($_POST['password']) && Util::valStr($_POST['password'])) {
+    $email = Util::sanEmail($_POST['email']);
+    $password = Util::sanStr($_POST['password']);
     $result=$page->login($email, $password, $autoRedirect="true");
     if (!$result['authenticated']) {
         echo "authenticaton failed"; 

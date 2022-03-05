@@ -1,12 +1,17 @@
-<?php 
-require_once('../../src/php/page.class.php');
+<?php
+
+use Getwhisky\Controllers\CategoryController;
+use Getwhisky\Controllers\Page;
+use Getwhisky\Util\Util;
+
+require_once 'C:/wamp64/www/getwhisky-mvc/vendor/autoload.php';
 $page = new Page(0);
 
 /*****************
  * 
  */
-if (isset($_GET['c']) && util::valInt($_GET['c'])) {
-    $categoryId = util::sanInt(str_replace("-", " ", $_GET['c']));
+if (isset($_GET['c']) && Util::valInt($_GET['c'])) {
+    $categoryId = Util::sanInt(str_replace("-", " ", $_GET['c']));
 
     // Get current category
     $category = new CategoryController();

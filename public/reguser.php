@@ -1,12 +1,16 @@
-<?php 
-    require_once("../src/php/page.class.php");
-    $page = new Page(0);
-    if (util::valEmail($_POST['email']) && util::valStr($_POST['password']) && util::valStr($_POST['first-name']) && util::valStr($_POST['surname']) && util::valStr($_POST['dob'])) {
-        $email = util::sanEmail($_POST['email']);
-        $password = util::sanStr($_POST['password']);
-        $firstName = util::sanStr($_POST['first-name']);
-        $surname = util::sanStr($_POST['surname']);
-        $dob = util::sanStr($_POST['dob']);
+<?php
+
+use Getwhisky\Controllers\Page;
+use Getwhisky\Util\Util;
+
+require_once 'C:/wamp64/www/getwhisky-mvc/vendor/autoload.php';
+$page = new Page(0);
+    if (Util::valEmail($_POST['email']) && Util::valStr($_POST['password']) && Util::valStr($_POST['first-name']) && Util::valStr($_POST['surname']) && Util::valStr($_POST['dob'])) {
+        $email = Util::sanEmail($_POST['email']);
+        $password = Util::sanStr($_POST['password']);
+        $firstName = Util::sanStr($_POST['first-name']);
+        $surname = Util::sanStr($_POST['surname']);
+        $dob = Util::sanStr($_POST['dob']);
 
         try {
             $result = $page->getUser()->regUser($email, $password, $firstName, $surname, $dob);

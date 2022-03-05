@@ -1,12 +1,11 @@
 <?php 
-require_once("crud/usercrud.class.php");
-require_once("userhash.class.php");
-require_once("views/userview.class.php");
-require_once("util/util.class.php");
-require_once("util/unique-id-generator.class.php");
+namespace Getwhisky\Controllers;
+use Getwhisky\Model\UserModel;
+use Getwhisky\Util\UniqueIdGenerator;
+use Getwhisky\Util\UserHash;
+use Getwhisky\Views\UserView;
 
-
-class UserController extends UserCRUD
+class UserController extends UserModel
 {
     private $id;
 	private $email; 

@@ -1,7 +1,9 @@
 <?php
-require_once("crud/subcategoryvaluecrud.class.php");
-require_once("views/subcategoryvalueview.class.php");
-class SubcategoryValueController extends SubcategoryValueCRUD
+namespace Getwhisky\Controllers;
+use Getwhisky\Model\SubcategoryValueModel;
+use Getwhisky\Views\SubcategoryValueView;
+
+class SubcategoryValueController extends SubcategoryValueModel
 {
     private $id;
     

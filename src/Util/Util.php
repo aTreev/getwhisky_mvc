@@ -1,5 +1,7 @@
 <?php
-class util {
+namespace Getwhisky\Util;
+
+class Util {
 	
 	/**********************
 	* Removes html tags and trims spaces from a string

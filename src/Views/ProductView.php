@@ -1,4 +1,6 @@
 <?php
+namespace Getwhisky\Views;
+
 class ProductView
 {
     private $product;
@@ -108,11 +110,11 @@ class ProductView
                         $html.="</div>";
                         // Details
                         $html.="<div id='tab-details' class='tab-content'>";
-                            if ($this->product->getFilters()) {
-                                foreach($this->product->getFilters() as $filter) {
+                            if ($this->product->getDetails()) {
+                                foreach($this->product->getDetails() as $detail) {
                                     $html.="<div class='detail-item'>";
-                                        $html.="<p>".$filter['title']."</p>";
-                                        $html.="<p>".$filter['value']."</p>";
+                                        $html.="<p>".$detail['name']."</p>";
+                                        $html.="<p>".$detail['value']."</p>";
                                     $html.="</div>";
                                 }
                             } else {

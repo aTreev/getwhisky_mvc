@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Atree\\GetwhiskyMvc\\' => array($baseDir . '/src'),
+    'Getwhisky\\' => array($baseDir . '/src'),
 );

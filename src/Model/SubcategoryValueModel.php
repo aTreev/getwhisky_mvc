@@ -1,24 +1,27 @@
 <?php
-class SubcategoryValueCRUD
+namespace Getwhisky\Model;
+use Getwhisky\Model\DatabaseConnection;
+
+class SubcategoryValueModel
 {
-    private static $db;
+    private static $DatabaseConnection;
     private $sql;
     private $stmt;
 
     // gets the singleton instance of the database connection
     protected function __construct() 
     {
-        self::$db = db::getInstance();
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
     }
 
 
     protected function getSubcategoryValueIdsModel($subcategoryid, $style=MYSQLI_ASSOC)
     {
-        self::$db = db::getInstance();
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
         
       
         $this->sql = "SELECT id FROM subcategory_value WHERE subcategory_id = ?;";
-        $this->stmt = self::$db->prepare($this->sql);
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
         $this->stmt->bind_param("i", $subcategoryid);
         $this->stmt->execute();
         $result = $this->stmt->get_result();
@@ -28,7 +31,7 @@ class SubcategoryValueCRUD
 
     protected function getSubcategoryValueByIdModel($id, $style=MYSQLI_ASSOC)
     {
-        self::$db = db::getInstance();
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
         
       
         $this->sql = "SELECT
@@ -42,7 +45,7 @@ class SubcategoryValueCRUD
                     JOIN categories 
                     ON subcategories.category_id = categories.id
                     WHERE subcategory_value.id = ?;";
-        $this->stmt = self::$db->prepare($this->sql);
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
         $this->stmt->bind_param("i", $id);
         $this->stmt->execute();
         $result = $this->stmt->get_result();
@@ -52,10 +55,10 @@ class SubcategoryValueCRUD
 
     protected function getProductCountModel($id, $style=MYSQLI_ASSOC)
     {
-        self::$db = db::getInstance();
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
         
         $this->sql = "SELECT COUNT(product_id) AS product_count FROM subcategory_value_product WHERE subcategory_value_id = ?;";
-        $this->stmt = self::$db->prepare($this->sql);
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
         $this->stmt->bind_param("i", $id);
         $this->stmt->execute();
         $result = $this->stmt->get_result();
@@ -64,14 +67,14 @@ class SubcategoryValueCRUD
     }
 
     protected function getProductsByOffsetLimit($id, $offset, $limit, $style=MYSQLI_ASSOC) {
-        self::$db = db::getInstance();
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
 
         $this->sql = "  SELECT products.id, products.price 
                         FROM products
                         JOIN subcategory_value_product
                         ON subcategory_value_product.product_id = products.id
                         WHERE subcategory_value_product.subcategory_value_id = ? ORDER BY products.id DESC LIMIT ?,?;";
-        $this->stmt = self::$db->prepare($this->sql);
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
         $this->stmt->bind_param("iii", $id, $offset, $limit);
         $this->stmt->execute();
         $result = $this->stmt->get_result();

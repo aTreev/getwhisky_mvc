@@ -1,4 +1,6 @@
 <?php
+namespace Getwhisky\Views;
+
 class CategoryView
 {
     private $category;
@@ -87,18 +89,24 @@ class CategoryView
         $html.="<input type='hidden' id='category-id' value='".$this->category->getId()."'>";
         $html.="
             <div id='filter-root' class='product-filters'>
-                <div class='bg-light p-3 text-center d-flex align-items-center'>
+                <div class='bg-light p-4 text-center d-flex align-items-center'>
                     <i class='fa-solid fa-xmark me-5 site-icon-black' id='close-filters'></i>
-                    <h4 style='font-weight:300'>Product Filters</h4>
+                    <h4 class='mb-0'>Product Filters</h4>
                 </div>
-                <div>
+                <div class='product-sort'>
+                    <div class='sorting-header'>
+                        <p class='mb-1'>Sort by</p>
+                    </div>
+                    <div class='sorting-options'>
+                        <button name='sort-option' class='btn btn-danger' id=''>Latest</button>
+                        <button name='sort-option' class='btn btn-danger' id='asc'>price (low)</button>
+                        <button name='sort-option' class='btn btn-danger' id='desc'>price (high)</button>
+                    </div>
+                </div>
+                <div class='filter-items'>
                     $filterView
                 </div>
-                <div>
-                    <button name='sort-option' id=''>Latest</button>
-                    <button name='sort-option' id='asc'>price (low)</button>
-                    <button name='sort-option' id='desc'>price (high)</button>
-                </div>
+                
             </div>
         ";
 
@@ -131,7 +139,7 @@ class CategoryView
                 foreach($subcategory->getValues() as $value) {
                     if ($value->getProductCount() > 0) {
                         $html.="<div >";
-                            $html.="<a href='/categories/subcategories/subcategoryvalue/?s=".$value->getId()."'>".ucwords($value->getName())."</a>";
+                            $html.="<a href='/categories/subcategories/subcategoryvalue/?s=".$value->getId()."'>".ucwords($value->getName())." (".$value->getProductCount().")</a>";
                         $html.="</div>";
                     }
                 }

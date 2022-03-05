@@ -1,7 +1,13 @@
-<?php 
-require_once("/wamp64/www/getwhisky-mvc/src/php/page.class.php");
+<?php
+
+use Getwhisky\Controllers\CategoryController;
+use Getwhisky\Controllers\SubcategoryValueController;
+use Getwhisky\Util\Util;
+
+require_once 'C:/wamp64/www/getwhisky-mvc/vendor/autoload.php';
+
 if (isset($_POST['function'])) {
-    $functionToCall = util::sanInt($_POST['function']);
+    $functionToCall = Util::sanInt($_POST['function']);
 
     switch ($functionToCall) {
         case 1:
@@ -24,10 +30,10 @@ if (isset($_POST['function'])) {
  */
 function loadProductsCategory() 
 {
-    if (!util::valInt($_POST["offset"]) || !util::valStr($_POST['catOrSubcatId'])) return;
-    $categoryid = util::sanStr($_POST['catOrSubcatId']);
-    $offset = (int)util::sanInt($_POST['offset']);
-    $sortOption = util::sanStr($_POST['sortOption']);
+    if (!Util::valInt($_POST["offset"]) || !Util::valStr($_POST['catOrSubcatId'])) return;
+    $categoryid = Util::sanStr($_POST['catOrSubcatId']);
+    $offset = (int)Util::sanInt($_POST['offset']);
+    $sortOption = Util::sanStr($_POST['sortOption']);
     $limit = 20;
     $end = false;
 
@@ -50,10 +56,10 @@ function loadProductsCategory()
  */
 function loadProductsSubcategory()
 {
-    if (util::valInt($_POST['offset']) && util::valInt($_POST['catOrSubcatId']))
-    $subcatvalueid = (int)util::sanInt($_POST['catOrSubcatId']);
-    $offset = (int)util::sanInt($_POST['offset']);
-    $sortOption = util::sanStr($_POST['sortOption']);
+    if (Util::valInt($_POST['offset']) && Util::valInt($_POST['catOrSubcatId']))
+    $subcatvalueid = (int)Util::sanInt($_POST['catOrSubcatId']);
+    $offset = (int)Util::sanInt($_POST['offset']);
+    $sortOption = Util::sanStr($_POST['sortOption']);
     $limit = 20;
     $end = false;
 

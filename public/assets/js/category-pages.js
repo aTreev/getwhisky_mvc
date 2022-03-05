@@ -13,16 +13,12 @@ var offset = document.getElementsByClassName("product-c").length;
  *  id of the current category / subcategory
  *****/
 if ($("#category-id").get(0)) {
-    console.log("cat");
     var cat_subcat_id = $("#category-id").val();
     var ajaxFunction = 1;
-    console.log(cat_subcat_id)
 }
 if ($("#subcategory-id").get(0)) {
-    console.log("subcat");
     var cat_subcat_id = $("#subcategory-id").val();
     var ajaxFunction = 2;
-    console.log(cat_subcat_id)
 }
     
 
@@ -84,7 +80,7 @@ function prepareCategoryPage()
                  handleSortingOptions();
                  handlePagination();
              });    
-         }, 500);
+         }, (Math.random() * 500));
      });
  }
 

@@ -1,8 +1,13 @@
 <?php
-require_once("/wamp64/www/getwhisky-mvc/src/php/page.class.php");
+
+use Getwhisky\Controllers\Page;
+use Getwhisky\Controllers\SubcategoryController;
+use Getwhisky\Util\Util;
+
+require_once 'C:/wamp64/www/getwhisky-mvc/vendor/autoload.php';
 $page = new Page(0);
-if (isset($_GET['s']) && util::valInt($_GET['s'])) {
-    $id = util::sanInt($_GET['s']);
+if (isset($_GET['s']) && Util::valInt($_GET['s'])) {
+    $id = Util::sanInt($_GET['s']);
     $subcategory = new SubcategoryController();
     $exists = $subcategory->initSubcategoryById($id);
     if ($exists) {

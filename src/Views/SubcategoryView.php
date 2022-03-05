@@ -1,4 +1,6 @@
 <?php
+namespace Getwhisky\Views;
+
 class SubcategoryView 
 {
     private $subcategory;

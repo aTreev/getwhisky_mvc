@@ -1,4 +1,5 @@
 <?php
+namespace Getwhisky\Views;
 
 class UserView 
 {

@@ -1,6 +1,9 @@
 body {
     background-color: #fff!important;
 }
+p,h3,h5,h1 {
+    margin-bottom: 0!important;
+}
 .product {
     margin-top: 60px;
     display: flex;
@@ -81,6 +84,7 @@ body {
 }
 .product-name {
     text-transform: capitalize;
+    font-weight: 400;
 }
 .product-type {
     text-transform: uppercase;
@@ -121,7 +125,7 @@ body {
 }
 .inactive-price, .product-price {
     font-weight: 600;
-    font-size: 24px;
+    font-size: 30px;
     color: var(--bs-danger);
 }
 .inactive-price {

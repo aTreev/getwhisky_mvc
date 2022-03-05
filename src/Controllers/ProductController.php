@@ -1,8 +1,11 @@
 <?php
-require_once("crud/productcrud.class.php");
-require_once("views/productview.class.php");
+namespace Getwhisky\Controllers;
+use Getwhisky\Model\ProductModel;
+use Getwhisky\Util\Porter;
+use Getwhisky\Views\ProductView;
 
-class ProductController extends ProductCRUD
+
+class ProductController extends ProductModel
 {
     private $id;
     private $name;
@@ -21,10 +24,10 @@ class ProductController extends ProductCRUD
     private $type;
     private $featured;
     private $categoryId;
-    private $filters = [];
+
+    private $details = [];
     private $overviews = [];
     private $reviews = [];
-
     private $productView;
 
     public function getId(){ return $this->id; }
@@ -42,7 +45,7 @@ class ProductController extends ProductCRUD
     public function getBottleSize() { return $this->bottleSize; }
     public function getType(){ return $this->type; }
     public function getCategoryId(){ return $this->categoryId; }
-    public function getFilters(){ return $this->filters; }
+    public function getDetails() { return $this->details; }
     public function getOverviews() { return $this->overviews; }
     public function getReviews() { return $this->reviews; }
     public function isFeatured() { return $this->featured; }
@@ -65,7 +68,6 @@ class ProductController extends ProductCRUD
     private function setBottleSize($bottleSize) { $this->bottleSize = $bottleSize; return $this;}
     private function setType($type) { $this->type = $type; return $this; }
     private function setCategoryId($categoryId) { $this->categoryId = $categoryId; return $this; }
-    private function setFilters($filters) { $this->filters = $filters; return $this; }
     public function setFeatured($featured) { $this->featured = $featured; return $this; }
 
     public function __construct()
@@ -81,8 +83,45 @@ class ProductController extends ProductCRUD
     }
 
 
+    public function initProduct($id)
+    {
+        $productExists = false;
+        $productData = parent::getProductByIdModel($id)[0];
+
+        if ($productData) {
+          
+            $productExists = true;
+            $this->setId($productData['id'])->setName($productData['name'])->setDescription($productData['description'])
+            ->setImage($productData['image'])->setPrice($productData['price'])->setDiscounted($productData['discounted'])->setDiscountPrice($productData['discount_price'])
+            ->setStock($productData['stock'])->setActive($productData['active'])->setDiscountEndDatetime($productData['discount_end_datetime'])
+            ->setType($productData['type'])->setCategoryId($productData['category_id'])->setAlcoholVolume($productData['alc_vol'])->setBottleSize($productData['bottle_size']);
+
+            $this->getAdditionalDetails();
+            $this->getProductOverviews();
+            $this->getAdditionalProductImages();
+            $this->checkDiscountEnded();
+        }
+
+        return $productExists;
+    }
+
 
   
+    private function getAdditionalDetails()
+    {
+        $detailData = parent::getProductAdditionalDetails($this->getId());
+
+        if (!$detailData) return;
+
+        foreach($detailData as $detail) {
+            // Singularize subcategory name using Porter2 class
+            $detailName = Porter::stem($detail['name']);
+            
+            array_push($this->details, [ 'name' => ucwords($detailName), 'value' => ucwords($detail['value']) ]);
+        }
+        
+       //var_dump($this->details);
+    }
 
   
     private function getAdditionalProductImages()
@@ -92,12 +131,6 @@ class ProductController extends ProductCRUD
         if ($images) {
             $this->additionalImages = $images;
         }
-    }
-    private function getProductFilters()
-    {
-        $filters = parent::getProductFiltersModel($this->getId());
-        if (!$filters) return;
-        $this->filters = $filters;
     }
 
     private function getProductOverviews()
@@ -119,27 +152,7 @@ class ProductController extends ProductCRUD
         }
     }
 
-    public function initProduct($id)
-    {
-        $productExists = false;
-        $productData = parent::getProductByIdModel($id)[0];
-
-        if ($productData) {
-          
-            $productExists = true;
-            $this->setId($productData['id'])->setName($productData['name'])->setDescription($productData['description'])
-            ->setImage($productData['image'])->setPrice($productData['price'])->setDiscounted($productData['discounted'])->setDiscountPrice($productData['discount_price'])
-            ->setStock($productData['stock'])->setActive($productData['active'])->setDiscountEndDatetime($productData['discount_end_datetime'])
-            ->setType($productData['type'])->setCategoryId($productData['category_id'])->setAlcoholVolume($productData['alc_vol'])->setBottleSize($productData['bottle_size']);
-
-            $this->getProductFilters();
-            $this->getProductOverviews();
-            $this->getAdditionalProductImages();
-            $this->checkDiscountEnded();
-        }
-
-        return $productExists;
-    }
+    
 
     public function initProductByName($name)
     {
@@ -153,7 +166,7 @@ class ProductController extends ProductCRUD
             ->setStock($productData['stock'])->setActive($productData['active'])->setDiscountEndDatetime($productData['discount_end_datetime'])
             ->setType($productData['type'])->setCategoryId($productData['category_id'])->setAlcoholVolume($productData['alc_vol'])->setBottleSize($productData['bottle_size']);
 
-            $this->getProductFilters();
+            $this->getAdditionalDetails();
             $this->getProductOverviews();
             $this->getAdditionalProductImages();
             $this->checkDiscountEnded();

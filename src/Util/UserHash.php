@@ -1,4 +1,5 @@
 <?php
+namespace Getwhisky\Util;
 
 class UserHash {
 	private $hashed;

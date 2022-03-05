@@ -1,7 +1,7 @@
 <?php
-require_once('usercontroller.class.php');
-require_once('categorycontroller.class.php');
-require_once('constants.php');
+namespace Getwhisky\Controllers;
+require_once("C:/wamp64/www/getwhisky-mvc/src/constants.php");
+
 /******************
  * The page class
  * This class handles authentication

@@ -1,4 +1,6 @@
 <?php 
+    namespace Getwhisky\Util;
+    
     class UniqueIdGenerator {
     /**********************************
      * Unique ID generator, used as an extra security measure,

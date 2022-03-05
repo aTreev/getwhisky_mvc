@@ -1,6 +1,9 @@
 <?php
-    require_once("../../src/php/page.class.php");
-    $page = new Page(3);
+
+use Getwhisky\Controllers\Page;
+
+require_once 'C:/wamp64/www/getwhisky-mvc/vendor/autoload.php';
+$page = new Page(3);
     
-    echo $page->displayPage();
+echo $page->displayPage();
 ?>
