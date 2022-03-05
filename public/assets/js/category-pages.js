@@ -6,16 +6,28 @@
  *  used to retrieve products by pagination
  *  initial value is the number of elements with class='product-c' loaded on the page
  *********/
-let offset = document.getElementsByClassName("product-c").length;
+var offset = document.getElementsByClassName("product-c").length;
 
 /*********
- * @category string
- *  Name of the current category
+ * @category || @subcategory string
+ *  id of the current category / subcategory
  *****/
-const category = $("#category").val();
+if ($("#category-id").get(0)) {
+    console.log("cat");
+    var cat_subcat_id = $("#category-id").val();
+    var ajaxFunction = 1;
+    console.log(cat_subcat_id)
+}
+if ($("#subcategory-id").get(0)) {
+    console.log("subcat");
+    var cat_subcat_id = $("#subcategory-id").val();
+    var ajaxFunction = 2;
+    console.log(cat_subcat_id)
+}
+    
 
 
-let sortOption = null;
+var sortOption = null;
 
 /**********
  * Initial function call - handles all functions necessary for the page
@@ -87,9 +99,10 @@ function loadMoreProducts()
         $.ajax({
             url: "/assets/js/ajax-scripts/category-handler.php",
             method: "POST",
-            data: { function: 1, category: category, offset: offset, sortOption: sortOption}
+            data: { function: ajaxFunction, catOrSubcatId: cat_subcat_id, offset: offset, sortOption: sortOption}
         })
         .done(function(result){
+            console.log(result);
             resolve(JSON.parse(result));
         });
     });

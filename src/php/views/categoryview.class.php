@@ -30,15 +30,9 @@ class CategoryView
         return $html;
     }
 
-    public function categoryPageFullView()
+    public function backwardsNavigation()
     {
-        $script = "/assets/js/category-page.js";
-        $style = "/assets/style/category-page.css";
-        $title = ucwords($this->category->getName());
-        $filterView = $this->filterView();
-
         $html = "";
-
         $html.="<div class='backwards-navigation break-container'>";
             $html.="<div class='container back-nav-content'>";
                 $html.="<a href='/'>Home</a>";
@@ -46,25 +40,51 @@ class CategoryView
                 $html.="<p class='current-page'>".ucwords($this->category->getName())."</p>";
             $html.="</div>";
         $html.="</div>";
+        return $html;
+    }
 
-        $html.="
-        <div class='break-container hero-container'>
-            <div class='hero-text'>
-                <h1 class='text-white'>".ucwords($this->category->getName())."</h1>
-                <p class='text-white-faded'>".$this->category->getDescription()."</p>
-            </div>
-            <img src='".$this->category->getImage()."' class='hero-image' />
-        </div>
+    public function bannerImage()
+    {
+        $html = "";
+        $html.="<div class='break-container hero-container'>";
+            $html.="<div class='hero-text'>";
+                $html.="<h1 class='text-white'>".ucwords($this->category->getName())."</h1>";
+                $html.="<p class='text-white-faded'>".$this->category->getDescription()."</p>";
+            $html.="</div>";
+            $html.="<img src='".$this->category->getImage()."' class='hero-image' />";
+        $html.="</div>";
+        return $html;
+    }
 
-        <div class='break-container p-3 bg-white shadow-sm'>
-            <div class='container px-2 m-auto d-flex align-items-center justify-content-between gap-1 flex-wrap'>
-            <div>Showing <span id='product-count'>".count($this->category->getProducts())."</span> of ".$this->category->getProductCount()." products</div>
-            <button class='btn btn-danger' id='open-filters'><i class='fa-solid fa-filter'></i> Product Filters</button>
-            </div>
-        </div>
-        <input type='hidden' id='category' value='".$this->category->getName()."'>
-        ";
+    public function productCountAndShowFilterBar()
+    {
+        $html = "";
+        $html.="<div class='break-container p-3 bg-white shadow-sm'>";
+            $html.="<div class='container px-2 m-auto d-flex align-items-center justify-content-between gap-1 flex-wrap'>";
+            $html.="<div>Showing <span id='product-count'>".count($this->category->getProducts())."</span> of ".$this->category->getProductCount()." products</div>";
+            $html.="<button class='btn btn-danger' id='open-filters'><i class='fa-solid fa-filter'></i> Product Filters</button>";
+            $html.="</div>";
+        $html.="</div>";
+        return $html;
+        
+    }
+    public function categoryPageFullView()
+    {
+        $script = "/assets/js/category-pages.js";
+        $style = "/assets/style/category-pages.css";
+        $title = ucwords($this->category->getName());
+        $filterView = $this->filterView();
+
+        $html = "";
+
+        $html.=$this->backwardsNavigation();
+
+        $html.=$this->bannerImage();
+
+        $html.=$this->productCountAndShowFilterBar();
+
         // Filters
+        $html.="<input type='hidden' id='category-id' value='".$this->category->getId()."'>";
         $html.="
             <div id='filter-root' class='product-filters'>
                 <div class='bg-light p-3 text-center d-flex align-items-center'>
@@ -84,16 +104,14 @@ class CategoryView
 
         // Products
         $html.="<div id='product-root' class='m-auto mt-5 d-flex flex-row flex-wrap gap-4'>";
-        foreach($this->category->getProducts() as $product) {
-            if ($product->isActive()) $html.=$product->getView()->categoryPageView();
-        }
+            $html.=$this->products();
         $html.="</div>";
 
         return ['html' => $html, 'script' => $script, 'style' => $style, 'title' => $title];
     }
 
 
-    public function productsOnly()
+    public function products()
     {
         $html = "";
         foreach($this->category->getProducts() as $product) {

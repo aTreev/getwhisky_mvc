@@ -62,8 +62,8 @@ class SubcategoryValueView
     {
         $html = "";
         $title = ucwords($this->subcategoryValue->getName());
-        $style = "/assets/style/category-page.css";
-        $script = "/assets/js/subcategory-page.js";
+        $style = "/assets/style/category-pages.css";
+        $script = "/assets/js/category-pages.js";
 
         $html.=$this->backwardsNavigation();
 
@@ -73,10 +73,8 @@ class SubcategoryValueView
         $html.=$this->productCountAndShowFiltersBar();
 
         $html.="<div id='product-root' class='m-auto mt-5 d-flex flex-row flex-wrap gap-4'>";
-            $html.="<input type='hidden' id='subcategoryval-id' value='".$this->subcategoryValue->getId()."'>";
-            foreach($this->subcategoryValue->getProducts() as $product) {
-                $html.=$product->getView()->categoryPageView();
-            }
+            $html.="<input type='hidden' id='subcategory-id' value='".$this->subcategoryValue->getId()."'>";
+            $html.=$this->products();
         $html.="</div>";
 
         $html.="
@@ -97,7 +95,7 @@ class SubcategoryValueView
     }
 
 
-    public function productsOnly()
+    public function products()
     {
         $html = "";
         foreach($this->subcategoryValue->getProducts() as $product) {
