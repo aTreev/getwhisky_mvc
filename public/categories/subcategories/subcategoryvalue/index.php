@@ -11,6 +11,7 @@ $page = new Page(0);
 if (isset($_GET['s']) && Util::valInt($_GET['s'])) {
     $subcategoryValue = new SubcategoryValueController();
     $exists = $subcategoryValue->initSubcategoryValue(Util::sanInt($_GET['s']));
+    
     if ($exists) {
         $subcategoryValue->loadProductsByOffsetLimit(0,constant("product_retrieve_count"));
         echo $page->displayPage($subcategoryValue->getView()->subcategoryValuePageFullView());

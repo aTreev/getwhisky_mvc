@@ -12,20 +12,20 @@ class ProductView
 
     public function categoryPageView()
     {
-        $html = "
-        <div class='product-c bg-white text-center' product-id='".$this->product->getId()."' price='".$this->product->getPrice()."'>
-            <img src='".$this->product->getImage()."' class='product-c-image img-fluid' loading='lazy'/>
-            <p class='product-c-name'>".$this->product->getName()."</p>
-            <p class='text-uppercase text-muted'>".$this->product->getType()."</p>
-            ";
+        $html = "";
+        $html.="<div class='product-c bg-white text-center' product-id='".$this->product->getId()."' price='".$this->product->getPrice()."'>";
+        if ($this->product->getStock() == 0) {
+            $html.="<div class='out-of-stock-tag'>Sold Out</div>";
+        }
+            $html.="<img src='".$this->product->getImage()."' class='product-c-image img-fluid' loading='lazy'/>";
+            $html.="<p class='product-c-name'>".$this->product->getName()."</p>";
+            $html.="<p class='text-uppercase text-muted'>".$this->product->getType()."</p>";
         if ($this->product->getAlcoholVolume()) {
             $html.="<p class='text-muted'>".$this->product->getBottleSize()." / ".$this->product->getAlcoholVolume()."</p>";
         }
-        $html.="
-            <p class='product-c-price'>£".$this->product->getPrice()."</p>
-            <a href='/categories/subcategories/subcategoryvalue/product?p=".str_replace(" ", "-", $this->product->getName())."' class='wrapper-link'><span></span></a>
-        </div>
-        ";
+            $html.="<p class='product-c-price'>£".$this->product->getPrice()."</p>";
+            $html.="<a href='/categories/subcategories/subcategoryvalue/product?p=".str_replace(" ", "-", $this->product->getName())."' class='wrapper-link'><span></span></a>";
+        $html.="</div>";
 
         return $html;
     }

@@ -4,6 +4,7 @@ namespace Getwhisky\Util;
  * PHP Implementation of the Porter2 Stemming Algorithm.
  *
  * See http://snowball.tartarus.org/algorithms/english/stemmer.html .
+ * credit https://github.com/markfullmer/porter2.git
  */
 class Porter {
 

@@ -5,20 +5,32 @@
  }
 
  .product-c:hover {
-     box-shadow: 2px 2px 15px lightgrey;
+    box-shadow: 2px 2px 15px lightgrey;
  }
  .product-c-image {
-     max-height: 300px;
+    max-height: 300px;
  }
  .product-c-name {
-     margin-top: 10px;
-     font-size: 18px;
-     color: var(--bg-secondary);
-     text-transform: capitalize;
+    margin-top: 10px;
+    font-size: 18px;
+    color: var(--bg-secondary);
+    text-transform: capitalize;
+ }
+
+ .out-of-stock-tag {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: black;
+    opacity: 0.7;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 4px;
  }
  .product-c-price {
-     color: var(--bg-secondary);
-     font-weight: 600;
+    color: var(--bg-secondary);
+    font-weight: 600;
  }
 .product-filters {
     transform: translateX(100%);
