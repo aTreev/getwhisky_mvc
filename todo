@@ -1,5 +1,6 @@
  3. add review system?
  4. Implement global cart system
+ 5. Implement cart notification system (insufficient stock auto removal)
  5. Implement add to cart
  6. Complete cart section, update, delete
  7. Implement user addresses with auto address lookup

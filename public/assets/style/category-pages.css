@@ -118,4 +118,7 @@
     .product-filters {
         width: 75vw;
     }
+    .sorting-options {
+        flex-direction: column;
+    }
 }

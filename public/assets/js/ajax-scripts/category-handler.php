@@ -70,7 +70,7 @@ function loadProductsSubcategory()
     if (!$subcategoryValueController->getProducts()) $end = true;
     $html = $subcategoryValueController->getView()->products();
 
-    echo json_encode(['html' => $html, 'offset' => $offset+$limit, 'end_of_products' => $end]);
+    echo json_encode(['html' => $html, 'newOffset' => $offset+$limit, 'end_of_products' => $end]);
 }
 
 ?>

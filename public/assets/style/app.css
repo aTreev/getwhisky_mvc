@@ -140,18 +140,10 @@ header {
 }
 
 /***************
-***********
-*/
-.breadcrumbs {
-    display: flex;
-    align-items: center;
-    background-color: var(--border-colour);
-    padding: 10px;
-    gap: 10px;
-}
-.breadcrumbs p {
-    margin-bottom: 0;
-}
+* General helper styling used throughout the site
+* Includes wrappers, overlays, scroll disables and
+* a class to break out of the bootstrap container
+***/
 
 .wrapper-link {
     position: absolute;
@@ -178,15 +170,18 @@ header {
 .disable-scroll-y {
     overflow-y: hidden;
 }
+
 .break-container{
     width:100vw;
     position:relative;
     left:calc(-1 * (100vw - 100%)/2);
 }
+
 .text-white-faded {
     color: white;
     opacity: 0.8;
 }
+/******************************************************************************************************************************************************************************/
 
 .hero-container {
     background: rgba(0, 0, 0, 0.8)!important;
@@ -211,6 +206,11 @@ header {
     background: rgba(0, 0, 0, 0.8);
     opacity: 0.4;
 }
+
+
+/********************************************************************************************
+* Stylings for backwards navigation on category pages
+***/
 .backwards-navigation {
     padding: 10px 0px;
     background-color: #f7f7f7!important;
@@ -245,6 +245,75 @@ header {
     opacity: 0.7;
     font-size: 15px;
 }
+/********************************************************************************************/
+
+/***********************************************************************************************
+* Stylings for notifications
+* Styles based on notication type
+* currently success/error
+*/
+.notification {
+    display: flex;
+    min-width: 250px;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    right: 0;
+    top: 20%;
+    border-radius: 6px;
+    gap: 10px;
+    z-index: 100;
+    transform: translateX(100%);
+    transition: transform 300ms ease-in-out;
+}
+.notification-message-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    padding-left: 15px;
+}
+.close-notification-container {
+    padding: 25px;
+    cursor:pointer;
+}
+.notification-success {
+    background-color: lightgreen;
+    border-left: 8px solid darkgreen;
+}
+
+.notification-success i {
+    font-size: 26px;
+    color: darkgreen;
+}
+.notification-success p {
+    margin-bottom: 0;
+    color: darkgreen;
+}
+
+.notification-success .close-notification-container {
+    background-color: rgb(104, 231, 104);
+}
+
+.notification-error {
+    background-color: lightcoral;
+    border-left: 8px solid darkred;
+}
+
+.notification-error i {
+    font-size: 26px;
+    color: darkred;
+}
+.notification-error p {
+    margin-bottom: 0;
+    color: darkred;
+}
+
+.notification-error .close-notification-container {
+    background-color: rgb(252, 134, 134);
+}
+/*************************************************************************/
+
 @media screen and (max-width: 1400px) {
     .header-center {
         width: 100%;

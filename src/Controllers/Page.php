@@ -8,11 +8,11 @@ require_once("C:/wamp64/www/getwhisky-mvc/src/constants.php");
  * and contains/controls state of classes & objects throughout the site
  ******************************/
 class Page {
-    private $requiredAccessLevel;
-    private $user;
-    private $categories = [];
-    private $category;
-    private $authenticated;
+    private int $requiredAccessLevel;
+    private array $categories = [];
+    private bool $authenticated;
+    private UserController $user;
+    private CartController $cart;
 
     public function __construct($requiredAccessLevel=0) {
         if (!isset($_SESSION)) session_start();
@@ -21,6 +21,7 @@ class Page {
         $this->setAuthenticated(false);
         $this->checkUser();
         $this->initCategories();
+        $this->initCart();
     }
 
 
@@ -32,6 +33,8 @@ class Page {
     public function getUser() { return $this->user; }
     public function getCategories() { return $this->categories; }
     public function getCategory() { return $this->category; }
+    public function getCart() { return $this->cart; }
+
 
     private function checkUser() 
     {
@@ -111,6 +114,12 @@ class Page {
         }
     }
 
+    private function initCart()
+    {
+        $this->cart = new CartController();
+        $this->cart->initCart($this->getUser()->getId());
+    }
+
     public function productMenu()
     {
         $html = "";
@@ -134,23 +143,11 @@ class Page {
         if ($this->getUser()->getAccessLevel() == 3) {
             $html.="<div><a href='/admin/home'><i class='fas fa-database site-icon-white'></i> <span class='site-icon-text'>Admin</span></a></div>";
         }
-        $html.="<div><a href='/cart'><i class='fa-solid fa-basket-shopping site-icon-white'></i> <span class='site-icon-text'>Basket</span></a></i></div>";
+        $html.="<div><a href='/basket/'><i class='fa-solid fa-basket-shopping site-icon-white'></i> <span class='site-icon-text'>Basket</span></a></i></div>";
         $html.="<i class='fa-solid fa-bars product-menu-open' id='product-menu-open'></i>";
         return $html;
     }
 
-    public function getCurrentCategoryByName($categoryName)
-    {
-        $found = false;
-        foreach($this->categories as $category) {
-            if ($category->getName() == $categoryName) {
-                $this->category = $category;
-                $found = true;
-                break;
-            }
-        }
-        return $found;
-    }
     /*****************
      * Displays the page html
      * Takes in a view as parameter which can either be passed
@@ -215,6 +212,7 @@ class Page {
                 <!-- Option 1: Bootstrap Bundle with Popper -->
                 <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js' integrity='sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p' crossorigin='anonymous'></script>
             </body>
+            <script src='/assets/js/classes/notification.js'></script>
             <script src='/assets/js/app.js'></script>
             $viewScript
             <script>

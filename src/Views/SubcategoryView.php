@@ -19,21 +19,29 @@ class SubcategoryView
         $html = "";
         $html.="<div class='subcategory-menu' category='".$this->subcategory->getCategoryId()."'>";
             $html.="<a href='/categories/subcategories?s=".$this->subcategory->getId()."' class='subcategory-menu-heading'>".$this->subcategory->getName()."</a>";
+            // Break after 6 and add a view all >
+            $i = 0;
             foreach($this->subcategory->getValues() as $subcatValue) {
                 $html.=$subcatValue->getView()->menu();
+                $i++;
+                if ($i == 6) { 
+                    $html.="<a href='/categories/subcategories?s=".$this->subcategory->getId()."'>See all ".$this->subcategory->getName()." &#8250; </a>";
+                    break;
+                }
             }
         return $html;
     }
 
     private function bannerImage()
     {
-        return "<div class='break-container hero-container'>
-        <div class='hero-text'>
-            <h1 class='text-white'>".ucwords($this->subcategory->getCategoryName())." ".ucwords($this->subcategory->getName())."</h1>
-            <p class='text-white-faded'>".$this->subcategory->getDescription()."</p>
-        </div>
-        <img src='".$this->subcategory->getImage()."' class='hero-image' />
-    </div>";
+        return "
+        <div class='break-container hero-container'>
+            <div class='hero-text'>
+                <h1 class='text-white'>".ucwords($this->subcategory->getCategoryName())." ".ucwords($this->subcategory->getName())."</h1>
+                <p class='text-white-faded'>".$this->subcategory->getDescription()."</p>
+            </div>
+            <img src='".$this->subcategory->getImage()."' class='hero-image' />
+        </div>";
     }
 
     public function backwardsNavigation()
@@ -64,6 +72,9 @@ class SubcategoryView
         $title = ucwords($this->subcategory->getCategoryName())." ".ucwords($this->subcategory->getName());
 
         switch($this->subcategory->getName()) {
+            default: 
+                $html = $this->defaultPageView(); 
+            break;
             case "distilleries": 
                 $html = $this->distilleryPageView(); 
             break;
@@ -73,9 +84,7 @@ class SubcategoryView
             case "typess": 
                 $html = $this->typePageView(); 
             break;
-            default: 
-                $html = $this->defaultPageView(); 
-            break;
+            
         }
         // Filters
         return ['html' => $html, 'style' => $style, 'script' => $script, 'title' => $title];

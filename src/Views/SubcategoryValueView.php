@@ -52,7 +52,7 @@ class SubcategoryValueView
 
     public function productCountAndShowFiltersBar()
     {
-        return "<div class='break-container p-3 bg-white shadow-sm'>
+        return "<div class='break-container p-3 bg-white shadow-sm' id='filter-bar'>
                     <div class='container px-2 m-auto d-flex align-items-center justify-content-between gap-1 flex-wrap'>
                     <div>Showing <span id='product-count'>".count($this->subcategoryValue->getProducts())."</span> of ".$this->subcategoryValue->getProductCount()." products</div>
                     <button class='btn btn-danger' id='open-filters'><i class='fa-solid fa-filter'></i> Product Filters</button>

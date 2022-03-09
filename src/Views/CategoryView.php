@@ -61,7 +61,7 @@ class CategoryView
     public function productCountAndShowFilterBar()
     {
         $html = "";
-        $html.="<div class='break-container p-3 bg-white shadow-sm'>";
+        $html.="<div class='break-container p-3 bg-white shadow-sm' id='filter-bar'>";
             $html.="<div class='container px-2 m-auto d-flex align-items-center justify-content-between gap-1 flex-wrap'>";
             $html.="<div>Showing <span id='product-count'>".count($this->category->getProducts())."</span> of ".$this->category->getProductCount()." products</div>";
             $html.="<button class='btn btn-danger' id='open-filters'><i class='fa-solid fa-filter'></i> Product Filters</button>";
