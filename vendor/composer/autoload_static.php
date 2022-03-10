@@ -22,26 +22,6 @@ class ComposerStaticInitb3a4e5b0ef7cff3bc195416d063e012b
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Getwhisky\\Controllers\\CategoryController' => __DIR__ . '/../..' . '/src/Controllers/CategoryController.php',
-        'Getwhisky\\Controllers\\Page' => __DIR__ . '/../..' . '/src/Controllers/Page.php',
-        'Getwhisky\\Controllers\\ProductController' => __DIR__ . '/../..' . '/src/Controllers/ProductController.php',
-        'Getwhisky\\Controllers\\SubcategoryController' => __DIR__ . '/../..' . '/src/Controllers/SubcategoryController.php',
-        'Getwhisky\\Controllers\\SubcategoryValueController' => __DIR__ . '/../..' . '/src/Controllers/SubcategoryValueController.php',
-        'Getwhisky\\Controllers\\UserController' => __DIR__ . '/../..' . '/src/Controllers/UserController.php',
-        'Getwhisky\\Model\\CategoryModel' => __DIR__ . '/../..' . '/src/Model/CategoryModel.php',
-        'Getwhisky\\Model\\ProductModel' => __DIR__ . '/../..' . '/src/Model/ProductModel.php',
-        'Getwhisky\\Model\\SubcategoryModel' => __DIR__ . '/../..' . '/src/Model/SubcategoryModel.php',
-        'Getwhisky\\Model\\SubcategoryValueModel' => __DIR__ . '/../..' . '/src/Model/SubcategoryValueModel.php',
-        'Getwhisky\\Model\\UserModel' => __DIR__ . '/../..' . '/src/Model/UserModel.php',
-        'Getwhisky\\Util\\Porter' => __DIR__ . '/../..' . '/src/Util/Porter.php',
-        'Getwhisky\\Util\\UniqueIdGenerator' => __DIR__ . '/../..' . '/src/Util/UniqueIdGenerator.php',
-        'Getwhisky\\Util\\UserHash' => __DIR__ . '/../..' . '/src/Util/UserHash.php',
-        'Getwhisky\\Util\\Util' => __DIR__ . '/../..' . '/src/Util/Util.php',
-        'Getwhisky\\Views\\CategoryView' => __DIR__ . '/../..' . '/src/Views/CategoryView.php',
-        'Getwhisky\\Views\\ProductView' => __DIR__ . '/../..' . '/src/Views/ProductView.php',
-        'Getwhisky\\Views\\SubcategoryValueView' => __DIR__ . '/../..' . '/src/Views/SubcategoryValueView.php',
-        'Getwhisky\\Views\\SubcategoryView' => __DIR__ . '/../..' . '/src/Views/SubcategoryView.php',
-        'Getwhisky\\Views\\UserView' => __DIR__ . '/../..' . '/src/Views/UserView.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

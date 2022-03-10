@@ -75,7 +75,47 @@ class CartController extends CartModel
             $cartItem->initCartItem($item);
             array_push($this->items, $cartItem);
         }
+    }
 
+
+    /******
+     * Retrieves and returns the total number of items
+     * in the cart.
+     ****/
+    public function getItemCount()
+    {
+        $itemCount = 0;
+        foreach($this->items as $item) {
+            $itemCount += $item->getQuantity();
+        }
+
+        return $itemCount;
+    }
+
+    /******
+     * Retrieves and returns the total price of the cart
+     *****/
+    public function getCartTotal()
+    {
+        $total = 0;
+        foreach($this->items as $item) {
+            $total += $item->getItemPrice() * $item->getQuantity();
+        }
+        return $total;
+    }
+
+    /*******
+     * Retrieves and returns any discounts applied
+     * to the cart
+     ********/
+    public function getCartDiscounts()
+    {
+        $discount = 0;
+        foreach($this->items as $item) {
+            $discount += $item->checkDiscount();
+        }
+        
+        return number_format($discount, 2, '.', '');
     }
 }
 ?>

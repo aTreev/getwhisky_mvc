@@ -43,12 +43,30 @@ class CartItemController extends CartItemModel
 
 
     // Initializes the cart item using data passed from the cart
+    // Creates a new instance of a product controller using the
+    // cart item data product_id
     public function initCartItem($itemData)
     {
         $this->setCartId($itemData['cart_id'])->setProductId($itemData['product_id'])->setQuantity($itemData['quantity']);
         $productController = new ProductController();
         $productController->initProduct($this->getProductId());
         $this->setProduct($productController);        
+    }
+
+
+    //
+    public function getItemPrice()
+    {
+        return $this->product->getActivePrice();
+    }
+
+    // Checks the product instance for any discount
+    // and returns it
+    public function checkDiscount()
+    {
+        if (!$this->getProduct()->isDiscounted()) return 0;
+
+        return ($this->getProduct()->getPrice() - $this->getProduct()->getDiscountPrice()) * $this->getQuantity();
     }
 }
 ?>

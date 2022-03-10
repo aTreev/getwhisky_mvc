@@ -1,0 +1,38 @@
+<script src="https://cdn.getaddress.io/scripts/jquery.getAddress-4.0.0.min.js"></script>
+
+<!-- Postcode field -->
+<div id="postcode_lookup"></div>  
+
+<!-- Add to your existing form -->
+<label>First Address Line</label>
+<input id="line1" type="text"> 
+
+<label>Second Address Line</label>
+<input id="line2" type="text">   
+
+<label>Third Address Line</label>
+<input id="line3" type="text">  
+
+<label>Town</label>
+<input id="town" type="text">
+
+<label>County</label>
+<input id="county" type="text">
+
+<label>Postcode</label>
+<input id="postcode" type="text">
+
+<script>
+$('#postcode_lookup').getAddress(
+    {
+    api_key: '-zl3kKu9QUe2OwO3zTLfOQ34562',  
+    output_fields:{
+        line_1: '#line1',
+        line_2: '#line2',
+        line_3: '#line3',
+        post_town: '#town',
+        county: '#county',
+        postcode: '#postcode'
+    }
+});
+</script>

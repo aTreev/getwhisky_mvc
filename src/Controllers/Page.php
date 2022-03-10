@@ -143,7 +143,7 @@ class Page {
         if ($this->getUser()->getAccessLevel() == 3) {
             $html.="<div><a href='/admin/home'><i class='fas fa-database site-icon-white'></i> <span class='site-icon-text'>Admin</span></a></div>";
         }
-        $html.="<div><a href='/basket/'><i class='fa-solid fa-basket-shopping site-icon-white'></i> <span class='site-icon-text'>Basket</span></a></i></div>";
+        $html.="<div><a href='/basket/'><i id='cart-icon' class='fa-solid fa-basket-shopping site-icon-white'><span id='cart-count-number'>".$this->getCart()->getItemCount()."</span></i> <span class='site-icon-text'>Basket</span></a></i></div>";
         $html.="<i class='fa-solid fa-bars product-menu-open' id='product-menu-open'></i>";
         return $html;
     }
@@ -206,9 +206,11 @@ class Page {
                         </nav>
                     </div>
                 </header>
-                <div class='container mb-5' id='page-root'>
+
+                <div class='container-xxl mb-5' id='page-root'>
                     $viewHtml
                 </div>
+
                 <!-- Option 1: Bootstrap Bundle with Popper -->
                 <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js' integrity='sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p' crossorigin='anonymous'></script>
             </body>

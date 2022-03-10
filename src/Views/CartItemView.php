@@ -19,41 +19,35 @@ class CartItemView
         $quantityLimit = ($product->getStock() < constant("purchase_limit")) ? $quantityLimit = $product->getStock() : constant("purchase_limit");
         $html = "";
 
-        $html.="<tr>";
-            // Product details
-            $html.="<td>";
-                $html.="<div class='cart-item-details-container'>";
+        $html.="<div class='cart-item' product-id='".$product->getId()."'>";
 
-                    $html.="<div class='cart-item-img-container'>";
-                        $html.="<img src='".$product->getImage()."' style='width:100%;'/>";
-                    $html.="</div>";
-
-                    $html.="<div class='cart-item-details'>";
-                        $html.="<p>".ucwords($product->getName())."</p>";
-                        $html.="<p>".ucwords($product->getType())."</p>";
-                        $html.="<button class='remove-item'>Remove</button>";
-                    $html.="</div>";
-
+            // Details
+            $html.="<div class='cart-item-details-container'>";
+                $html.="<a href='/categories/subcategories/subcategoryvalue/product?p=".$product->getName()."'>";
+                $html.="<img src='".$product->getImage()."' />";
+                $html.="</a>";
+                $html.="<div class='cart-item-details'>";
+                    $html.="<p>".ucwords($product->getName())."</p>";
+                    $html.="<p>".ucwords($product->getType())."</p>";
+                    $html.="<button id='remove-item-".$product->getId()."'>Remove</button>";
                 $html.="</div>";
-            $html.="</td>";
+            $html.="</div>";
 
-            // Product Quantity
-            $html.="<td>";
-                $html.="<div class='cart-item-quantity-container'>";
-                    $html.="<select>";
-                        for($i = 1; $i <= $quantityLimit; $i++) {
-                            if ($i == $this->cartItem->getQuantity()) {
-                                $html.="<option value='$i' selected>$i</option>";
-                            } else {
-                                $html.="<option value='$i'>$i</option>";
-                            }
-                        }
-                    $html.="</select>";
-                $html.="</div>";
-            $html.="</td>";
+            // Quantity
+            $html.="<div class='quantity-container'>";
+                $html.="<select>";
+                for($i = 1; $i <= $quantityLimit; $i++) {
+                    if ($i == $this->cartItem->getQuantity()) {
+                        $html.="<option value='$i' selected>$i</option>";
+                    } else {
+                        $html.="<option value='$i'>$i</option>";
+                    }
+                }
+                $html.="</select>";
+            $html.="</div>";
 
             // Price
-            $html.="<td>";
+            $html.="<div class='price-container'>";
                 if($product->isDiscounted()) {
                     $html.="<div class='price-discount-container'>";
                         $html.="<p class='price-inactive'>£".$product->getPrice()."</p>";
@@ -62,64 +56,15 @@ class CartItemView
                 } else {
                     $html.="<p class='price-active'>£".$product->getActivePrice()."</p>";
                 }
-            $html.="</td>";
-
-            // subtotal
-            $html.="<td>";
-                $html.="<div class='cart-item-subtotal-container'>";
-                    $html.="<p>£".($this->cartItem->getQuantity() * $product->getPrice())."</p>";
-                $html.="</div>";
-            $html.="</td>";
-        $html.="</tr>";
-
-        return $html;
-    }
-
-    public function itemView1()
-    {
-        $product = $this->cartItem->getProduct();
-        $quantityLimit = ($product->getStock() < constant("purchase_limit")) ? $quantityLimit = $product->getStock() : constant("purchase_limit");
-        $html = "";
-
-        $html.="<div class='cart-item' style='display:flex;'>";
-
-            $html.="<div class='cart-item-details-container' style='max-width:450px;display:flex;gap:10px;'>";
-
-                $html.="<img src='".$product->getImage()."' style='width: 30%;'/>";
-
-                $html.="<div class='cart-item-details'>";
-                    $html.="<p>".ucwords($product->getName())."</p>";
-                    $html.="<p>".ucwords($product->getType())."</p>";
-                $html.="</div>";
             $html.="</div>";
 
-            $html.="<div class='cart-item-quantity-container'>";
-                $html.="<select>";
-                    for($i = 1; $i <= $quantityLimit; $i++) {
-                        if ($i == $this->cartItem->getQuantity()) {
-                            $html.="<option value='$i' selected>$i</option>";
-                        } else {
-                            $html.="<option value='$i'>$i</option>";
-                        }
-                    }
-                $html.="</select>";
-            $html.="</div>";
-
-            $html.="<div class='cart-item-price-container'>";
-                if($product->isDiscounted()) {
-                    $html.="<div class='price-discount-container' style='display:flex;gap:5px;'>";
-                        $html.="<p>£".$product->getPrice()."</p>";
-                        $html.="<p>£".$product->getDiscountPrice()."</p>";
-                    $html.="</div>";
-                } else {
-                    $html.="<p>£".$product->getActivePrice()."</p>";
-                }
-            $html.="</div>";
-
-            $html.="<div class='cart-item-subtotal-container'>";
+            // Subtotal
+            $html.="<div class='subtotal-container'>";
                 $html.="<p>£".($this->cartItem->getQuantity() * $product->getPrice())."</p>";
             $html.="</div>";
         $html.="</div>";
+
+        
 
         return $html;
     }

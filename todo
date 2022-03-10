@@ -1,10 +1,11 @@
- 3. add review system?
- 4. Implement global cart system
- 5. Implement cart notification system (insufficient stock auto removal)
- 5. Implement add to cart
- 6. Complete cart section, update, delete
- 7. Implement user addresses with auto address lookup
- 8. Implement shipping cost calculator if possible
- 9. Create order/invoice system
-10. Integrate Stripe checkout
-11. 
+add review system?
+Implement global cart system
+Implement cart notification system (insufficient stock auto removal)
+Implement add to cart
+Implement shipp test API
+Complete cart section, update, delete
+Implement user addresses with auto address lookup -- getaddress.io
+Implement shipping cost calculator if possible
+Create order/invoice system
+Integrate Stripe checkout
+ 

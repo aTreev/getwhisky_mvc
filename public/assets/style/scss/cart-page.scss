@@ -1,79 +1,137 @@
-.cart-items-table {
-    border-collapse: collapse;
-    margin:25px 0px;
-    width: 100%;
+body {
+    background-color: white!important;
 
-    thead tr {
-        border-bottom: 1px solid var(--border-colour);
-        opacity: 0.7;
-        text-align: left;
+}
+
+.cart-root {
+    display: flex;
+    margin-top: 40px;
+    gap: 40px;
+    //box-shadow: 2px 2px 15px lightgrey;
+    padding: 25px;
+
+    .cart-left {
+        width: 70%;
+
         
-        th {
-            font-weight: 500;
-            padding-bottom: 10px;
-        }
     }
-    // Table body stylings
-    tbody {
-        tr {
-            border-bottom: 1px solid var(--border-colour);
-        }
-       
-        tr:first-child td {
-            padding-top: 40px;
-        }
+    .cart-right {
+        width: 30%;
+        padding-left: 30px;
+        //background-color: #f9f9f9;
+        box-shadow: -15px 2px 39px -26px #aaaaaa;
 
-        td {
-            vertical-align: top;
-            padding: 20px 0px;
-        }
-
-        select {
-            width: 65px;
-            padding: 10px 0px;
-        }
-
-        // Div stylings within tds
-        .cart-item-details-container {
+        .summary-details {
+            margin-top: 15px;
             display: flex;
-            gap: 10px;
+            gap: 25px;
+            ul {
+                list-style: none;
+                padding-left: 0;
+                font-weight: 500;
 
-            .cart-item-img-container {
-                max-width: 150px;
-
-                img {
-                    border: 1px solid var(--border-colour);
+                li {
+                    padding-top: 25px;
                 }
             }
-
-            .cart-item-details {
-                .remove-item {
-                    border: none;
-                    background-color: transparent;
-                    padding-left: 0px;
-                    color: var(--bs-danger);
-
-                    &:hover {
-                        text-decoration: underline;
-                    }
-                }
-            }
-        }
-        
-
-        .price-discount-container {
-            display: flex;
-            gap: 10px;
-            
-            .price-inactive {
-                color: grey;
-                opacity: 0.8;
-                text-decoration: line-through;
-            }
-        }
-        .price-active {
-            color: darkgreen;
-            font-weight: 500;
         }
     }
 }
+
+.cart-header {
+    margin: 40px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.cart-headings {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    grid-gap: 10px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-colour);
+    padding-bottom: 10px;
+
+    p {
+        font-weight: 500;
+        opacity: 0.8;
+        margin-bottom: 0;
+        font-size: 14px;
+    }
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    padding: 20px 0px;
+    grid-gap: 10px;
+    border-bottom: 1px solid var(--border-colour);
+
+    .cart-item-details-container {
+        display: flex;
+        gap: 10px;
+
+        img {
+            max-width: 100px;
+            border: 1px solid lightgrey;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+        button {
+            border: none;
+            background-color: transparent;
+            color: var(--bs-danger);
+            padding: 0;
+            margin: 0;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+
+    .quantity-container {
+        select {
+            width: 60px;
+            padding: 10px 0px 10px 5px;
+        }
+    }
+
+    .price-discount-container {
+        display: flex;
+        gap: 10px;
+    }
+
+    .price-inactive {
+        color: grey;
+        text-decoration: line-through;
+    }
+    .price-active {
+        font-weight: 500;
+        color: darkgreen;
+    }
+
+    .subtotal-container {
+        p {
+            font-size: 18px;
+        }
+    }
+    
+}
+
+.no-items-container {
+    max-width: 800px;
+    margin: auto;
+    background-color: lightcoral;
+    opacity:0.8;
+    padding: 30px;
+    margin-top: 40px;
+    border-radius: 6px;
+    
+}
+
