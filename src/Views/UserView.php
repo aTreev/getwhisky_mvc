@@ -70,68 +70,84 @@ class UserView
         return ['html' => $html, 'title' => 'Login'];
     }
 
+
+    public function backwardsNavigation()
+    {
+        $html = "";
+        $html.="<div class='backwards-navigation break-container'>";
+            $html.="<div class='container-xxl back-nav-content'>";
+                $html.="<a href='/'>Home</a>";
+                $html.="<p class='caret'>&#8250;</p>";
+                $html.="<p class='current-page'>My Account</p>";
+            $html.="</div>";
+        $html.="</div>";
+        return $html;
+    }
+
+
+
     public function sidebar($activePage="profile")
     {
         $html = 
         "
-        <div class=' d-flex flex-column gap-1'>
-            <div class='d-flex align-items-center rounded me-5'>
-                <a href='/user/details' class='text-muted'><i class='p-2 fa-regular fa-user'></i></a>
-                <a href='/user/details' class='text-muted p-2 fw-normal text-decoration-none'>My details</a>
+        <div class='sidebar'>
+            <div class='sidebar-option active'>
+                <a href='/user/details' class='link-icon'><i class='p-2 fa-regular fa-user'></i></a>
+                <a href='/user/details' class='link'>My details</a>
             </div>
-            <div class='d-flex align-items-center rounded me-5'>
-                <a href='/user/addresses' class='text-muted'><i class='p-2 fa-regular fa-address-book'></i></a>
-                <a href='/user/addresses' class='text-muted p-2 fw-normal text-decoration-none'>My delivery Addresses</a>
+            <div class='sidebar-option'>
+                <a href='/user/addresses' class='link-icon'><i class='p-2 fa-regular fa-address-book'></i></a>
+                <a href='/user/addresses' class='link'>My delivery Addresses</a>
             </div>
-            <div class='d-flex align-items-center rounded me-5'>
-                <a href='/user/orders' class='text-muted'><i class='p-2 fa-solid fa-box'></i></a>
-                <a href='/user/orders' class='text-muted p-2 fw-normal text-decoration-none'>My orders</a>
+            <div class='sidebar-option'>
+                <a href='/user/orders' class='link-icon'><i class='p-2 fa-solid fa-box'></i></a>
+                <a href='/user/orders' class='link'>My orders</a>
             </div>
-
+            <div class='sidebar-option sign-out'>
+                <a href='/logout' class='link-icon'><i class='p-2 fa-solid fa-arrow-right-from-bracket'></i></a>
+                <a href='/logout' class='link'>Sign Out</a>
+            </div>
         </div>
-        <style>
-            .active-page {
-                background-color:rgba(191, 223, 249, 0.5);
-            }
-            .active-page i {
-                color: var(--btn-action-blue)!important;
-            }
-            .active-page a {
-                color: var(--btn-action-blue)!important;
-            }
-        </style>
         ";
         return $html;
     }
 
     public function index()
     {
-        $html = "
-        <div class='row mt-5'>
-            <h1>My Account</h1>
+        $html = "";
+        $style = "/assets/style/user-page.css";
+        $script = "";
+        $title = "My Account - Getwhisky";
+
+        $html.=$this->backwardsNavigation();
+
+        $html.="
+        <div class='user-root'>
             <!-- Sidebar -->
-            <div class='col-3 user-sidebar'>
+            <div class='sidebar-container'>
                 ".$this->sidebar()."
             </div>
             <!-- Main content -->
-            <div class='col bg-white border'>
-                <div class='mx-2 my-3 p-3 rounded' style='background-color:#ecedee;'>
-                    <div class='d-flex justify-content-between align-items-center mb-2'>
+            <div class='main-content'>
+
+                <!-- Account Header -->
+                <div class='header' style='background-color:#ecedee;'>
+                    <div class='top'>
                         <h1 class='fs-3 mb-0'>Hello ".$this->user->getFirstName()." ".$this->user->getSurname()."</h1>
-                        <a href='/logout' class='text-danger text-decoration-none'>Sign out</a>
+                        <a class='logout' href='/logout' class='text-danger text-decoration-none'>Sign out</a>
                     </div>
                     <p>Welcome to your acccount profile, select from one of the options below to manage your account</p>
                 </div>
 
 
-                <div class='d-flex flex-row flex-wrap  gap-4 mx-2 my-3 p-2'>
+                <div class='account-options-container'>
 
-                    <div class='account-option col bg-white border flex-fill' style='width:48%;position: relative;'>
+                    <div class='account-option' style='width:48%;position: relative;'>
                         <a href='/user/details' class='wrapper-link'><span></span></a>
-                        <div class='text-center border-bottom p-5 mx-5'>
+                        <div class='top'>
                             <i class='fas fa-user profile-icon'></i>
                         </div>
-                        <div class='text-center p-5'>
+                        <div class='bottom'>
                             <h5>My details</h5>
                             <p>Manage and edit your account details</p>
                         </div>  
@@ -139,10 +155,10 @@ class UserView
 
                     <div class='account-option col bg-white border flex-fill' style='width:48%;position: relative;'>
                         <a href='/user/addresses' class='wrapper-link'><span></span></a>
-                        <div class='text-center border-bottom p-5 mx-5'>
+                        <div class='top'>
                             <i class='fas fa-truck profile-icon'></i>
                         </div>
-                        <div class='text-center p-5'>
+                        <div class='bottom'>
                             <h5>My Addresses</h5>
                             <p>Manage your delivery address details</p>
                         </div>  
@@ -150,10 +166,10 @@ class UserView
 
                     <div class='account-option col bg-white border flex-fill' style='width:48%;position: relative;'>
                         <a href='/user/orders' class='wrapper-link'><span></span></a>
-                        <div class='text-center border-bottom p-5 mx-5'>
+                        <div class='top'>
                             <i class='fas fa-box-open profile-icon'></i>
                         </div>
-                        <div class='text-center p-5'>
+                        <div class='bottom'>
                             <h5>My orders</h5>
                             <p>View your order history</p>
                         </div>  
@@ -163,33 +179,14 @@ class UserView
                 </div>
             </div>
         </div>
-        <style>
-            .account-option:hover {
-                box-shadow: 2px 2px 15px lightgrey;
-                cursor: pointer;
-            }
-            .profile-icon {
-                font-size: 26px;
-                background-color:var(--bg-primary);
-                border-radius:128px;
-                width:60px;
-                height:60px;
-                display:flex;
-                align-items:center;
-                margin:auto;
-                justify-content:center;
-                color:white;
-            }
-
-            @media screen and (max-width:1200px) {
-                .user-sidebar {
-                    display: none!important;
-                }
-            }
-        </style>
         ";
         
-        return ['html' => $html, 'style' => '/assets/style/user-page.css', 'script' => '', 'title' => 'account profile'];
+        return [
+            'html' => $html, 
+            'style' => $style, 
+            'script' => $script, 
+            'title' => $title
+        ];
     }
 }
 ?>
