@@ -60,7 +60,7 @@ class CartItemView
 
             // Subtotal
             $html.="<div class='subtotal-container'>";
-                $html.="<p>£".($this->cartItem->getQuantity() * $product->getPrice())."</p>";
+                $html.="<p>£".($this->cartItem->getQuantity() * $product->getActivePrice())."</p>";
             $html.="</div>";
         $html.="</div>";
 

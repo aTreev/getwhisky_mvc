@@ -116,7 +116,10 @@ class UserView
             <!-- Main content -->
             <div class='col bg-white border'>
                 <div class='mx-2 my-3 p-3 rounded' style='background-color:#ecedee;'>
-                    <h1 class='fs-3'>Hello ".$this->user->getFirstName()." ".$this->user->getSurname()."</h1>
+                    <div class='d-flex justify-content-between align-items-center mb-2'>
+                        <h1 class='fs-3 mb-0'>Hello ".$this->user->getFirstName()." ".$this->user->getSurname()."</h1>
+                        <a href='/logout' class='text-danger text-decoration-none'>Sign out</a>
+                    </div>
                     <p>Welcome to your acccount profile, select from one of the options below to manage your account</p>
                 </div>
 

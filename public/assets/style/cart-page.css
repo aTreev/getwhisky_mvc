@@ -2,11 +2,15 @@ body {
   background-color: white !important;
 }
 
+.container-xxl {
+  margin-bottom: 0 !important;
+}
+
 .cart-root {
   display: flex;
-  margin-top: 40px;
   gap: 40px;
-  padding: 25px;
+  padding: 0px 25px;
+  min-height: calc(100vh - 184px);
 }
 .cart-root .cart-left {
   width: 70%;
@@ -32,9 +36,6 @@ body {
 
 .cart-header {
   margin: 40px 0px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding-bottom: 10px;
 }
 
@@ -60,13 +61,15 @@ body {
   grid-gap: 10px;
   border-bottom: 1px solid var(--border-colour);
 }
+.cart-item:last-of-type {
+  border-color: transparent;
+}
 .cart-item .cart-item-details-container {
   display: flex;
-  gap: 10px;
+  gap: 15px;
 }
 .cart-item .cart-item-details-container img {
   max-width: 100px;
-  border: 1px solid lightgrey;
 }
 .cart-item .cart-item-details-container p {
   margin-bottom: 10px;
@@ -95,10 +98,11 @@ body {
 }
 .cart-item .price-active {
   font-weight: 500;
-  color: darkgreen;
 }
 .cart-item .subtotal-container p {
   font-size: 18px;
+  color: darkgreen;
+  font-weight: 500;
 }
 
 .no-items-container {
@@ -109,6 +113,58 @@ body {
   padding: 30px;
   margin-top: 40px;
   border-radius: 6px;
+}
+
+@media screen and (max-width: 736px) {
+  .cart-root {
+    height: auto;
+    flex-direction: column-reverse;
+    padding: 0px;
+    gap: 0px;
+  }
+  .cart-root .cart-header {
+    margin: 20px 0px;
+  }
+  .cart-root .cart-left {
+    width: 100%;
+  }
+  .cart-root .cart-right {
+    width: 100%;
+    box-shadow: none;
+    padding-left: 0px !important;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border-colour);
+  }
+  .cart-root .cart-right button {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 574px) {
+  .cart-left .cart-headings {
+    position: absolute;
+    top: -9999px;
+  }
+  .cart-left .cart-header {
+    margin: 20px 0px;
+  }
+  .cart-left .cart-item {
+    display: block;
+  }
+  .cart-left .cart-item .quantity-container {
+    margin-top: -50px;
+    margin-bottom: 10px;
+  }
+  .cart-left .cart-item .quantity-container, .cart-left .cart-item .price-container, .cart-left .cart-item .subtotal-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .cart-right {
+    padding-left: 0px !important;
+  }
+  .cart-right button {
+    width: 100%;
+  }
 }
 
 /*# sourceMappingURL=cart-page.css.map */

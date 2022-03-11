@@ -17,9 +17,25 @@ class CartView
      */
 
 
+
+    public function backwardsNavigation()
+    {
+        $html = "";
+
+        $html.="<div class='backwards-navigation break-container'>";
+            $html.="<div class='container back-nav-content'>";
+                $html.="<a href='/'>Home</a>";
+                $html.="<p class='caret'>&#8250;</p>";
+                $html.="<p class='current-page'>My Basket</p>";
+            $html.="</div>";
+        $html.="</div>";
+        return $html;
+    }
+
     public function emptyCart()
     {
         $html = "";
+        $html.=$this->backwardsNavigation();
 
         $html.="<div class='no-items-container'>";  
             $html.="<h4>Your Basket is empty</h4>";
@@ -33,6 +49,8 @@ class CartView
     public function cartHasItems()
     {
         $html = "";
+        $html.=$this->backwardsNavigation();
+
         // Cart Header
         $html.="<div class='cart-root'>";
 
@@ -88,7 +106,7 @@ class CartView
                 $html.="</div>";
 
                 // Proceed button
-                $html.="<button class='btn btn-success px-3 mt-3'>Proceed To Secure Checkout</button>";
+                $html.="<button class='btn btn-success px-5 mt-3'>Secure Checkout</button>";
            
             $html.="</div>";
         $html.="</div>";
