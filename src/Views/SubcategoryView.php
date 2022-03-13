@@ -32,33 +32,6 @@ class SubcategoryView
         return $html;
     }
 
-    private function bannerImage()
-    {
-        return "
-        <div class='break-container hero-container'>
-            <div class='hero-text'>
-                <h1 class='text-white'>".ucwords($this->subcategory->getCategoryName())." ".ucwords($this->subcategory->getName())."</h1>
-                <p class='text-white-faded'>".$this->subcategory->getDescription()."</p>
-            </div>
-            <img src='".$this->subcategory->getImage()."' class='hero-image' />
-        </div>";
-    }
-
-    public function backwardsNavigation()
-    {
-        $html = "";
-        $html.="<div class='backwards-navigation break-container'>";
-            $html.="<div class='container back-nav-content'>";
-                $html.="<a href='/'>Home</a>";
-                $html.="<p class='caret'>&#8250;</p>";
-                $html.="<a href='/categories/?c=".$this->subcategory->getCategoryId()."'>".ucwords($this->subcategory->getCategoryName())."</a>";
-                $html.="<p class='caret'>&#8250;</p>";
-                $html.="<p class='current-page'>".ucwords($this->subcategory->getCategoryName())." ".ucwords($this->subcategory->getName())."</p>";
-            $html.="</div>";
-        $html.="</div>";
-        return $html;
-    }
-
     /*******
      * Full view subcategory page
      * Calls specific page view depending on subcategory name
@@ -71,18 +44,30 @@ class SubcategoryView
         $html = "";
         $title = ucwords($this->subcategory->getCategoryName())." ".ucwords($this->subcategory->getName());
 
+        $html.= SharedView::backwardsNavigation(array(
+            ['url' => "/categories/?c=".$this->subcategory->getCategoryId()."", 'pageName' => ucwords($this->subcategory->getCategoryName())],
+            ['url' => '', 'pageName' => ucwords($this->subcategory->getCategoryName())." ".ucwords($this->subcategory->getName())]
+        ));
+
+
+        $html.=SharedView::bannerImage([
+            'header' => ucwords($this->subcategory->getCategoryName()." ". ucwords($this->subcategory->getName())), 
+            'text' => $this->subcategory->getDescription(), 
+            'image' => $this->subcategory->getImage()
+        ]);
+
         switch($this->subcategory->getName()) {
             default: 
-                $html = $this->defaultPageView(); 
+                $html .= $this->defaultPageView(); 
             break;
             case "distilleries": 
-                $html = $this->distilleryPageView(); 
+                $html .= $this->distilleryPageView(); 
             break;
             case "regionss": 
-                $html = $this->regionPageView(); 
+                $html .= $this->regionPageView(); 
             break;
             case "typess": 
-                $html = $this->typePageView(); 
+                $html .= $this->typePageView(); 
             break;
             
         }
@@ -94,17 +79,12 @@ class SubcategoryView
     public function defaultPageView()
     {
         $html = "";
-        $html.= $this->backwardsNavigation();
-        $html.=$this->bannerImage();
         return $html;
     }
 
     public function distilleryPageView()
     {
         $html = "";
-
-        $html.= $this->backwardsNavigation();
-        $html.=$this->bannerImage();
 
         $html.="<div class='distillery-items'>";
         foreach($this->subcategory->getValues() as $value) {

@@ -32,32 +32,7 @@ class CategoryView
         return $html;
     }
 
-    public function backwardsNavigation()
-    {
-        $html = "";
-        $html.="<div class='backwards-navigation break-container'>";
-            $html.="<div class='container back-nav-content'>";
-                $html.="<a href='/'>Home</a>";
-                $html.="<p class='caret'>&#8250;</p>";
-                $html.="<p class='current-page'>".ucwords($this->category->getName())."</p>";
-            $html.="</div>";
-        $html.="</div>";
-        return $html;
-    }
-
-    public function bannerImage()
-    {
-        $html = "";
-        $html.="<div class='break-container hero-container'>";
-            $html.="<div class='hero-text'>";
-                $html.="<h1 class='text-white'>".ucwords($this->category->getName())."</h1>";
-                $html.="<p class='text-white-faded'>".$this->category->getDescription()."</p>";
-            $html.="</div>";
-            $html.="<img src='".$this->category->getImage()."' class='hero-image' />";
-        $html.="</div>";
-        return $html;
-    }
-
+   
     public function productCountAndShowFilterBar()
     {
         $html = "";
@@ -79,9 +54,15 @@ class CategoryView
 
         $html = "";
 
-        $html.=$this->backwardsNavigation();
+        $html.=SharedView::backwardsNavigation(array(
+            ['url' => '', 'pageName' => ucwords($this->category->getName())]
+        ));
 
-        $html.=$this->bannerImage();
+        $html.=SharedView::bannerImage([
+            'header' => ucwords($this->category->getName()), 
+            'text' => $this->category->getDescription(), 
+            'image' => $this->category->getImage()
+        ]);
 
         $html.=$this->productCountAndShowFilterBar();
 

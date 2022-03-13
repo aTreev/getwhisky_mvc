@@ -71,21 +71,6 @@ class UserView
     }
 
 
-    public function backwardsNavigation()
-    {
-        $html = "";
-        $html.="<div class='backwards-navigation break-container'>";
-            $html.="<div class='container-xxl back-nav-content'>";
-                $html.="<a href='/'>Home</a>";
-                $html.="<p class='caret'>&#8250;</p>";
-                $html.="<p class='current-page'>My Account</p>";
-            $html.="</div>";
-        $html.="</div>";
-        return $html;
-    }
-
-
-
     public function sidebar($activePage="profile")
     {
         $html = 
@@ -119,7 +104,9 @@ class UserView
         $script = "";
         $title = "My Account - Getwhisky";
 
-        $html.=$this->backwardsNavigation();
+        $html.=SharedView::backwardsNavigation(array(
+            ['url' => "/user/account",'pageName' => "My Account"]
+        ));
 
         $html.="
         <div class='user-root'>

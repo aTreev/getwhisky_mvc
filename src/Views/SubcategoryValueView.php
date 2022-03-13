@@ -20,35 +20,6 @@ class SubcategoryValueView
 
     }
 
-    public function backwardsNavigation()
-    {
-        $html = "";
-        $html.="<div class='backwards-navigation break-container'>";
-            $html.="<div class='back-nav-content container'>";
-                $html.="<a href='/'>Home</a>";
-                $html.="<p class='caret'>&#8250;</p>";
-                $html.="<a href='/categories/?c=".$this->subcategoryValue->getCategoryId()."'>".ucwords($this->subcategoryValue->getCategoryName())."</a>";
-                $html.="<p class='caret'>&#8250;</p>";
-                $html.="<a href='/categories/subcategories?s=".$this->subcategoryValue->getSubcategoryId()."'>".ucwords($this->subcategoryValue->getSubcategoryName())."</a>";
-                $html.="<p class='caret'>&#8250;</p>";
-                $html.="<p class='current-page'>".ucwords($this->subcategoryValue->getName())."</p>";
-
-            $html.="</div>";
-        $html.="</div>";
-
-        return $html;
-    }
-
-    public function bannerImage()
-    {
-        return "<div class='break-container hero-container'>
-                    <div class='hero-text'>
-                        <h1 class='text-white'>".ucwords($this->subcategoryValue->getName())."</h1>
-                        <p class='text-white-faded'>".$this->subcategoryValue->getDescription()."</p>
-                    </div>
-                    <img src='".$this->subcategoryValue->getImage()."' class='hero-image' />
-                </div>";
-    }
 
     public function productCountAndShowFiltersBar()
     {
@@ -67,9 +38,17 @@ class SubcategoryValueView
         $style = "/assets/style/category-pages.css";
         $script = "/assets/js/category-pages.js";
 
-        $html.=$this->backwardsNavigation();
+        $html.=SharedView::backwardsNavigation(array(
+            ['url' => "/categories/?c=".$this->subcategoryValue->getCategoryId(), 'pageName' => ucwords($this->subcategoryValue->getCategoryName())],
+            ['url' => "/categories/subcategories?s=".$this->subcategoryValue->getSubcategoryId(), 'pageName' => ucwords($this->subcategoryValue->getSubcategoryName())],
+            ['url' => '', 'pageName' => ucwords($this->subcategoryValue->getName())]
+        ));
 
-        $html.=$this->bannerImage();
+        $html.=SharedView::bannerImage([
+            'header' => ucwords($this->subcategoryValue->getName()), 
+            'text' => $this->subcategoryValue->getDescription(), 
+            'image' => $this->subcategoryValue->getImage()
+        ]);
 
         // Filter show bar
         $html.=$this->productCountAndShowFiltersBar();
