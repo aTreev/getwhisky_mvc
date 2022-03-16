@@ -2,3 +2,4 @@ src/constants.php
 src/Model/DatabaseConnection.php
 composer.json
 bootstrapstaging
+Design_doc.docx

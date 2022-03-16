@@ -232,6 +232,7 @@ header {
     padding: 10px 0px;
     background-color: #f7f7f7!important;
     border-top: 1px solid var(--border-colour);
+    border-bottom: 1px solid var(--border-colour);
     user-select: none;
 }
 .back-nav-content {

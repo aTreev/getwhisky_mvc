@@ -26,6 +26,18 @@ class CartItemModel
         $resultset=$result->fetch_all($style);
         return $resultset;
     }
+
+
+    protected function increaseCartItemQuantity($cartid, $productid, $quantity) 
+    {
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
+
+        $this->sql = "UPDATE `cart_item` SET `quantity` = ( `quantity` + ? ) WHERE `cart_id` = ? AND `product_id` = ?;";
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
+        $this->stmt->bind_param("isi", $quantity, $cartid, $productid);
+        $this->stmt->execute();
+        return $this->stmt->affected_rows;
+    }
 }
 
 ?>

@@ -72,7 +72,7 @@ class ProductController extends ProductModel
 
     public function __construct()
     {
-
+        //
     }
 
 
@@ -83,14 +83,25 @@ class ProductController extends ProductModel
     }
 
 
+    public function checkProductExists($id)
+    {
+        return parent::getProductByIdModel($id);
+    }
+
+    /*********
+     * Takes a productid and initializes the product
+     * returns false if product isn't found on DB
+     * returns true if exists on DB
+     *****/
     public function initProduct($id)
     {
         $productExists = false;
-        $productData = parent::getProductByIdModel($id)[0];
+        $productData = parent::getProductByIdModel($id);
 
         if ($productData) {
-          
+            $productData = $productData[0];
             $productExists = true;
+
             $this->setId($productData['id'])->setName($productData['name'])->setDescription($productData['description'])
             ->setImage($productData['image'])->setPrice($productData['price'])->setDiscounted($productData['discounted'])->setDiscountPrice($productData['discount_price'])
             ->setStock($productData['stock'])->setActive($productData['active'])->setDiscountEndDatetime($productData['discount_end_datetime'])

@@ -26,5 +26,25 @@ class CartModel
         return $resultset;
     }
 
+    protected function addToCartModel($cartid, $productid, $quantity)
+    {
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
+
+        $this->sql = "INSERT INTO cart_item (`cart_id`, `product_id`, `quantity`) VALUES (?,?,?)";
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
+        $this->stmt->bind_param("sii", $cartid, $productid, $quantity);
+        $this->stmt->execute();
+        return $this->stmt->affected_rows;
+    }
+
+    protected function removeFromCartModel($cartid, $productid) 
+    {
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
+        $this->sql = "DELETE FROM `cart_item` WHERE `cart_id` = ? AND `product_id` = ?;";
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
+        $this->stmt->bind_param("si", $cartid, $productid);
+        $this->stmt->execute();
+        return $this->stmt->affected_rows;
+    }
 }
 ?>

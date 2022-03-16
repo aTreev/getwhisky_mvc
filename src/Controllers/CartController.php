@@ -53,6 +53,7 @@ class CartController extends CartModel
             $this->setId($userCart['id'])->setUserid($userCart['user_id'])->setCheckedOut($userCart['checked_out']);
             $this->loadCartItems();
         }
+        var_dump($this->removeFromCart(36));
         return $userCart;
     }
 
@@ -101,7 +102,7 @@ class CartController extends CartModel
         foreach($this->items as $item) {
             $total += $item->getItemPrice() * $item->getQuantity();
         }
-        return $total;
+        return number_format($total, 2, '.', '');
     }
 
     /*******
@@ -116,6 +117,77 @@ class CartController extends CartModel
         }
         
         return number_format($discount, 2, '.', '');
+    }
+
+
+    /***********
+     * Takes a productid and iterates through the cartitems to
+     * check if the product is already in the cart
+     * Returns the item if it's found
+     * Returns false if not found
+     ********/
+    private function findProductInCart($productid)
+    {
+        foreach($this->items as $item) {
+            if ($item->getProduct()->getId() == $productid) {
+                return $item;
+            }
+        }
+
+        return false;
+    }
+
+    /***********
+     * Increases an existing cart item's quantity via the
+     * CartItemController.
+     * Receives and returns a success or fail message
+     ************/
+    private function increaseCartItemQty($cartItem, $quantity)
+    {
+        return $cartItem->increaseItemQuantity($quantity);
+    }
+
+
+
+    /*********
+     * Adds a new item to the cart via the Cart's Model
+     * returns a success or fail message
+     *********/
+    private function addNewItemToCart($productid, $quantity)
+    {
+        $result = ['result' => false, 'message' => "Failed to add product to basket, please try again"];
+        $insert = parent::addToCartModel($this->getId(), $productid, $quantity);
+
+        if ($insert) {
+            $item = new CartItemController();
+            $item->initCartItemByAddToCart($this->getId(), $productid, $quantity);
+            array_push($this->items, $item);
+            $result = ['result' => true, 'message' => $item->getProduct()->getName()." added to basket"];
+            
+        }
+      
+        return $result;
+    }
+
+
+    public function addToCart($productid, $quantity)
+    {
+        $result = ['result', 'message'];
+
+        // Guard Clause - Check whether product exists with new controller
+        if (!(new ProductController)->checkProductExists($productid)) return ['result' => false, 'message' => "Invalid product supplied"];
+
+        // Check if product is in cart
+        $cartItem = $this->findProductInCart($productid);
+
+        // Call appropriate method depending on whether in cart
+        if ($cartItem) $result = $this->increaseCartItemQty($cartItem, $quantity);
+        if (!$cartItem) $result = $this->addNewItemToCart($productid, $quantity); 
+        
+        // Append cartCount to return var
+        $result['cartCount'] = $this->getItemCount();
+
+        return $result;
     }
 }
 ?>

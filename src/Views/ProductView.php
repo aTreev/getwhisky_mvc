@@ -35,10 +35,12 @@ class ProductView
         $script = "/assets/js/product-page.js";
         $style = "/assets/style/product-page.css";
         $title = ucwords($this->product->getName());
-        $maxAllowed = $this->product->getStock() < 10 ? $this->product->getStock() : 10;
         $html = "";
 
+
         $html.="<div class='product'>";
+            $html.="<input type='hidden' id='product-id' value='".$this->product->getId()."'/>";
+
             // Container for all things product images
             $html.="<div class='product-left'>";
                 // Main product Image
@@ -84,8 +86,12 @@ class ProductView
                     
             
                 $html.="</div>";
+
+                // Quantity selection
+                $maxAllowed = $this->product->getStock() < 10 ? $this->product->getStock() : 10;
+
                 if ($this->product->getStock() > 0) {
-                    $html.="<select class='quantity-selection'>";
+                    $html.="<select class='quantity-selection' id='quantity'>";
                 for($i = 1; $i <= $maxAllowed; $i++) {
                     $html.="<option value=$i>$i</option>";
                 }
@@ -102,12 +108,15 @@ class ProductView
 
                 // Tabs with desc / reviews / details
                 $html.="<div class='product-right-bottom'>";
+
                     $html.="<div class='tabs-container'>";
+
                         $html.="<div class='tabs'>";
                             $html.="<button class='active' tab='tab-details'>Details</button>";
                             $html.="<button tab='tab-description'>Description</button>";
                             $html.="<button tab='tab-reviews'>Reviews</button>";
                         $html.="</div>";
+                        
                         // Details
                         $html.="<div id='tab-details' class='tab-content'>";
                             if ($this->product->getDetails()) {
@@ -146,6 +155,7 @@ class ProductView
                         }
                         $html.="</div>"; 
                     $html.="</div>";
+
                 $html.="</div>";
 
             $html.="</div>";

@@ -1,6 +1,7 @@
 <?php
 namespace Getwhisky\Controllers;
-require_once("C:/wamp64/www/getwhisky-mvc/src/constants.php");
+$path = realpath("C:/") ? "C:/wamp64/www/getwhisky-mvc" : "var/www/getwhisky-mvc";
+require_once("$path/src/constants.php");
 
 /******************
  * The page class
@@ -14,14 +15,24 @@ class Page {
     private UserController $user;
     private CartController $cart;
 
-    public function __construct($requiredAccessLevel=0) {
+    /*************
+     * Constructer for a page
+     * Takes the page's required access level and uses the checkUser method to log user out
+     * if they're on a page they shouldnt
+     * Optional param @userFunctionsOnly
+     * If true returns after the user and cart has been instantiated - 
+     * prevents any further data loading
+     **********/
+    public function __construct($requiredAccessLevel=0, $userFunctionsOnly = false) {
         if (!isset($_SESSION)) session_start();
         $this->user = new UserController();
         $this->setRequiredAccessLevel($requiredAccessLevel);
         $this->setAuthenticated(false);
         $this->checkUser();
-        $this->initCategories();
         $this->initCart();
+
+        if ($userFunctionsOnly) return;
+        $this->initCategories();
     }
 
 

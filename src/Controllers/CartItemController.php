@@ -53,6 +53,13 @@ class CartItemController extends CartItemModel
         $this->setProduct($productController);        
     }
 
+    public function initCartItemByAddToCart($cartid, $productid, $quantity)
+    {
+        $this->setCartId($cartid)->setProductId($productid)->setQuantity($quantity);
+        $productController = new ProductController();
+        $productController->initProduct($this->getProductId());
+        $this->setProduct($productController);      
+    }
 
     //
     public function getItemPrice()
@@ -67,6 +74,31 @@ class CartItemController extends CartItemModel
         if (!$this->getProduct()->isDiscounted()) return 0;
 
         return ($this->getProduct()->getPrice() - $this->getProduct()->getDiscountPrice()) * $this->getQuantity();
+    }
+
+
+    /********
+     * Increases the CartItem's quantity
+     * Returns a success or fail message depending
+     * on result.
+     *********/
+    public function increaseItemQuantity($quantity)
+    {
+        // Guard clause - return fail message if new quantity higher than stock
+        if ($this->getQuantity() + $quantity > $this->getProduct()->getStock()) return ['result' => false, 'message' => "Insufficient stock to add specified quantity"];
+
+        $result = parent::increaseCartItemQuantity($this->getCartId(), $this->productid, $quantity);
+
+        // Successful update
+        if ($result) {
+            // Update object quantity
+            $this->setQuantity($this->getQuantity()+$quantity);
+            // Return success message
+            return ['result' => true, 'message' => ucwords($this->getProduct()->getName())." basket quantity updated"];
+        } else {
+            // Failed, return failure message
+            return ['result' => false, 'message' => "Something went wrong, please try again"];
+        }
     }
 }
 ?>

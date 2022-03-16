@@ -18,7 +18,7 @@ class DatabaseConnection extends mysqli
         mysqli_report(MYSQLI_REPORT_STRICT);
 
         // connect to database
-        @parent::__construct(self::host,self::user,self::pass,self::schema,self::port,self::sock);
+        parent::__construct(self::host,self::user,self::pass,self::schema,self::port,self::sock);
 
         // check if a connection established
         if( mysqli_connect_errno() ) {

@@ -3,6 +3,7 @@ function prepareProductPage()
     prepareSaleTimer();
     prepareTabs();
     prepareProductImages();
+    prepareAddToCart();
 }
 
 function prepareSaleTimer()
@@ -97,7 +98,7 @@ function prepareProductImages()
             }, 300);
             
         });
-        // Trigger click overlay click on escape
+        // Trigger overlay click on escape
         $(document).on("keydown",function(ev){
             if (ev.keyCode == 27) {
                 $(".page-overlay").click();
@@ -107,4 +108,40 @@ function prepareProductImages()
     });
 }
 
+
+/**************
+ * Prepares the page's add to cart button
+ */
+function prepareAddToCart()
+{
+    const productid = $("#product-id").val();
+    const addToCartBtn = $("#add-to-cart");
+
+    if (addToCartBtn.hasClass("out-of-stock")) return console.log("out of stock");
+
+    addToCartBtn.click(function(){
+        const quantity = $("#quantity").val();
+
+        addToCart(productid, quantity)
+        .then(function(result){
+            new Notification(result.result, result.message);
+            if (result.cartCount) $("#cart-count-number").html(result.cartCount);
+        });        
+    });
+}
+
+
+function addToCart(productid, quantity)
+{
+    return new Promise(function(resolve){
+        $.ajax({
+            url: "/assets/js/ajax-scripts/cart-handler.php",
+            method: "POST",
+            data: { function: 1, productid: productid, quantity: quantity}
+        })
+        .done(function(result){
+            resolve(JSON.parse(result));
+        });
+    });
+}
 prepareProductPage();
