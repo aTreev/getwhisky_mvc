@@ -46,6 +46,13 @@ function removeFromCart()
     $page = new Page(0, true);
     $userCart = $page->getCart();
 
-    echo json_encode($userCart->removeFromCart($productid));
+    $result = $userCart->removeFromCart($productid);
+
+    // if removed get new html from cart view
+    if ($result) {
+        $html = $userCart->getView()->index()['html'];
+        $result['html'] = $html;
+    }
+    echo json_encode($result);
 }
 ?>

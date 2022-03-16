@@ -53,7 +53,7 @@ class CartController extends CartModel
             $this->setId($userCart['id'])->setUserid($userCart['user_id'])->setCheckedOut($userCart['checked_out']);
             $this->loadCartItems();
         }
-        var_dump($this->removeFromCart(36));
+        //var_dump($this->removeFromCart(36));
         return $userCart;
     }
 
@@ -188,6 +188,46 @@ class CartController extends CartModel
         $result['cartCount'] = $this->getItemCount();
 
         return $result;
+    }
+
+    /*********
+     * Deletes a cart item where the productid matches
+     ***********/
+    private function deleteCartItemByProductId($productid) 
+    {
+        for($i = 0; $i < count($this->items); $i++) {
+            if ($this->items[$i]->getProduct()->getId() == $productid) {
+                unset($this->items[$i]);
+            }
+        }
+    }
+
+    /********
+     * Removes an item from cart
+     * checks if an item exists and if the item is in cart
+     * returns fail or success message
+     ***********/
+    public function removeFromCart($productid)
+    {
+        // Guard Clause - Check whether product exists with temp controller
+        if (!(new ProductController)->checkProductExists($productid)) return ['result' => 0, 'message' => "Invalid product supplied"];
+
+        // Check if product is in cart
+        $cartItem = $this->findProductInCart($productid);
+        // Guard clause - return fail if not in cart
+        if (!$cartItem) return ['result' => 0, 'message' => "Product not in basket"];
+
+        // Delete from DB
+        $result = parent::removeFromCartModel($this->getId(), $productid);
+
+        // If sucessfull DB delete remove object
+        if ($result) {
+            $this->deleteCartItemByProductId($productid);
+            return ['result' => 1, 'message' => 'Product removed from basket', 'cartCount' => $this->getItemCount()];
+        }
+
+        // DB query fail
+        return ['result' => 0, 'message' => "Something went wrong"];
     }
 }
 ?>

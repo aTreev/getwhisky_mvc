@@ -35,7 +35,6 @@ class CartView
     public function emptyCart()
     {
         $html = "";
-        $html.=$this->backwardsNavigation();
 
         $html.="<div class='no-items-container'>";  
             $html.="<h4>Your Basket is empty</h4>";
@@ -49,7 +48,6 @@ class CartView
     public function cartHasItems()
     {
         $html = "";
-        $html.=$this->backwardsNavigation();
 
         // Cart Header
         $html.="<div class='cart-root'>";
@@ -117,11 +115,15 @@ class CartView
     {
         $html = "";
         $title = "My Basket - Getwhisky";
-        $script = "";
+        $script = "/assets/js/cart-page.js";
         $style = "/assets/style/cart-page.css";
 
-        if ($this->cart->getItems()) $html = $this->cartHasItems();
-        if (!$this->cart->getItems()) $html = $this->emptyCart();
+        $html.=SharedView::backwardsNavigation(array(
+            ['url' => '', 'pageName' => "My basket"]
+        ));
+
+        if ($this->cart->getItems()) $html.= $this->cartHasItems();
+        if (!$this->cart->getItems()) $html.= $this->emptyCart();
 
         
         return [

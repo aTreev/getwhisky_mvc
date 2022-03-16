@@ -24,8 +24,6 @@ class SharedView {
                    $html.="<a href='".$element['url']."'>".$element['pageName']."</a>";
                     $html.="<p class='caret'>&#8250;</p>"; 
                 }
-                
-
             }
             $html.="</div>";
         $html.="</div>";
