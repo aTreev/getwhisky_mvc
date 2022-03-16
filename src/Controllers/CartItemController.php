@@ -100,5 +100,37 @@ class CartItemController extends CartItemModel
             return ['result' => false, 'message' => "Something went wrong, please try again"];
         }
     }
+
+
+    /***********
+     * Updates the CartItems quantity
+     * Checks that sufficient product stock exists
+     * Checks whether quantity changed at all
+     * Returns empty, fail or success message 
+     * depending on result
+     */
+    public function updateItemQuantity($quantity)
+    {
+        // Guard clauses
+
+        // Quantity greater than stock return fail message
+        if ($quantity > $this->getProduct()->getStock()) return ['result' => false, 'message' => "Insufficient stock to update quantity"];
+
+        // Quantity not changed return no message
+        if ($quantity == $this->getQuantity()) return ['result' => 0, 'message' => ""];
+
+        $result = parent::updateCartItemQuantity($this->getCartId(), $this->getProductId(), $quantity);
+
+        // Successful update
+        if ($result) {
+            // Update object quantity
+            $this->setQuantity($quantity);
+            // Return success message
+            return ['result' => true, 'message' => ucwords($this->getProduct()->getName())." basket quantity updated"];
+        } else {
+            // Failed, return failure message
+            return ['result' => false, 'message' => "Something went wrong, please try again"];
+        }
+    }
 }
 ?>

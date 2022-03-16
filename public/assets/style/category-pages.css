@@ -78,6 +78,7 @@
     font-size: 18px;
     font-weight: 500;
 }
+
 .subcategory-links {
     max-height: 180px;
     overflow-y: auto;
@@ -104,6 +105,9 @@
     padding: 10px 5px;
 }
 
+.subcategory-links a:hover, .subcategory-heading:hover {
+    color: var(--bs-danger);
+}
 @media screen and (max-width: 1200px) {
     .product-filters {
         width: 50vw;

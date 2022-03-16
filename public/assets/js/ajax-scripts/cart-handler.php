@@ -15,6 +15,9 @@ if (isset($_POST['function']) && util::valInt($_POST['function'])) {
         case 2:
             removeFromCart();
         break;
+        case 3:
+            updateCartItemQuantity();
+        break;
     }
 }
 
@@ -46,6 +49,7 @@ function removeFromCart()
     $page = new Page(0, true);
     $userCart = $page->getCart();
 
+    // Attempt remove from cart
     $result = $userCart->removeFromCart($productid);
 
     // if removed get new html from cart view
@@ -53,6 +57,26 @@ function removeFromCart()
         $html = $userCart->getView()->index()['html'];
         $result['html'] = $html;
     }
+    echo json_encode($result);
+}
+
+function updateCartItemQuantity()
+{
+    // Guard clause - return if productid not set or not int
+    if (!isset($_POST['productid']) || !util::valInt($_POST['productid'])) echo json_encode(['result' => 0, 'message' => "Invalid product supplied"]);
+    if (!isset($_POST['quantity']) || !util::valInt($_POST['quantity'])) echo json_encode(['result' => 0, 'message' => "Please provide a valid quantity"]);
+
+    $productid = util::sanInt($_POST['productid']);
+    $quantity = util::sanInt($_POST['quantity']);
+    $page = new Page(0, true);
+    $userCart = $page->getCart();
+
+    $result = $userCart->updateCartItemQuantity($productid, $quantity);
+    if ($result){
+        $html = $userCart->getView()->index()['html'];
+        $result['html'] = $html;
+    }
+
     echo json_encode($result);
 }
 ?>

@@ -1,5 +1,5 @@
 src/constants.php
 src/Model/DatabaseConnection.php
 composer.json
-bootstrapstaging.php
+bootstrapstaging
 Design_doc.docx

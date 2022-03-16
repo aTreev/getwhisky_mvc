@@ -3,6 +3,7 @@ namespace Getwhisky\Controllers;
 
 use Getwhisky\Model\CartModel;
 use Getwhisky\Controllers\CartItemController;
+use Getwhisky\Util\UniqueIdGenerator;
 use Getwhisky\Views\CartView;
 
 class CartController extends CartModel
@@ -47,13 +48,26 @@ class CartController extends CartModel
     public function initCart($userid)
     {
         $userCart = parent::checkForCart($userid);
+        // return if guest session for now
+        if ($userid == -1) return;
+
+        // Get user cart
         if ($userCart) {
             $userCart = $userCart[0];
 
             $this->setId($userCart['id'])->setUserid($userCart['user_id'])->setCheckedOut($userCart['checked_out']);
             $this->loadCartItems();
+        } 
+        // No user cart
+        if (!$userCart) {
+            // Get unique ID
+            $uniqueIdGen = new UniqueIdGenerator();
+            $cartid = $uniqueIdGen->setIdProperties(parent::getCartIds())->getUniqueId();
+            // Create new cart
+            parent::createUserCart($cartid, $userid);
+            // Recursive call to retrieve cart
+            $this->initCart($userid);
         }
-        //var_dump($this->removeFromCart(36));
         return $userCart;
     }
 
@@ -174,6 +188,8 @@ class CartController extends CartModel
     {
         $result = ['result', 'message'];
 
+        // Guard clause - ensure quantity at least 1
+        if ($quantity < 1) return['result' => 0, 'message' => "Quantity must be greater than 0"];
         // Guard Clause - Check whether product exists with new controller
         if (!(new ProductController)->checkProductExists($productid)) return ['result' => false, 'message' => "Invalid product supplied"];
 
@@ -195,7 +211,7 @@ class CartController extends CartModel
      ***********/
     private function deleteCartItemByProductId($productid) 
     {
-        for($i = 0; $i < count($this->items); $i++) {
+        for($i = 0; $i <= count($this->items); $i++) {
             if ($this->items[$i]->getProduct()->getId() == $productid) {
                 unset($this->items[$i]);
             }
@@ -228,6 +244,38 @@ class CartController extends CartModel
 
         // DB query fail
         return ['result' => 0, 'message' => "Something went wrong"];
+    }
+
+    private function updateItemQty($cartItem, $quantity)
+    {
+        return $cartItem->updateItemQuantity($quantity);
+    }
+
+
+    /**********
+     * Updates an existing items quantity via the CartItemController
+     * Checks if quantity is at least one
+     * Checks if product exists
+     * Checks if product in cart
+     * returns success or fail message
+     */
+    public function updateCartItemQuantity($productid, $quantity)
+    {
+        // Guard clause - ensure quantity at least 1
+        if ($quantity < 1) return['result' => 0, 'message' => "Quantity must be greater than 0"];
+
+        // Guard Clause - Check whether product exists with temp controller
+        if (!(new ProductController)->checkProductExists($productid)) return ['result' => 0, 'message' => "Invalid product supplied"];
+
+        // Check and get item if product is in cart
+        $cartItem = $this->findProductInCart($productid);
+        // Guard clause - return fail if not in cart
+        if (!$cartItem) return ['result' => 0, 'message' => "Product not in basket"];
+
+        $result = $this->updateItemQty($cartItem, $quantity);
+        $result['cartCount'] = $this->getItemCount();
+
+        return $result;
     }
 }
 ?>

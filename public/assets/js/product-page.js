@@ -140,6 +140,7 @@ function addToCart(productid, quantity)
             data: { function: 1, productid: productid, quantity: quantity}
         })
         .done(function(result){
+            console.log(result);
             resolve(JSON.parse(result));
         });
     });

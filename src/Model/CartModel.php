@@ -26,6 +26,29 @@ class CartModel
         return $resultset;
     }
 
+    protected function getCartIds($style=MYSQLI_ASSOC) 
+    {
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
+
+        $this->sql = "SELECT id FROM `cart`;";
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
+        $this->stmt->execute();
+        $result = $this->stmt->get_result();
+        $resultset=$result->fetch_all($style);
+        return $resultset;
+    }
+
+    protected function createUserCart($id, $userid)
+    {
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
+
+        $this->sql = "INSERT INTO cart (`id`, `user_id`) VALUES (?,?);";
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
+        $this->stmt->bind_param("ss", $id, $userid);
+        $this->stmt->execute();
+        return $this->stmt->affected_rows;
+    }
+
     protected function addToCartModel($cartid, $productid, $quantity)
     {
         self::$DatabaseConnection = DatabaseConnection::getInstance();

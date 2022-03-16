@@ -35,7 +35,7 @@ class CartItemView
 
             // Quantity
             $html.="<div class='quantity-container'>";
-                $html.="<select>";
+                $html.="<select id='quantity-selector-".$this->cartItem->getProduct()->getId()."'>";
                 for($i = 1; $i <= $quantityLimit; $i++) {
                     if ($i == $this->cartItem->getQuantity()) {
                         $html.="<option value='$i' selected>$i</option>";
