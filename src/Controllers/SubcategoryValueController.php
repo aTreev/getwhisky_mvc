@@ -92,14 +92,11 @@ class SubcategoryValueController extends SubcategoryValueModel
      *******************************/
     public function loadProductsByOffsetLimit($offset, $limit, $sorting=null)
     {
-        $productData = parent::getProductsByOffsetLimit($this->getId(), $offset, $limit);
 
-        if ($sorting) {
-            if ($sorting == "asc") uasort($productData, function($data1, $data2){return $data1['price'] <=> $data2['price'];});
-            if ($sorting == "desc") uasort($productData, function($data1, $data2){return $data2['price'] <=> $data1['price'];});
-        }
-        
-        foreach($productData as $product) {
+        $products = (new ProductController())->getProductsBySubcategoryValueId($this->getId(), $offset, $limit, $sorting);
+        if (!$products) return false;
+
+        foreach($products as $product) {
             $tmpObj = new ProductController();
             $tmpObj->initProduct($product['id']);
             array_push($this->products, $tmpObj);

@@ -1,5 +1,5 @@
 <?php
-$path = realpath("C:/") ? "C:/wamp64/www/getwhisky-mvc" : "var/www/getwhisky-mvc";
+$path = realpath("C:/") ? "C:/wamp64/www/getwhisky-mvc" : "/var/www/getwhisky-mvc";
 require_once "$path/vendor/autoload.php";
 
 use Getwhisky\Controllers\Page;

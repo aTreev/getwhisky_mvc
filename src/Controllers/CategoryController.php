@@ -93,17 +93,12 @@ class CategoryController extends CategoryModel
      * 
      *  No products retrieved
      */
-    public function getProductsByOffsetLimit($offset=0, $limit=20, $sorting=null)
+    public function getProductsByOffsetLimit($offset=0, $limit=20, $sorting="default")
     {
         
-        $productController = new ProductController();
-        $products = $productController->getProductsByCategoryId($this->getId(), $offset, $limit);
+        $products = (new ProductController())->getProductsByCategoryId($this->getId(), $offset, $limit, $sorting);
         if (!$products) return false;
 
-        if ($sorting) {
-            if ($sorting == "asc") uasort($products, function($data1, $data2){return $data1['price'] <=> $data2['price'];});
-            if ($sorting == "desc") uasort($products, function($data1, $data2){return $data2['price'] <=> $data1['price'];});
-        }
         foreach($products as $product) {
             $productObj = new ProductController();
             $productObj->initProduct($product['id']);

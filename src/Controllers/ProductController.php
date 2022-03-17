@@ -76,12 +76,16 @@ class ProductController extends ProductModel
     }
 
 
-    public function getProductsByCategoryId($categoryid, $offset, $limit)
+    public function getProductsByCategoryId($categoryid, $offset, $limit, $sorting)
     {
-        return parent::getProductsByCategoryIdModel($categoryid, $offset, $limit);
+        return parent::getProductsByCategoryIdModel($categoryid, $offset, $limit, $sorting);
         
     }
 
+    public function getProductsBySubcategoryValueId($subcategoryValueId, $offset, $limit, $sorting)
+    {
+        return parent::getProductsBySubcategoryValueIdModel($subcategoryValueId, $offset, $limit, $sorting);
+    }
 
     public function checkProductExists($id)
     {

@@ -14,10 +14,17 @@ class ProductModel
     }
 
 
-    protected function getProductsByCategoryIdModel($categoryid, $offset, $limit, $style=MYSQLI_ASSOC) {
+    protected function getProductsByCategoryIdModel($categoryid, $offset, $limit, $sorting, $style=MYSQLI_ASSOC) 
+    {
         self::$DatabaseConnection = DatabaseConnection::getInstance();
 
-        $this->sql = "SELECT * FROM products WHERE category_id = ? ORDER BY id DESC LIMIT ?,?;";
+        $this->sql = "SELECT * FROM products WHERE category_id = ?";
+
+        switch($sorting) {
+            case "asc":     $this->sql.= " ORDER BY price ASC LIMIT ?,?;";   break;
+            case "desc":    $this->sql.= " ORDER BY price DESC LIMIT ?,?;";  break;
+            default:        $this->sql.=" ORDER BY id DESC LIMIT ?,?;"; break;
+        }
         $this->stmt = self::$DatabaseConnection->prepare($this->sql);
         $this->stmt->bind_param("iii", $categoryid, $offset, $limit);
         $this->stmt->execute();
@@ -26,6 +33,28 @@ class ProductModel
         return $resultset;
     }
 
+    protected function getProductsBySubcategoryValueIdModel($id, $offset, $limit, $sorting, $style=MYSQLI_ASSOC) 
+    {
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
+
+        $this->sql = "  SELECT products.id, products.price 
+                        FROM products
+                        JOIN subcategory_value_product
+                        ON subcategory_value_product.product_id = products.id
+                        WHERE subcategory_value_product.subcategory_value_id = ?";
+
+        switch($sorting) {
+            case "asc":     $this->sql.= " ORDER BY products.price ASC LIMIT ?,?;";   break;
+            case "desc":    $this->sql.= " ORDER BY products.price DESC LIMIT ?,?;";  break;
+            default:        $this->sql.=" ORDER BY products.id DESC LIMIT ?,?;"; break;
+        }
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
+        $this->stmt->bind_param("iii", $id, $offset, $limit);
+        $this->stmt->execute();
+        $result = $this->stmt->get_result();
+        $resultset=$result->fetch_all($style);
+        return $resultset;
+    }
 
     protected function getProductByIdModel($id, $style=MYSQLI_ASSOC) 
     {

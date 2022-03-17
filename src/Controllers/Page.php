@@ -3,8 +3,8 @@ namespace Getwhisky\Controllers;
 
 use Getwhisky\Util\UniqueIdGenerator;
 
-$path = realpath("C:/") ? "C:/wamp64/www/getwhisky-mvc" : "var/www/getwhisky-mvc";
-require_once("$path/src/constants.php");
+$path = realpath("C:/") ? "C:/wamp64/www/getwhisky-mvc" : "/var/www/getwhisky-mvc";
+require_once "$path/src/constants.php";
 
 /******************
  * The page class

@@ -66,21 +66,7 @@ class SubcategoryValueModel
         return $resultset;
     }
 
-    protected function getProductsByOffsetLimit($id, $offset, $limit, $style=MYSQLI_ASSOC) {
-        self::$DatabaseConnection = DatabaseConnection::getInstance();
-
-        $this->sql = "  SELECT products.id, products.price 
-                        FROM products
-                        JOIN subcategory_value_product
-                        ON subcategory_value_product.product_id = products.id
-                        WHERE subcategory_value_product.subcategory_value_id = ? ORDER BY products.id DESC LIMIT ?,?;";
-        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
-        $this->stmt->bind_param("iii", $id, $offset, $limit);
-        $this->stmt->execute();
-        $result = $this->stmt->get_result();
-        $resultset=$result->fetch_all($style);
-        return $resultset;
-    }
+    
 }
 
 ?>

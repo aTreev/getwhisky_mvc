@@ -4,7 +4,8 @@ use Getwhisky\Controllers\CategoryController;
 use Getwhisky\Controllers\SubcategoryValueController;
 use Getwhisky\Util\Util;
 
-require_once 'C:/wamp64/www/getwhisky-mvc/vendor/autoload.php';
+$path = realpath("C:/") ? "C:/wamp64/www/getwhisky-mvc" : "/var/www/getwhisky-mvc";
+require_once "$path/vendor/autoload.php";
 
 if (isset($_POST['function'])) {
     $functionToCall = Util::sanInt($_POST['function']);
