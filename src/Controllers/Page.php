@@ -1,5 +1,8 @@
 <?php
 namespace Getwhisky\Controllers;
+
+use Getwhisky\Util\UniqueIdGenerator;
+
 $path = realpath("C:/") ? "C:/wamp64/www/getwhisky-mvc" : "var/www/getwhisky-mvc";
 require_once("$path/src/constants.php");
 
@@ -49,12 +52,29 @@ class Page {
 
     private function checkUser() 
     {
-        // check for user session
-        // logout if session not same as db session
         
-        if (isset($_SESSION['userid']) && $_SESSION['userid']!='') {
-            $this->setAuthenticated($this->getUser()->authBySession($_SESSION['userid'], session_id()));
+        // set guest session if userid not in session
+        // This would occur on first time the user loads a page on a fresh browser
+        // or after a logout
+        if (!isset($_SESSION['userid'])) {
+            $_SESSION['guest'] = true;
+            $_SESSION['userid'] = "guest-".(new UniqueIdGenerator())->setIdProperties([], 15)->getUniqueId();
         }
+        
+        // check for and attempt to authenticate with session
+        if ((isset($_SESSION['userid']) && $_SESSION['userid']!='' )) {
+            $this->setAuthenticated($this->getUser()->authBySession($_SESSION['userid'], session_id()));
+            if ($this->isAuthenticated()) $_SESSION['guest'] = false;
+        } 
+        
+        // If we're still on a guest session at this point set the global user object's
+        // userid to the guest-id. This allows the global user cart to be initialized for
+        // the guest session.
+        if (isset($_SESSION['userid']) && $_SESSION['guest'] == true) {
+            $this->getUser()->setGuestId($_SESSION['userid']);
+        }
+        
+        
         // logout if access_level < page_req_access_level
         if ((!$this->isauthenticated() && $this->getRequiredAccessLevel()>0) || ($this->isAuthenticated() && $this->getUser()->getAccessLevel()<$this->getRequiredAccessLevel())) {
             $this->logout();
@@ -64,11 +84,15 @@ class Page {
     public function login($email, $password, $autoRedirect=false) 
     {
         $authenticated = 0;
+        // Generate a new session_id
 		session_regenerate_id();
 
 		if($this->getUser()->authByLogin($email,$password)) {
+            // User authenticated by login Auth = true
 			$authenticated = 1;
+            // set the DB session to newly generated session_id
 			$this->getUser()->storeSession($this->getUser()->getId(),session_id());
+            // Set session['userid'] to 
 			$_SESSION['userid']=$this->getUser()->getId();
 			$_SESSION['last_activity'] = time(); // init inactivity timer
 
@@ -85,7 +109,9 @@ class Page {
 					break;
 			}
 		} 
+        // auto redirect if set to true and authenticated
         if ($authenticated && $autoRedirect) header("Location: $location");
+        // return values for use in JavaScript
 		return ['authenticated' => $authenticated, 'redirect_location' => $location];
     }
 

@@ -1,6 +1,7 @@
 <?php
 namespace Getwhisky\Controllers;
 
+use Exception;
 use Getwhisky\Model\CartModel;
 use Getwhisky\Controllers\CartItemController;
 use Getwhisky\Util\UniqueIdGenerator;
@@ -64,11 +65,24 @@ class CartController extends CartModel
             $uniqueIdGen = new UniqueIdGenerator();
             $cartid = $uniqueIdGen->setIdProperties(parent::getCartIds())->getUniqueId();
             // Create new cart
-            parent::createUserCart($cartid, $userid);
-            // Recursive call to retrieve cart
-            $this->initCart($userid);
+          
+            try {
+                parent::createUserCart($cartid, $userid);
+
+            } catch(SQLException $e) {
+                echo $e->getMessage();
+            }
+                // Recursive call to retrieve cart
+                //$this->initCart($userid);
+            
+            
         }
         return $userCart;
+    }
+
+    public function initGuestCart()
+    {
+
     }
 
     /**************
@@ -169,13 +183,19 @@ class CartController extends CartModel
      *********/
     private function addNewItemToCart($productid, $quantity)
     {
+        // Default message with error condition
         $result = ['result' => false, 'message' => "Failed to add product to basket, please try again"];
+
+        // Attempt item insert
         $insert = parent::addToCartModel($this->getId(), $productid, $quantity);
 
+        // if successful insert
         if ($insert) {
+            // Add new CartItemController to items array
             $item = new CartItemController();
             $item->initCartItemByAddToCart($this->getId(), $productid, $quantity);
             array_push($this->items, $item);
+            // Success message
             $result = ['result' => true, 'message' => $item->getProduct()->getName()." added to basket"];
             
         }

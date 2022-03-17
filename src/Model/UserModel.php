@@ -54,7 +54,7 @@ class UserModel
         }
     }
 
-    protected function getUserByEmail($email, $style=MYSQLI_ASSOC) {
+    protected function getUserByEmailModel($email, $style=MYSQLI_ASSOC) {
         self::$DatabaseConnection = DatabaseConnection::getInstance();
 
         $this->sql="SELECT * FROM users WHERE email = ?";
@@ -66,7 +66,7 @@ class UserModel
 		return $resultset;
     }
 
-    protected function getUserById($id, $style=MYSQLI_ASSOC) {
+    protected function getUserByIdModel($id, $style=MYSQLI_ASSOC) {
         self::$DatabaseConnection = DatabaseConnection::getInstance();
 
 		$this->sql="SELECT * FROM users WHERE id = ?;";

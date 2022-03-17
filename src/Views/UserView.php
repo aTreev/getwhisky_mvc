@@ -73,10 +73,11 @@ class UserView
 
     public function sidebar($activePage="profile")
     {
+        // add active class depending on page
         $html = 
         "
         <div class='sidebar'>
-            <div class='sidebar-option active'>
+            <div class='sidebar-option'>
                 <a href='/user/details' class='link-icon'><i class='p-2 fa-regular fa-user'></i></a>
                 <a href='/user/details' class='link'>My details</a>
             </div>

@@ -30,6 +30,7 @@ class UserController extends UserModel
     }
 
     private function setId($id) { $this->id = $id; return $this; }
+    public function setGuestId($id) { $this->id = $id; return $this; }
     private function setEmail($email) { $this->email = $email; return $this; }
     private function setFirstName($firstName) { $this->firstName = $firstName; return $this; }
     private function setSurname($surname) { $this->surname = $surname; return $this; }
@@ -75,7 +76,7 @@ class UserController extends UserModel
     {
         $authenticated=false;
         // Check for existing user
-		$authenticated=$this->getUserByIdFromModel($id);
+		$authenticated=$this->getUserById($id);
         // return false if user doesn't exist
 		if(!$authenticated) return $authenticated;
         // set authenticated to false if session doesn't match db session
@@ -93,7 +94,7 @@ class UserController extends UserModel
     public function authByLogin($email, $password) 
     {
         // Look for user
-        $authenticated=$this->getUserByEmailFromModel($email);
+        $authenticated=$this->getUserByEmail($email);
         // If user check to see if password matches
 		if($authenticated) {
 			$authenticated=$this->userhash->testPass($password);
@@ -101,11 +102,11 @@ class UserController extends UserModel
 		return $authenticated;
     }
 
-    public function getUserByEmailFromModel($email) 
+    public function getUserByEmail($email) 
     {
 		$haveuser=false;
 		
-		$data=parent::getUserByEmail($email);
+		$data=parent::getUserByEmailModel($email);
 		if(count($data)==1) {
 			$user=$data[0];
 			$this->setId($user["id"]);
@@ -128,10 +129,10 @@ class UserController extends UserModel
      * Retrieves user by their id
      * Used with authentication by session_id()
      ************************************/
-    public function getUserByIdFromModel($id) 
+    public function getUserById($id) 
     {
 		$haveuser=false;
-		$data=parent::getUserById($id);
+		$data=parent::getUserByIdModel($id);
 		if(count($data)==1) {
 			$user=$data[0];
 			$this->setId($user["id"]);
@@ -186,10 +187,5 @@ class UserController extends UserModel
 		return $result;
 	}
 
-
-    public function __toString()
-    {
-        return "";
-    }
 }
 ?>

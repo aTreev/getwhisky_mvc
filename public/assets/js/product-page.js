@@ -124,7 +124,7 @@ function prepareAddToCart()
 
         addToCart(productid, quantity)
         .then(function(result){
-            new Notification(result.result, result.message);
+            if (result.message) new Notification(result.result, result.message);
             if (result.cartCount) $("#cart-count-number").html(result.cartCount);
         });        
     });

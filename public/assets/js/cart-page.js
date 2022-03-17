@@ -5,6 +5,10 @@ function prepareCartPage()
 }
 
 
+/***********
+ * Prepares each cart item's remove button to remove the item.
+ * Receives updated html from backend
+ ****************/
 function prepareRemoveFromCart()
 {
     $(".cart-item").each(function(){
@@ -14,15 +18,20 @@ function prepareRemoveFromCart()
         removeFromCartBtn.click(function(){
             removeFromCart(productid)
             .then(function(result) {
-                $("#page-root").html(result.html);
-                new Notification(result.result, result.message);
+                if (result.html) $("#page-root").html(result.html);
                 if (result.cartCount) $("#cart-count-number").html(result.cartCount);
+                if (result.message) new Notification(result.result, result.message);
                 prepareCartPage();
             });
         });
     });
 }
 
+/**********
+ * Prepares each cart item's select field to update the item quantity
+ * on change.
+ * Receieves updated html via backend
+ *****************/
 function prepareUpdateCartQuantity()
 {
     $(".cart-item").each(function(){
@@ -34,7 +43,7 @@ function prepareUpdateCartQuantity()
             .then(function(result){
                 if (result.html) $("#page-root").html(result.html);
                 if (result.cartCount) $("#cart-count-number").html(result.cartCount);
-                new Notification(result.result, result.message);
+                if (result.message) new Notification(result.result, result.message);
                 prepareCartPage();
             })
         })
