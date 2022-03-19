@@ -176,5 +176,46 @@ class UserView
             'title' => $title
         ];
     }
+
+
+    public function addressPage()
+    {
+        $html = "";
+        $script = "";
+        $style = "/assets/style/user-page.css";
+        $title = "My addresses | Getwhisky";
+
+        $html.=SharedView::backwardsNavigation(array(
+            ['url' => "/user/account", 'pageName' => "My account"],
+            ['url' => "", "pageName" => "My addresses"]
+        ));
+        
+        $html.="<div class='user-root'>";
+            $html.="<!-- Sidebar -->";
+            $html.="<div class='sidebar-container'>";
+                $html.=$this->sidebar();
+            $html.="</div>";
+
+            $html.="<!-- Main content -->";
+            $html.="<div class='main-content'>";
+                $html.="<div class='header' style=''>";
+                    $html.="<h5>My addresses</h5>";
+                $html.="</div>";
+                $html.="<div class='user-address-root'>";
+                foreach ($this->user->getAddresses() as $address) {
+                    $html.=$address->getView()->addressItem();
+                }
+                $html.="</div>";
+            $html.="</div>";
+
+        $html.="</div>";
+
+        return [
+            'html' => $html,
+            'script' => $script,
+            'style' => $style,
+            'title' => $title,
+        ];
+    }
 }
 ?>

@@ -63,10 +63,10 @@ class SubcategoryView
             case "distilleries": 
                 $html .= $this->distilleryPageView(); 
             break;
-            case "regionss": 
+            case "regions": 
                 $html .= $this->regionPageView(); 
             break;
-            case "typess": 
+            case "types": 
                 $html .= $this->typePageView(); 
             break;
             
@@ -98,6 +98,20 @@ class SubcategoryView
             
         }
         $html.="</div>";
+        return $html;
+    }
+
+    public function regionPageView()
+    {
+        $html = "";
+        $html.="<h4>Not implemented yet</h4>";
+        return $html;
+    }
+
+    public function typePageView()
+    {
+        $html = "";
+        $html.="<h4>Not implemented yet</h4>";
         return $html;
     }
 

@@ -20,7 +20,7 @@ class SubcategoryValueModel
         self::$DatabaseConnection = DatabaseConnection::getInstance();
         
       
-        $this->sql = "SELECT id FROM subcategory_value WHERE subcategory_id = ?;";
+        $this->sql = "SELECT id FROM subcategory_value WHERE subcategory_id = ? ORDER BY name ASC;";
         $this->stmt = self::$DatabaseConnection->prepare($this->sql);
         $this->stmt->bind_param("i", $subcategoryid);
         $this->stmt->execute();
@@ -44,7 +44,7 @@ class SubcategoryValueModel
                     ON subcategory_value.subcategory_id = subcategories.id
                     JOIN categories 
                     ON subcategories.category_id = categories.id
-                    WHERE subcategory_value.id = ?;";
+                    WHERE subcategory_value.id = ?";
         $this->stmt = self::$DatabaseConnection->prepare($this->sql);
         $this->stmt->bind_param("i", $id);
         $this->stmt->execute();

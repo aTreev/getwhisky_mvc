@@ -15,12 +15,17 @@ class UserModel
 
 
     protected function getUserIds($style=MYSQLI_ASSOC) {
+        // Ensure mysqli instance
         self::$DatabaseConnection = DatabaseConnection::getInstance();
-
+        // Set SQL string
         $this->sql = "SELECT id FROM users;";
+        // Returns a mysqli_stmt instance
         $this->stmt = self::$DatabaseConnection->prepare($this->sql);
+        // executes the mysqli_stmt
         $this->stmt->execute();
+        // retrieves mysqli_result instance from the mysqli_stmt
         $result = $this->stmt->get_result();
+        // fetches all results from mysqli_result instance as an assoc array
         $resultset=$result->fetch_all($style);
         return $resultset;
     }

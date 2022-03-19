@@ -14,7 +14,7 @@ class SharedView {
     {
         $html = "";
         $html.="<div class='backwards-navigation break-container'>";
-            $html.="<div class='container-xxl back-nav-content'>";
+            $html.="<div class='container px-2 back-nav-content'>";
                 $html.="<a href='/'>Home</a>";
                 $html.="<p class='caret'>&#8250;</p>";
             foreach($backLinks as $key => $element) {

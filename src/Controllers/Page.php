@@ -84,6 +84,7 @@ class Page {
     public function login($email, $password, $autoRedirect=false) 
     {
         $authenticated = 0;
+        $location = "";
         // Generate a new session_id
 		session_regenerate_id();
 
@@ -99,13 +100,13 @@ class Page {
 			// userlevel logic here
 			switch($this->getUser()->getAccessLevel()) {
 				case 1:
-					$location= 'user/suspended';
+					$location = 'user/suspended';
 					break;
 				case 2:
-					$location= 'user/account';
+					$location = 'user/account';
 					break;
 				case 3:
-					$location= 'admin/home';
+					$location = 'admin/home';
 					break;
 			}
 		} 

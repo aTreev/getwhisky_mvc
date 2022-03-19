@@ -2,6 +2,17 @@
 namespace Getwhisky\Model;
 use mysqli;
 
+/***************
+ * Retrieving data with a query
+ * 
+ *  This class creates a new instance of the mysqli class which gives access to methods like prepare which starts a prepared statment
+ *  ->prepare returns a mysqli_stmt object which gives access to the following:  
+ *      bind_param() - binds parameters to the prepared statment
+ *      execute() - executes the statement
+ *      affected_rows - the number of rows affected
+ *      get_result() - returns a mysqli_result instance which gives access to the following:
+ *          fetch_all($mode=MYSQLI_ASSOC) - returns the results of the returned result as an assoc array
+ */
 class DatabaseConnection extends mysqli 
 {
     protected static $instance;

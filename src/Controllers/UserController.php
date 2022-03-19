@@ -20,6 +20,8 @@ class UserController extends UserModel
     private $passResetKey;
     private $userView;
 
+    private $addresses = [];
+
     public function __construct() 
     {
         $this->id = -1;
@@ -65,6 +67,7 @@ class UserController extends UserModel
 	public function getVerificationKey() { return $this->verificationKey; }
     public function getPassResetKey() { return $this->passResetKey; }
     public function getView() { return $this->userView = new UserView($this); }
+    public function getAddresses() { return $this->addresses; }
 
     /*********
      * Authenticates a user by checking if the passed session
@@ -120,6 +123,7 @@ class UserController extends UserModel
             $this->setVerified($user['verified']);
             $this->setPassResetKey($user['password_reset_key']);
             $this->userhash->initHash($user["user_password"]);
+            $this->getUserAddresses();
 			$haveuser=true;
 		} 
 		return $haveuser;
@@ -146,6 +150,7 @@ class UserController extends UserModel
             $this->setVerified($user['verified']);
             $this->setPassResetKey($user['password_reset_key']);
             $this->userhash->initHash($user["user_password"]);
+            $this->getUserAddresses();
 			$haveuser=true;
 		} 
 		return $haveuser;
@@ -187,5 +192,21 @@ class UserController extends UserModel
 		return $result;
 	}
 
+
+    /***********
+     * Retrieves user's saved addresses
+     * pushes them to the address[] array
+     *******/
+    public function getUserAddresses()
+    {
+        $addressData = (new AddressController())->getUserAddressIds($this->getId());
+
+        if (!$addressData)  return false;
+        foreach($addressData as $address) {
+            $addressContr = new AddressController();
+            $addressContr->initAddressById($address['id']);
+            array_push($this->addresses, $addressContr);
+        }
+    }
 }
 ?>
