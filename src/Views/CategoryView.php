@@ -19,7 +19,7 @@ class CategoryView
         $html.="<div class='product-menu-item'>";
             $html.="<a href='/categories?c=".str_replace(" ", "-", $this->category->getId())."' categoryid='".$this->category->getId()."'>".$this->category->getName()."</a>";
 
-            $html.="<div class='subcategory-menus'>";
+            $html.="<div class='subcategory-menus container-xxl'>";
             foreach($this->category->getSubcategories() as $subcategory) {
                 $html.= $subcategory->getView()->menu();
                 $html.="</div>";

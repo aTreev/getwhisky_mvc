@@ -61,12 +61,14 @@ class AddressController extends AddressModel
      *******************************/
     public function initAddressById($id)
     {
+        $addressFound = false;
         $addressData = parent::getUserAddressById($id);
         if ($addressData) {
             $data = $addressData[0];
+            $addressFound = true;
 
             $this->setId($data['id'])
-            ->setUserid($data['userid'])
+            ->setUserid($data['user_id'])
             ->setAddressIdentifier($data['address_name'])
             ->setRecipientName($data['recipient'])
             ->setMobileNumber($data['mobile_number'])
@@ -76,10 +78,16 @@ class AddressController extends AddressModel
             ->setCity($data['city'])
             ->setCounty($data['county']);
         }
+
+        return $addressFound;
     }
 
 
-
+    function updateAddress($addressIdentifier, $recipientName, $mobileNumber, $postcode, $line1, $line2, $city, $county)
+    {
+        $result = parent::updateAddressModel($this->getId(), $this->getUserid(), $addressIdentifier, $recipientName, $mobileNumber, $postcode, $line1, $line2, $city, $county);
+        return $result;
+    }
 
 
 

@@ -181,7 +181,7 @@ class UserView
     public function addressPage()
     {
         $html = "";
-        $script = "";
+        $script = "/assets/js/address-page.js";
         $style = "/assets/style/user-page.css";
         $title = "My addresses | Getwhisky";
 

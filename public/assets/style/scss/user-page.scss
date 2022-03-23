@@ -124,8 +124,6 @@
     }
 }
 
-
-
 @media screen and (max-width:1200px) {
     .sidebar-container {
         display: none!important;
@@ -139,3 +137,111 @@
         gap: 15px;
     }
 }
+
+
+/************
+    User address page
+********************/
+.user-address-root {
+    padding-bottom: 20px;
+}
+.address-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 0px 20px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border-colour);
+    margin-top: 20px;
+
+    &:first-of-type {
+        margin-top: 0;
+    }
+    
+    @media screen and (max-width: 389px) {
+        flex-direction: column;
+        
+    }
+
+    .left {
+        display: flex;
+        flex-direction: column;
+
+        .address-name {
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        .address-details {
+            display: flex;
+
+            p {
+                margin-bottom: 0;
+                text-transform: uppercase;
+                font-size: 300;
+            }
+
+            @media screen and (max-width: 736px) {
+                flex-direction: column;
+                .separator {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .right {
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+
+        @media screen and (max-width: 736px) {
+            align-items: flex-start;
+        }
+        @media screen and (max-width: 389px) {
+            margin-top:20px;
+        }
+        button {
+            border: none;
+            background-color: transparent;
+            color: var(--bg-secondary);
+            padding-left: 0px;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+.address-item-edit {
+    margin: -1px 20px 0px 20px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 300ms ease-in-out;
+
+
+    form {
+        padding: 20px;
+        label {
+            font-size: 13px;
+            font-weight: 700;
+
+            .required {
+                color: var(--bs-danger);
+                font-weight: 500;
+            }
+        }
+
+        button {
+            font-size: 14px;
+            font-weight: 500;
+        }
+    }
+}
+
+.address-item-edit-show {
+    border: 1px solid var(--border-colour);
+    max-height: 2000px;
+}
+

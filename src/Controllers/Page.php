@@ -161,7 +161,7 @@ class Page {
     public function productMenu()
     {
         $html = "";
-        $html.="<div class='product-menu container'>";
+        $html.="<div class='product-menu container-xxl'>";
         foreach($this->categories as $category) {
             $html.=$category->getView()->menu();
         }
@@ -231,7 +231,7 @@ class Page {
                 <header>
                     <div class='page-overlay'></div>
                     <div class=' header-container'>
-                        <div class='header-center container'>
+                        <div class='header-center container-xxl'>
                         <a href='/'>
                             <img src='/assets/getwhisky-logo-lowercase.png' class='site-logo' alt='getwhisky-logo'/>
                         </a>
@@ -253,6 +253,7 @@ class Page {
                 <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js' integrity='sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p' crossorigin='anonymous'></script>
             </body>
             <script src='/assets/js/classes/notification.js'></script>
+            <script src='/assets/js/form-functions.js'></script>
             <script src='/assets/js/app.js'></script>
             $viewScript
             <script>
