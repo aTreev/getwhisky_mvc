@@ -259,6 +259,7 @@ class CartController extends CartModel
         // If sucessfull DB delete remove object
         if ($result) {
             $this->deleteCartItemByProductId($productid);
+            
             return ['result' => 1, 'message' => 'Product removed from basket', 'cartCount' => $this->getItemCount()];
         }
 

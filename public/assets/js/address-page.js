@@ -85,7 +85,6 @@ function updateAddress(formData)
             
         })
         .done(function(result){
-            console.log(result);
             resolve(JSON.parse(result));
         });
     });

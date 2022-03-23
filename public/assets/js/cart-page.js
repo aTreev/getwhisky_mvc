@@ -19,7 +19,7 @@ function prepareRemoveFromCart()
             removeFromCart(productid)
             .then(function(result) {
                 if (result.html) $("#page-root").html(result.html);
-                if (result.cartCount) $("#cart-count-number").html(result.cartCount);
+                if (result.cartCount || result.cartCount == 0) $("#cart-count-number").html(result.cartCount);
                 if (result.message) new Notification(result.result, result.message);
                 prepareCartPage();
             });
