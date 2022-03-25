@@ -54,15 +54,20 @@ class AddressController extends AddressModel
         return parent::getUserAddressIdsModel($userid);
     }
 
+    public function getAddressIds()
+    {
+        return parent::getAddressIdsModel();
+    }
+
 
     /********
-     * Initialize the address from the passed in address_id
+     * Initialize the address from the passed in address_id and user_id
      * Called from via the UserController class
      *******************************/
-    public function initAddressById($id)
+    public function initAddressById($id, $userid)
     {
         $addressFound = false;
-        $addressData = parent::getUserAddressById($id);
+        $addressData = parent::getUserAddressById($id, $userid);
         if ($addressData) {
             $data = $addressData[0];
             $addressFound = true;
@@ -83,13 +88,22 @@ class AddressController extends AddressModel
     }
 
 
-    function updateAddress($addressIdentifier, $recipientName, $mobileNumber, $postcode, $line1, $line2, $city, $county)
+    public function updateAddress($addressIdentifier, $recipientName, $mobileNumber, $postcode, $line1, $line2, $city, $county)
     {
         $result = parent::updateAddressModel($this->getId(), $this->getUserid(), $addressIdentifier, $recipientName, $mobileNumber, $postcode, $line1, $line2, $city, $county);
         return $result;
     }
 
+    public function deleteAddress()
+    {
+        $result = parent::deleteAddressModel($this->getId(), $this->getUserid());
+        return $result;
+    }
 
-
+    public function addAddress($id, $userid, $identifier, $recipientName, $mobileNumber, $postcode, $line1, $line2, $city, $county)
+    {
+        $result = parent::addAddressModel($id, $userid, $identifier, $recipientName, $mobileNumber, $postcode, $line1, $line2, $city, $county);
+        return $result;
+    }
 }
 ?>

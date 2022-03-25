@@ -6,15 +6,19 @@ require_once "$path/vendor/autoload.php";
 $page = new Page(0);
 echo $page->displayPage([
     'html' => "
-    <p style='margin-top:20px;'>Hello! This site is a work in progress and is the second iteration of my ecommerce site.<br>This site uses an MVC design pattern.</p>
+    <p style='margin-top:20px;'>
+        Hello! This site is a work in progress and is the second iteration of my ecommerce site.
+        <br>This site uses an MVC design pattern.
+    </p>
 
 
-    <p>Features that have been implemented in this iteration so far:</p>
+    <p style='font-weight:500;'>Features that have been implemented in this iteration so far:</p>
     <ul style='margin-top:-10px;'>
         <li>Authentication - reg / login</li>
         <li>Product categories, subcategories</li>
         <li>Product pages</li>
         <li>Cart system - add/update/remove</li>
+        <li>User address system</li>
     </ul>
     <p style='margin-top:10px;'>You may test the authentication by logging in with the following button:</p>
     <form method='post' action='processlogin.php'>

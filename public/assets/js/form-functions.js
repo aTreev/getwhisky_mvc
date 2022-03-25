@@ -64,7 +64,7 @@ function check(inputName, value, required, type, max)
 
     if (type == "postcode" && !value.toUpperCase().match(UK_POSTCODE_REGEX)) return {'inputName' : inputName, 'valid': false, 'message': `Postcode must be a valid UK postcode`}
     
-    if (type == "mobile" && !value.match(UK_MOBILE_REGEX)) return {'inputName' : inputName, 'valid': false, 'message' : "Mobile number must be a valid UK mobile number"}
+    if ((type == "mobile" && !value.match(UK_MOBILE_REGEX)) && ((required && value == "") || (!required && value != ""))) return {'inputName' : inputName, 'valid': false, 'message' : "Mobile number must be a valid UK mobile number"}
     
     // Max check
     if (value.length > max) return {'valid' : false, 'message' : `${inputName} must be less than ${max} characters`}

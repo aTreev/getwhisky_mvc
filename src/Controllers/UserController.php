@@ -204,7 +204,7 @@ class UserController extends UserModel
         if (!$addressData)  return false;
         foreach($addressData as $address) {
             $addressContr = new AddressController();
-            $addressContr->initAddressById($address['id']);
+            $addressContr->initAddressById($address['id'], $this->getId());
             array_push($this->addresses, $addressContr);
         }
     }

@@ -55,13 +55,13 @@ class AddressView
             // Identifier
             $html.="<div class='mb-4'>";
                 $html.="<label>Identifier: <span class='required'>*</span> (A name to identify this address) </label>";
-                $html.="<input type='text' class='form-control' name='identifier' value='".$this->address->getAddressIdentifier()."'>";
+                $html.="<input type='text' class='form-control' name='identifier' value='".$this->address->getAddressIdentifier()."' autocomplete='none'>";
             $html.="</div>";
 
             // Recipient
             $html.="<div class='mb-4'>";
                 $html.="<label>Recipient: <span class='required'>*</span></label>";
-                $html.="<input type='name' class='form-control' name='recipient' value='".$this->address->getRecipientName()."'>";
+                $html.="<input type='name' class='form-control' name='recipient' value='".$this->address->getRecipientName()."' autocomplete='none'>";
             $html.="</div>";
 
             // Mobile number

@@ -72,7 +72,7 @@ class InputValidator
             }
             else {
                 if (!$this->invalid) {
-                    array_push($this->errors, ['input' => $this->name, 'message' => ucwords($this->name). " must be less text"]);
+                    array_push($this->errors, ['input' => $this->name, 'message' => ucwords($this->name). " must be text"]);
                     $this->invalid = true;
                 }
             }
