@@ -61,19 +61,25 @@
     $("body").removeClass("disable-scroll-y")
  }
 
+ /************
+  * Positions filter bar as either fixed or relative depending on
+  * device width and scroll
+  ************************************/
  function handleFilterBarPosition() {
-    var $el = $('#filter-bar'); 
-    var isPositionFixed = ($el.css('position') == 'fixed');
+    var filterBar = $('#filter-bar'); 
+    var isPositionFixed = (filterBar.css('position') == 'fixed');
 
     if ($(window).width() < 735) {
         if ($(this).scrollTop() > 400 && !isPositionFixed){ 
-            $el.css({'position': 'fixed', 'top': '0px', 'z-index': '14'}); 
+            filterBar.css({'position': 'fixed', 'top': '0px', 'z-index': '14'}); 
         }       
     }
     if ($(this).scrollTop() < 400 && isPositionFixed){
-        $el.css({'position': 'relative'}); 
+        filterBar.css({'position': 'relative'}); 
     } 
  }
+
+ 
  /**********
   * Adds event listeners to the sort buttons
   * Sets the global sorting option when a sort button is click
@@ -81,7 +87,6 @@
   ******/
   function handleSortingOptions()
   {
-      // Sort button clicked
       $("[name=sort-option]").click(function() {
           // Hide filters
           closeFilters();
@@ -89,13 +94,16 @@
           sortOption = $(this).attr("id");
           // Reset product offest to 0
           offset = 0;
-          
-          // show loader image
-          $("#product-root").html("<img src='/assets/loader.gif' style='display:block;margin:auto;' />");
-  
-          // Disable buttons until minimum 500ms delay
+          // Disable scroll function in case of multiple button clicks
+          $(window).off('scroll', handlePagination);
+
+          // Disable buttons until products loaded
           $("[name=sort-option]").off();
   
+          // show loader image
+          $("#product-root").html("<img src='/assets/loader.gif' style='display:block;margin:auto;' />");
+
+          // set random delay max 500ms
           setTimeout(() => {
               // Load products
               loadMoreProducts()
@@ -103,10 +111,11 @@
                   $("#product-root").html(result.html);
                   offset = result.newOffset;
                   $("#product-count").text($(".product-c").length);
-                  // Recursive call to add listeners
+                  // Re-enable sorting button
                   handleSortingOptions();
-                  handlePagination();
-              });    
+                  // Enable
+                  $(window).scroll(handlePagination);
+                });    
           }, (Math.random() * 500));
       });
   }
@@ -125,7 +134,7 @@
              data: { function: ajaxFunction, catOrSubcatId: cat_subcat_id, offset: offset, sortOption: sortOption}
          })
          .done(function(result){
-             console.log(result);
+             //console.log(result);
              resolve(JSON.parse(result));
          });
      });
@@ -149,11 +158,14 @@
 
         loadMoreProducts()
         .then(function(result){
+            // Set html to retrieved
             $("#product-root").append(result.html)
             $("#product-count").html(document.getElementsByClassName("product-c").length);
+            
             // update offset to new offset supplied via backend
             offset = result.newOffset;
-            // recursive call to add the listener again once ajax request resolved
+
+            // Re-enable the listener if more products available
             if(!result.end_of_products) $(window).scroll(handlePagination());
         });
     }

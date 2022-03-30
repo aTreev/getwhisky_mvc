@@ -12,27 +12,10 @@ class CartView
 
 
     private function setCart($cart) {$this->cart = $cart; }
-    /***********
-     * Cart page
-     */
 
 
 
-    public function backwardsNavigation()
-    {
-        $html = "";
-
-        $html.="<div class='backwards-navigation break-container'>";
-            $html.="<div class='container back-nav-content'>";
-                $html.="<a href='/'>Home</a>";
-                $html.="<p class='caret'>&#8250;</p>";
-                $html.="<p class='current-page'>My Basket</p>";
-            $html.="</div>";
-        $html.="</div>";
-        return $html;
-    }
-
-    public function emptyCart()
+    private function emptyCart()
     {
         $html = "";
 
@@ -45,7 +28,7 @@ class CartView
         return $html;
     }
 
-    public function cartHasItems()
+    private function cartHasItems()
     {
         $html = "";
 
@@ -111,10 +94,33 @@ class CartView
         return $html;
     }
 
-    public function index()
+    /*********
+     * WORK ON THIS.
+     */
+    private function cartNotifications()
+    {   
+        $html= "";
+
+        $html.="<div class='cart-notifications'>";
+            $html.="<div class='header'>";
+            $html.="<p>You have notifications about your cart</p>";
+            $html.="<i class='fas fa-times' id='clear-notifications'></i>";
+            $html.="</div>";
+        foreach($this->cart->getNotifications() as $notification) {
+            $html.="<div class='cart-notification'>";
+                $html.="<img src='".$notification['image']."' />";
+                $html.="<p>".$notification['desc']."</p>";
+            $html.="</div>";
+        }
+        $html.="</div>";
+
+        return $html;
+    }
+
+    public function cartPage()
     {
         $html = "";
-        $title = "My Basket - Getwhisky";
+        $title = "My Basket | Getwhisky";
         $script = "/assets/js/cart-page.js";
         $style = "/assets/style/cart-page.css";
 
@@ -122,6 +128,10 @@ class CartView
             ['url' => '', 'pageName' => "My basket"]
         ));
 
+        if ($this->cart->getNotifications()) {
+            $html.= $this->cartNotifications();
+            $this->cart->clearNotifications();
+        }
         if ($this->cart->getItems()) $html.= $this->cartHasItems();
         if (!$this->cart->getItems()) $html.= $this->emptyCart();
 

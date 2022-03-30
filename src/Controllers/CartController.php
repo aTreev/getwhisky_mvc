@@ -17,6 +17,7 @@ class CartController extends CartModel
     private CartView $cartView;
 
 
+
     public function __construct()
     {
         
@@ -30,6 +31,7 @@ class CartController extends CartModel
     public function getUserid() { return $this->userid; }    
     public function isCheckedOut() { return $this->checkedOut; }
     public function getItems() { return $this->items; }
+    public function getNotifications() { return $this->notifications; }
     public function getView() { return $this->CartView = new CartView($this); }
 
 
@@ -52,37 +54,77 @@ class CartController extends CartModel
         // return if guest session for now
         if ($userid == -1) return;
 
-        // Get user cart
+        // User cart exists, init
         if ($userCart) {
             $userCart = $userCart[0];
 
             $this->setId($userCart['id'])->setUserid($userCart['user_id'])->setCheckedOut($userCart['checked_out']);
             $this->loadCartItems();
+            
+            // Check for stock notification cookies and then check stock
+            if (isset($_COOKIE['cart-notifications'])) $this->notifications = json_decode($_COOKIE['cart-notifications'], true);
+            $this->checkStock();
         } 
+        
+
         // No user cart
         if (!$userCart) {
             // Get unique ID
             $uniqueIdGen = new UniqueIdGenerator();
             $cartid = $uniqueIdGen->setIdProperties(parent::getCartIds())->getUniqueId();
             // Create new cart
-          
-            try {
-                parent::createUserCart($cartid, $userid);
-
-            } catch(SQLException $e) {
-                echo $e->getMessage();
-            }
-                // Recursive call to retrieve cart
-                //$this->initCart($userid);
+            parent::createUserCart($cartid, $userid);
+            // Recursive call to retrieve cart
+            //$this->initCart($userid);
             
             
         }
         return $userCart;
     }
 
-    public function initGuestCart()
-    {
 
+    /*********
+     * Checks the stock of each cart item
+     * Sets a notification via cookies
+     * Updates the quantity or removes the item entirely depending on stock
+     **************/
+    public function checkStock()
+    {
+        foreach($this->items as $item) {
+            // Stock less than quantity
+            if ($item->getProduct()->getStock() == 0) {
+
+                // set array key by product_id ensures unique
+                $this->notifications[$item->getProduct()->getId()] = [
+                    'image' => $item->getProduct()->getImage(), 
+                    'desc' => ucwords($item->getProduct()->getName())." removed from cart due to stock shortages"
+                ];
+
+                $this->removeFromCart($item->getProduct()->getId());
+
+            }
+            // Out of stock
+            else if ($item->getProduct()->getStock() < $item->getQuantity()) {
+                // set array key by product_id ensures unique
+                $this->notifications[$item->getProduct()->getId()] = [
+                    'image' => $item->getProduct()->getImage(), 
+                    'desc' => ucwords($item->getProduct()->getName())." quantity changed to ".$item->getProduct()->getStock()." due to stock shortages"
+                ];
+                
+                $this->updateItemQty($item, $item->getProduct()->getStock());
+            }
+        }
+        if (!empty($this->notifications)) setcookie("cart-notifications", json_encode($this->notifications), "", "/");
+    }
+
+
+    /**********
+     * Clears any set notification cookies
+     *************/
+    public function clearNotifications()
+    {
+        unset($this->notifications);
+        setCookie("cart-notifications", "", time() - 3600, "/");
     }
 
     /**************
@@ -267,11 +309,11 @@ class CartController extends CartModel
         return ['result' => 0, 'message' => "Something went wrong"];
     }
 
+
     private function updateItemQty($cartItem, $quantity)
     {
         return $cartItem->updateItemQuantity($quantity);
     }
-
 
     /**********
      * Updates an existing items quantity via the CartItemController

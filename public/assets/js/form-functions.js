@@ -1,5 +1,6 @@
 const UK_POSTCODE_REGEX = /^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/;
 const UK_MOBILE_REGEX = /((\+44(\s\(0\)\s|\s0\s|\s)?)|0)7\d{3}(\s)?\d{6}/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 
 /*************
@@ -19,10 +20,8 @@ function validate(form, options={})
     let formValid = true;
     
 
-
     // Reset the invalidity marks
     resetFeedback(form);
-   
 
     // Iterate through the first level of the options object
     for (const [input, validationOptions] of Object.entries(options)) {
@@ -64,8 +63,9 @@ function check(inputName, value, required, type, max)
 
     if (type == "postcode" && !value.toUpperCase().match(UK_POSTCODE_REGEX)) return {'inputName' : inputName, 'valid': false, 'message': `Postcode must be a valid UK postcode`}
     
-    if ((type == "mobile" && !value.match(UK_MOBILE_REGEX)) && ((required && value == "") || (!required && value != ""))) return {'inputName' : inputName, 'valid': false, 'message' : "Mobile number must be a valid UK mobile number"}
+    if ((type == "mobile" && !value.match(UK_MOBILE_REGEX)) && ((required && value != "") || (!required && value != ""))) return {'inputName' : inputName, 'valid': false, 'message' : "Mobile number must be a valid UK mobile number"}
     
+    if ((type == "email" && !value.match(EMAIL_REGEX)) && ((required && value != "") || (!required && value != ""))) return {'inputName' : inputName, 'valid' : false, 'message' : "Valid email format required"}
     // Max check
     if (value.length > max) return {'valid' : false, 'message' : `${inputName} must be less than ${max} characters`}
     
@@ -87,6 +87,7 @@ function feedback(input, message)
 {
     input.style.borderColor = "red";
     input.insertAdjacentHTML("afterend", `<div class='form-feedback text-danger'>${message}</div>`);
+    $(".form-feedback")[0].scrollIntoView({block: "end", inline: "nearest"});
 }
 
 
@@ -108,4 +109,7 @@ function resetFeedback(form)
     form.querySelectorAll("input[type=postcode]").forEach(e => e.style.borderColor = "#ced4da");
     form.querySelectorAll("input[type=city]").forEach(e => e.style.borderColor = "#ced4da");
     form.querySelectorAll("input[type=county]").forEach(e => e.style.borderColor = "#ced4da");
+    form.querySelectorAll("input[type=email]").forEach(e => e.style.borderColor = "#ced4da");
+    form.querySelectorAll("input[type=password]").forEach(e => e.style.borderColor = "#ced4da");
+
 }

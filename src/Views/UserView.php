@@ -42,18 +42,20 @@ class UserView
             </form>
         </div>
         ";
-        return ['html' => $html, 'title' => 'Getwhisky sign up'];
+        return ['html' => $html, 'title' => 'Registration | Getwhisky'];
     }
 
     public function login()
     {
+        $title = "Login | Getwhisky";
+        $script = "/assets/js/login-page.js";
         $html = 
         "
         <div class='login-container row p-4 bg-white rounded border mt-5 m-auto' style='max-width:700px;'>
 
         <div class='login-form col p-3'>
             <h1 class='fs-3 pb-2'>Login</h1>
-            <form action='processlogin.php' method='post'>
+            <form action='processlogin.php' method='post' id='login-form'>
                 <div class='mb-3'>
                     <label for='email'>Email Address</label>
                     <input type='email' class='form-control' name='email' id='email'>
@@ -67,7 +69,7 @@ class UserView
             </form>
         </div>
         ";
-        return ['html' => $html, 'title' => 'Login'];
+        return ['html' => $html, 'title' => $title, 'script' => $script];
     }
 
 
@@ -103,7 +105,7 @@ class UserView
         $html = "";
         $style = "/assets/style/user-page.css";
         $script = "";
-        $title = "My Account - Getwhisky";
+        $title = "My Account | Getwhisky";
 
         $html.=SharedView::backwardsNavigation(array(
             ['url' => "/user/account",'pageName' => "My Account"]
@@ -220,54 +222,54 @@ class UserView
             $html.="<div class='header'>";
                 $html.="<h3>Add a new address</h3>";
             $html.="</div>";
-
+    
             $html.="<form id='add-address-form'>";
                 // Identifier
                 $html.="<div class='mb-4'>";
                     $html.="<label>Identifier: <span class='required'>*</span> (A name to identify this address) </label>";
-                    $html.="<input type='text' class='form-control' name='identifier' autocomplete='none'>";
+                    $html.="<input type='text' class='bs-input' name='identifier' autocomplete='none'>";
                 $html.="</div>";
 
                 // Recipient
                 $html.="<div class='mb-4'>";
                     $html.="<label>Recipient: <span class='required'>*</span></label>";
-                    $html.="<input type='name' class='form-control' name='recipient' autocomplete='none'>";
+                    $html.="<input type='name' class='bs-input' name='recipient' autocomplete='none'>";
                 $html.="</div>";
 
                 // Mobile number
                 $html.="<div class='mb-4'>";
                     $html.="<label>Mobile number:</label>";
-                    $html.="<input type='tel' class='form-control' name='mobile' maxlength='12'>";
+                    $html.="<input type='tel' class='bs-input' name='mobile' maxlength='12'>";
                 $html.="</div>";
 
                 // Address Line 1
                 $html.="<div class='mb-4'>";
                     $html.="<label>Address line 1:  <span class='required'>*</span></label>";
-                    $html.="<input type='street' class='form-control' name='line1'>";
+                    $html.="<input type='street' class='bs-input' name='line1'>";
                 $html.="</div>";
 
                 // Address Line 2
                 $html.="<div class='mb-4'>";
                     $html.="<label>Address line 2:</label>";
-                    $html.="<input type='street' class='form-control' name='line2'>";
+                    $html.="<input type='street' class='bs-input' name='line2'>";
                 $html.="</div>";
 
                 // Postcode
                 $html.="<div class='mb-4'>";
                     $html.="<label>Postcode: <span class='required'>*</span></label>";
-                    $html.="<input type='postcode' class='form-control' name='postcode' maxlength='10' >";
+                    $html.="<input type='postcode' class='bs-input' name='postcode' maxlength='10' >";
                 $html.="</div>";
 
                 // City
                 $html.="<div class='mb-4'>";
                     $html.="<label>City: <span class='required'>*</span></label>";
-                    $html.="<input type='city' class='form-control' name='city'>";
+                    $html.="<input type='city' class='bs-input' name='city'>";
                 $html.="</div>";
 
                 // County
                 $html.="<div class='mb-4'>";
                     $html.="<label>County:</label>";
-                    $html.="<input type='county' class='form-control' name='county'>";
+                    $html.="<input type='county' class='bs-input' name='county'>";
                 $html.="</div>";
 
                 $html.="<div class='mb-4 d-flex gap-2'>";

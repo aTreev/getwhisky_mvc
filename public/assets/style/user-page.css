@@ -242,7 +242,7 @@
 .add-address-root {
   margin: auto;
   margin-top: 200px;
-  margin-bottom: 180px;
+  margin-bottom: 100px;
   max-height: 0;
   overflow: hidden;
   opacity: 0;
@@ -265,6 +265,10 @@
 }
 .add-address-root .header p, .add-address-root .header h3 {
   margin-bottom: 0;
+}
+.add-address-root form label {
+  font-weight: 500;
+  font-size: 14px;
 }
 
 /*# sourceMappingURL=user-page.css.map */

@@ -54,7 +54,7 @@ function removeFromCart()
 
     // if removed get new html from cart view
     if ($result) {
-        $html = $userCart->getView()->index()['html'];
+        $html = $userCart->getView()->cartPage()['html'];
         $result['html'] = $html;
     }
     echo json_encode($result);
@@ -73,7 +73,7 @@ function updateCartItemQuantity()
 
     $result = $userCart->updateCartItemQuantity($productid, $quantity);
     if ($result){
-        $html = $userCart->getView()->index()['html'];
+        $html = $userCart->getView()->cartPage()['html'];
         $result['html'] = $html;
     }
 

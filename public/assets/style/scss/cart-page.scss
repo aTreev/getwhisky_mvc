@@ -6,7 +6,58 @@ body {
     margin-bottom: 0!important;
 }
 
+.cart-notifications {
+    padding: 15px;
+    margin-top: 20px;
+    background: white;
+    position: relative;
+    z-index: 8;
+    border: 3px solid hsl(0deg 100% 79%);
+    border-radius: 6px;
 
+    .header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        p {
+            font-style: italic;
+            font-weight: 500;
+            margin-bottom: 0;
+        }
+        i {
+            font-size: 22px;
+            cursor: pointer;
+            color: #ff9494;
+            border: 3px solid #ff9494;
+            border-radius: 128px;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover {
+                color: var(--bs-danger);
+                border-color: var(--bs-danger);
+            }
+        }
+    }
+        
+
+    .cart-notification {
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+        img {
+            max-width: 75px;
+        }
+        p {
+            font-weight: 500;
+            font-size: 14px;
+        }
+    }
+}
 .cart-root {
     display: flex;
     gap: 40px;

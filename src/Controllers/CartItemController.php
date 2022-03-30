@@ -61,6 +61,9 @@ class CartItemController extends CartItemModel
         $this->setProduct($productController);      
     }
 
+
+
+
     //
     public function getItemPrice()
     {

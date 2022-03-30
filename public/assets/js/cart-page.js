@@ -2,6 +2,10 @@ function prepareCartPage()
 {
     prepareRemoveFromCart();
     prepareUpdateCartQuantity();
+
+    $("#clear-notifications").click(function(){
+        $(".cart-notifications").remove();
+    });
 }
 
 
