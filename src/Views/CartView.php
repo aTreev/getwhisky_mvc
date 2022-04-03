@@ -87,7 +87,7 @@ class CartView
                 $html.="</div>";
 
                 // Proceed button
-                $html.="<button class='btn btn-success px-5 mt-3'>Secure Checkout</button>";
+                $html.="<a href='/checkout/' class='btn btn-success px-5 mt-3'>Secure Checkout</a>";
            
             $html.="</div>";
         $html.="</div>";

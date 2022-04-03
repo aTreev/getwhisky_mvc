@@ -1,5 +1,7 @@
 src/constants.php
 src/Model/DatabaseConnection.php
+src/stripe
+src/webhooks
 composer.json
 bootstrapstaging
 Design_doc.docx

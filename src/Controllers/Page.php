@@ -254,6 +254,7 @@ class Page {
             </body>
             <script src='/assets/js/classes/notification.js'></script>
             <script src='/assets/js/form-functions.js'></script>
+            <script src='/assets/js/ajax-functions.js'></script>
             <script src='/assets/js/app.js'></script>
             $viewScript
             <script>

@@ -3,6 +3,7 @@ $path = realpath("C:/") ? "C:/wamp64/www/getwhisky-mvc" : "/var/www/getwhisky-mv
 require_once "$path/vendor/autoload.php";
 
 use Getwhisky\Controllers\AddressController;
+use Getwhisky\Controllers\CheckoutController;
 use Getwhisky\Controllers\Page;
 use Getwhisky\Util\InputValidator;
 use Getwhisky\Util\UniqueIdGenerator;
@@ -26,7 +27,6 @@ function updateAddress()
     $identifier = $inputValidator->inputName("identifier")->value($_POST['identifier'])->sanitize("string")->required()->maxLen(90)->getResult();
     $recipient = $inputValidator->inputName("recipient")->value($_POST['recipient'])->sanitize("string")->required()->maxLen(90)->getResult();
     $postcode = $inputValidator->inputName("postcode")->value(strtoupper($_POST['postcode']))->sanitize("string")->required()->match("postcode")->maxLen(10)->getResult();
-    $mobile = $inputValidator->inputName("mobile")->value($_POST['mobile'])->sanitize("string")->match("mobile")->maxLen(12)->getResult();
     $line1 = $inputValidator->inputName("line1")->value($_POST['line1'])->sanitize("string")->maxLen(100)->required()->getResult();
     $line2 = $inputValidator->inputName("line2")->value($_POST['line2'])->sanitize("string")->maxLen(100)->getResult();
     $city = $inputValidator->inputName("city")->value($_POST['city'])->sanitize("string")->maxLen(50)->required()->getResult();
@@ -48,7 +48,7 @@ function updateAddress()
         return;
     }
     // Attempt update
-    $result = $address->updateAddress($identifier, $recipient, $mobile, $postcode, $line1, $line2, $city, $county);
+    $result = $address->updateAddress($identifier, $recipient, $postcode, $line1, $line2, $city, $county);
 
     if ($result) {
         echo json_encode(['success' => 1, 'message' => "Address updated successfully", 'html' => (new Page(2, true))->getUser()->getView()->addressPage()['html']]);
@@ -86,7 +86,6 @@ function addAddress()
     $identifier = $inputValidator->inputName("identifier")->value($_POST['identifier'])->sanitize("string")->required()->maxLen(90)->getResult();
     $recipient = $inputValidator->inputName("recipient")->value($_POST['recipient'])->sanitize("string")->required()->maxLen(90)->getResult();
     $postcode = $inputValidator->inputName("postcode")->value(strtoupper($_POST['postcode']))->sanitize("string")->required()->match("postcode")->maxLen(10)->getResult();
-    $mobile = $inputValidator->inputName("mobile")->value($_POST['mobile'])->sanitize("string")->match("mobile")->maxLen(12)->getResult();
     $line1 = $inputValidator->inputName("line1")->value($_POST['line1'])->sanitize("string")->maxLen(100)->required()->getResult();
     $line2 = $inputValidator->inputName("line2")->value($_POST['line2'])->sanitize("string")->maxLen(100)->getResult();
     $city = $inputValidator->inputName("city")->value($_POST['city'])->sanitize("string")->maxLen(50)->required()->getResult();
@@ -101,10 +100,15 @@ function addAddress()
     $page = new Page(2, true);
     $addressid = (new UniqueIdGenerator())->setIdProperties($contr->getAddressIds())->getUniqueId();
 
-    $result = $contr->addAddress($addressid, $page->getUser()->getId(), $identifier, $recipient, $mobile, $postcode, $line1, $line2, $city, $county);
+    $result = $contr->addAddress($addressid, $page->getUser()->getId(), $identifier, $recipient, $postcode, $line1, $line2, $city, $county);
 
     if ($result) {
-        echo json_encode(['success' => 1, 'message' => "Address $identifier created", 'html' => (new Page(2, true))->getUser()->getView()->addressPage()['html']]);
+        // Reload page variable and get view
+        $page = new Page(2, true);
+        if (util::sanStr($_POST['page'])  == "user") $view = $page->getUser()->getView()->addressPage()['html'];
+        if (util::sanStr($_POST['page'] ) == "cart") $view = (new CheckoutController($page->getUser(), $page->getCart()))->getView()->deliveryPage()['html'];
+
+        echo json_encode(['success' => 1, 'message' => "Address $identifier created", 'html' => $view]);
     } else {
         echo json_encode(['success' => 0, 'message' => "An error occurred, please try again"]);
     }

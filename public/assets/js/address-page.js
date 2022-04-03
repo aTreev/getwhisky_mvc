@@ -36,7 +36,6 @@ function prepareAddressPage()
                 'identifier': { 'required' : true, 'type' : "text", 'max' : 90 },
                 'recipient': { 'required' : true, 'type' : 'text', 'max' : 90 },
                 'postcode' : { 'required' : true, 'type' : "postcode", 'max' : 10 },
-                'mobile' : {'required' : false, 'type' : "mobile", 'max' : 12 },
                 'line1' : { 'required' : true, 'type' : "text", 'max' : 100 },
                 'line2' : { 'required' : false, 'type' : 'text', 'max' : 100 },
                 'city' : { 'required' : true, 'type' : "text", 'max' : 50 },
@@ -118,7 +117,6 @@ function prepareAddAddress()
             'identifier': { 'required' : true, 'type' : "text", 'max' : 90 },
             'recipient': { 'required' : true, 'type' : 'text', 'max' : 90 },
             'postcode' : { 'required' : true, 'type' : "postcode", 'max' : 10 },
-            'mobile' : {'required' : false, 'type' : "mobile", 'max' : 12 },
             'line1' : { 'required' : true, 'type' : "text", 'max' : 100 },
             'line2' : { 'required' : false, 'type' : 'text', 'max' : 100 },
             'city' : { 'required' : true, 'type' : "text", 'max' : 50 },
@@ -127,7 +125,7 @@ function prepareAddAddress()
  
         if (!formValid) return;
 
-        addAddress(data).then(function(result){
+        addAddress(data, "user").then(function(result){
             if (result.success == 0) return new Notification (false, result.message);
 
             if (result.success == 1) {
@@ -154,59 +152,3 @@ function prepareAddAddress()
 }
 
 
-/******************
- * AJAX functions
- *******************/
-function updateAddress(formData)
-{
-    return new Promise(function(resolve){
-        $.ajax({
-            url: "/assets/js/ajax-scripts/address-handler.php",
-            method: "POST",
-            data: {
-                function: 1, address_id: formData.get("address-id"), identifier: formData.get("identifier"), 
-                recipient: formData.get("recipient"), postcode: formData.get("postcode"), mobile: formData.get("mobile"), 
-                line1: formData.get("line1"), line2: formData.get("line2"), city: formData.get("city"), county: formData.get("county")
-            },
-            
-        })
-        .done(function(result){
-            resolve(JSON.parse(result));
-        });
-    });
-}
-
-function deleteAddress(addressid)
-{
-    return new Promise(function(resolve){
-        $.ajax({
-            url: "/assets/js/ajax-scripts/address-handler.php",
-            method: "POST",
-            data: {
-                function: 2,
-                address_id: addressid
-            }
-        })
-        .done(function(result){
-            resolve(JSON.parse(result));
-        });
-    });
-}
-function addAddress(formData)
-{
-    return new Promise(function(resolve){
-        $.ajax({
-            url: "/assets/js/ajax-scripts/address-handler.php",
-            method: "POST",
-            data: {
-                function: 3, address_id: formData.get("address-id"), identifier: formData.get("identifier"), 
-                recipient: formData.get("recipient"), postcode: formData.get("postcode"), mobile: formData.get("mobile"), 
-                line1: formData.get("line1"), line2: formData.get("line2"), city: formData.get("city"), county: formData.get("county")
-            },
-            
-        })
-        .done(function(result){
-            resolve(JSON.parse(result));
-        });
-    });
-}

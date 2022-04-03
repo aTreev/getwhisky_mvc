@@ -217,68 +217,7 @@ class UserView
 
         $html.="</div>";
 
-        $html.="<div class='add-address-root'>";
-
-            $html.="<div class='header'>";
-                $html.="<h3>Add a new address</h3>";
-            $html.="</div>";
-    
-            $html.="<form id='add-address-form'>";
-                // Identifier
-                $html.="<div class='mb-4'>";
-                    $html.="<label>Identifier: <span class='required'>*</span> (A name to identify this address) </label>";
-                    $html.="<input type='text' class='bs-input' name='identifier' autocomplete='none'>";
-                $html.="</div>";
-
-                // Recipient
-                $html.="<div class='mb-4'>";
-                    $html.="<label>Recipient: <span class='required'>*</span></label>";
-                    $html.="<input type='name' class='bs-input' name='recipient' autocomplete='none'>";
-                $html.="</div>";
-
-                // Mobile number
-                $html.="<div class='mb-4'>";
-                    $html.="<label>Mobile number:</label>";
-                    $html.="<input type='tel' class='bs-input' name='mobile' maxlength='12'>";
-                $html.="</div>";
-
-                // Address Line 1
-                $html.="<div class='mb-4'>";
-                    $html.="<label>Address line 1:  <span class='required'>*</span></label>";
-                    $html.="<input type='street' class='bs-input' name='line1'>";
-                $html.="</div>";
-
-                // Address Line 2
-                $html.="<div class='mb-4'>";
-                    $html.="<label>Address line 2:</label>";
-                    $html.="<input type='street' class='bs-input' name='line2'>";
-                $html.="</div>";
-
-                // Postcode
-                $html.="<div class='mb-4'>";
-                    $html.="<label>Postcode: <span class='required'>*</span></label>";
-                    $html.="<input type='postcode' class='bs-input' name='postcode' maxlength='10' >";
-                $html.="</div>";
-
-                // City
-                $html.="<div class='mb-4'>";
-                    $html.="<label>City: <span class='required'>*</span></label>";
-                    $html.="<input type='city' class='bs-input' name='city'>";
-                $html.="</div>";
-
-                // County
-                $html.="<div class='mb-4'>";
-                    $html.="<label>County:</label>";
-                    $html.="<input type='county' class='bs-input' name='county'>";
-                $html.="</div>";
-
-                $html.="<div class='mb-4 d-flex gap-2'>";
-                    $html.="<input type='submit' value='SAVE' class='btn btn-success px-4'>";
-                    $html.="<button class='btn btn-danger' id='cancel-add'>CANCEL</button>";
-                $html.="</div>";
-            $html.="</form>";
-
-        $html.="</div>";
+        $html.= $this->user->getAddresses()[0]->getView()->createAddressForm();
         return [
             'html' => $html,
             'script' => $script,

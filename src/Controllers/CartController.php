@@ -1,11 +1,13 @@
 <?php
 namespace Getwhisky\Controllers;
 
-use Exception;
 use Getwhisky\Model\CartModel;
 use Getwhisky\Controllers\CartItemController;
 use Getwhisky\Util\UniqueIdGenerator;
 use Getwhisky\Views\CartView;
+
+$path = realpath("C:/") ? "C:/wamp64/www/getwhisky-mvc" : "/var/www/getwhisky-mvc";
+require_once "$path/src/constants.php";
 
 class CartController extends CartModel
 {

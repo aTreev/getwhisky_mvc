@@ -230,7 +230,19 @@ header {
     box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
 }
 
+.link-button {
+    border: none;
+    background: transparent;
+    text-decoration: underline;
+    color: var(--bg-secondary);
+    font-size: 14px;
+    padding-left: 0px;
+}
 
+.link-button:hover {
+    color:var(--bs-danger);
+}
+/*************************************************************************/
 
 .hero-container {
     background: rgba(0, 0, 0, 0.8)!important;

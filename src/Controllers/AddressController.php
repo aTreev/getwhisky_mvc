@@ -76,8 +76,8 @@ class AddressController extends AddressModel
             ->setUserid($data['user_id'])
             ->setAddressIdentifier($data['address_name'])
             ->setRecipientName($data['recipient'])
-            ->setMobileNumber($data['mobile_number'])
             ->setPostcode($data['postcode'])
+            ->setMobileNumber($data['mobile_number'])
             ->setLine1($data['line1'])
             ->setLine2($data['line2'])
             ->setCity($data['city'])
@@ -88,9 +88,9 @@ class AddressController extends AddressModel
     }
 
 
-    public function updateAddress($addressIdentifier, $recipientName, $mobileNumber, $postcode, $line1, $line2, $city, $county)
+    public function updateAddress($addressIdentifier, $recipientName, $postcode, $line1, $line2, $city, $county)
     {
-        $result = parent::updateAddressModel($this->getId(), $this->getUserid(), $addressIdentifier, $recipientName, $mobileNumber, $postcode, $line1, $line2, $city, $county);
+        $result = parent::updateAddressModel($this->getId(), $this->getUserid(), $addressIdentifier, $recipientName, $postcode, $line1, $line2, $city, $county);
         return $result;
     }
 
@@ -100,9 +100,9 @@ class AddressController extends AddressModel
         return $result;
     }
 
-    public function addAddress($id, $userid, $identifier, $recipientName, $mobileNumber, $postcode, $line1, $line2, $city, $county)
+    public function addAddress($id, $userid, $identifier, $recipientName, $postcode, $line1, $line2, $city, $county)
     {
-        $result = parent::addAddressModel($id, $userid, $identifier, $recipientName, $mobileNumber, $postcode, $line1, $line2, $city, $county);
+        $result = parent::addAddressModel($id, $userid, $identifier, $recipientName, $postcode, $line1, $line2, $city, $county);
         return $result;
     }
 }

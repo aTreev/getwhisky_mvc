@@ -175,8 +175,6 @@
 
             p {
                 margin-bottom: 0;
-                text-transform: uppercase;
-                font-size: 300;
             }
 
             @media screen and (max-width: 736px) {
@@ -184,6 +182,11 @@
                 .separator {
                     display: none;
                 }
+            }
+        }
+        .address-details-2 {
+            p {
+                margin-bottom: 0;
             }
         }
     }

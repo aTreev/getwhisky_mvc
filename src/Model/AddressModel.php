@@ -52,14 +52,13 @@ class AddressModel
         return $resultset;
     }
 
-    protected function updateAddressModel($id, $userid, $addressIdentifier, $recipientName, $mobileNumber, $postcode, $line1, $line2, $city, $county)
+    protected function updateAddressModel($id, $userid, $addressIdentifier, $recipientName, $postcode, $line1, $line2, $city, $county)
     {
         self::$DatabaseConnection = DatabaseConnection::getInstance();
 
         $this->sql = "UPDATE `user_addresses` SET 
         `address_name`=?,
         `recipient`=?,
-        `mobile_number`=?,
         `postcode`=?,
         `line1`=?,
         `line2`=?,
@@ -67,7 +66,7 @@ class AddressModel
         `county`=?
         WHERE `id` = ? AND `user_id` = ?";
         $this->stmt = self::$DatabaseConnection->prepare($this->sql);
-        $this->stmt->bind_param("ssssssssss", $addressIdentifier, $recipientName, $mobileNumber, $postcode, $line1, $line2, $city, $county, $id, $userid);
+        $this->stmt->bind_param("sssssssss", $addressIdentifier, $recipientName, $postcode, $line1, $line2, $city, $county, $id, $userid);
         $this->stmt->execute();
         return $this->stmt->affected_rows;
     }
@@ -83,13 +82,13 @@ class AddressModel
         return $this->stmt->affected_rows;
     }
 
-    protected function addAddressModel($id, $userid, $identifier, $recipientName, $mobileNumber, $postcode, $line1, $line2, $city, $county)
+    protected function addAddressModel($id, $userid, $identifier, $recipientName, $postcode, $line1, $line2, $city, $county)
     {
         self::$DatabaseConnection = DatabaseConnection::getInstance();
 
-        $this->sql = "INSERT INTO user_addresses (`id`, `user_id`, `address_name`, `recipient`, `mobile_number`, `postcode`, `line1`, `line2`, `city`, `county`) VALUES (?,?,?,?,?,?,?,?,?,?);";
+        $this->sql = "INSERT INTO user_addresses (`id`, `user_id`, `address_name`, `recipient`, `postcode`, `line1`, `line2`, `city`, `county`) VALUES (?,?,?,?,?,?,?,?,?);";
         $this->stmt = self::$DatabaseConnection->prepare($this->sql);
-        $this->stmt->bind_param("ssssssssss", $id, $userid, $identifier, $recipientName, $mobileNumber, $postcode, $line1, $line2, $city, $county);
+        $this->stmt->bind_param("sssssssss", $id, $userid, $identifier, $recipientName, $postcode, $line1, $line2, $city, $county);
         $this->stmt->execute();
         return $this->stmt->affected_rows;
     }
