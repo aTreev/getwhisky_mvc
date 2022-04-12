@@ -73,7 +73,7 @@ class CartController extends CartModel
         if (!$userCart) {
             // Get unique ID
             $uniqueIdGen = new UniqueIdGenerator();
-            $cartid = $uniqueIdGen->setIdProperties(parent::getCartIds())->getUniqueId();
+            $cartid = $uniqueIdGen->properties(parent::getCartIds())->getUniqueId();
             // Create new cart
             parent::createUserCart($cartid, $userid);
             // Recursive call to retrieve cart
@@ -90,7 +90,7 @@ class CartController extends CartModel
      * Sets a notification via cookies
      * Updates the quantity or removes the item entirely depending on stock
      **************/
-    public function checkStock()
+    private function checkStock()
     {
         foreach($this->items as $item) {
             // Stock less than quantity
@@ -341,6 +341,11 @@ class CartController extends CartModel
         $result['cartCount'] = $this->getItemCount();
 
         return $result;
+    }
+
+    public function checkout()
+    {
+        return parent::checkoutModel($this->getId());
     }
 }
 ?>

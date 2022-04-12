@@ -69,5 +69,15 @@ class CartModel
         $this->stmt->execute();
         return $this->stmt->affected_rows;
     }
+
+    protected function checkoutModel($cartid)
+    {
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
+        $this->sql = "UPDATE `cart` SET `checked_out` = 1 WHERE `id` = ? AND `checked_out` = 0;";
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
+        $this->stmt->bind_param("s", $cartid);
+        $this->stmt->execute();
+        return $this->stmt->affected_rows;
+    }
 }
 ?>

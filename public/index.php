@@ -25,10 +25,11 @@ echo $page->displayPage([
         <li>Cart system - add/update/remove</li>
         <li>User address system</li>
         <li>Cart notifications</li>
+        <li>Stripe checkout</li>
     </ul>
     <p style='font-weight:500;'>Features yet to be implemented</p>
     <ul style='margin-top:-10px;'>
-        <li>Stripe checkout</li>
+        <li>Post checkout order generation</li>
         <li>User orders</li>
         <li>PDF invoice generation</li>
         <li>Featured / recommended products</li>
@@ -41,7 +42,7 @@ echo $page->displayPage([
             <li>Homepage edit/CMS</li>
         </ul>
         <li>User detail edit</li>
-        <li>Auto postcode lookup</li>
+        <li>Auto postcode lookup on user addresses</li>
         <li>Product review system</li>
         
     </ul>

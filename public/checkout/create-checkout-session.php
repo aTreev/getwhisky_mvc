@@ -1,7 +1,9 @@
 <?php
-// Src
+
 use Getwhisky\Controllers\AddressController;
+use Getwhisky\Controllers\OrderController;
 use Getwhisky\Controllers\Page;
+use Getwhisky\Util\UniqueIdGenerator;
 use Getwhisky\Util\Util;
 
 
@@ -20,9 +22,12 @@ $page = new Page(2, true);
 // Check that the address exists and belongs to the user
 $found = $addressController->initAddressById($addressid, $page->getUser()->getId());
 
+// error message if not user's address
 if (!$found) die("Invalid address supplied");
 
-startCheckout($addressid, $page);
+// Generate an orderid here, pass it as metadata to the stripe webhook and use it as a get parameter in the success page
+$orderid = (new UniqueIdGenerator())->properties((new OrderController())->getOrderIds(), 10)->getUniqueId();
+startCheckout($addressid, $page, $orderid);
 
 
 
@@ -30,16 +35,19 @@ startCheckout($addressid, $page);
 
 
 
-function startCheckout($addressid, $page)
+function startCheckout($addressid, $page, $orderid)
 {
+    $deliveryCharge = constant("delivery_cost");
+    $freeDeliveryThreshold = constant("free_delivery_threshold");
     $line_items = [];
+
     // Construct stripe line_items from cart items
     foreach($page->getCart()->getItems() as $item) {
         array_push($line_items, ['price_data' => ['currency' => 'gbp', 'product_data' => ['name' => ucwords($item->getProduct()->getName()),],'unit_amount' => $item->getProduct()->getActivePrice()*100,],'quantity' => $item->getQuantity(),]);
     }
     // add delivery fee if basket total less than threshold
-    if ($page->getCart()->getCartTotal() < constant("free_delivery_threshold")) {
-        array_push($line_items,['price_data' => ['currency' => 'gbp', 'product_data' => ['name' => "Delivery fee",],'unit_amount' => constant("delivery_cost")*100,],'quantity' => 1,]);
+    if ($page->getCart()->getCartTotal() < $freeDeliveryThreshold) {
+        array_push($line_items,['price_data' => ['currency' => 'gbp', 'product_data' => ['name' => "Delivery fee",],'unit_amount' => $deliveryCharge*100,],'quantity' => 1,]);
     }
 
     if (empty($line_items)) header("Location: /basket");
@@ -57,11 +65,11 @@ function startCheckout($addressid, $page)
         'mode' => 'payment',
         'metadata' => [
             'userid' => $page->getUser()->getId(),
-            'cartid' => $page->getCart()->getId(),
             'addressid' => $addressid,
-            'userEmail' => $page->getUser()->getEmail()
+            'orderid' => $orderid,
+            'deliveryCost' => $deliveryCharge
         ],
-        'success_url' => $DOMAIN . '/checkout/success',
+        'success_url' => $DOMAIN . "/checkout/success?order=$orderid",
         'cancel_url' => $DOMAIN . '/basket',
         ]);
     header("HTTP/1.1 303 See Other");

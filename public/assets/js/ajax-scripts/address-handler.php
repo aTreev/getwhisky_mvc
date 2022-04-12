@@ -98,7 +98,7 @@ function addAddress()
 
     $contr = new AddressController();
     $page = new Page(2, true);
-    $addressid = (new UniqueIdGenerator())->setIdProperties($contr->getAddressIds())->getUniqueId();
+    $addressid = (new UniqueIdGenerator())->properties($contr->getAddressIds())->getUniqueId();
 
     $result = $contr->addAddress($addressid, $page->getUser()->getId(), $identifier, $recipient, $postcode, $line1, $line2, $city, $county);
 

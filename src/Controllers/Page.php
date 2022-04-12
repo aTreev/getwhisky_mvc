@@ -58,7 +58,7 @@ class Page {
         // or after a logout
         if (!isset($_SESSION['userid'])) {
             $_SESSION['guest'] = true;
-            $_SESSION['userid'] = "guest-".(new UniqueIdGenerator())->setIdProperties([], 15)->getUniqueId();
+            $_SESSION['userid'] = "guest-".(new UniqueIdGenerator())->properties([], 15)->getUniqueId();
         }
         
         // check for and attempt to authenticate with session

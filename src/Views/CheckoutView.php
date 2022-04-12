@@ -114,5 +114,22 @@ class CheckoutView
             'style' => $style
         ];
     }
+
+    public function orderConfirmationPage()
+    {
+        $html = "";
+        $title = "";
+        $style = "";
+        $script = "";
+
+        $html.=$_GET['order'];
+
+        return [
+            'html' => $html,
+            'title' => $title,
+            'style' => $style,
+            'script' => $script
+        ];
+    }
 }
 ?>
