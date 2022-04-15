@@ -13,6 +13,8 @@ use Getwhisky\Controllers\ProductController;
 
 $page = new Page(0);
 $product = new ProductController;
-$product->initProductByName(str_replace("-", " ", $_GET['p']));
-echo $page->displayPage($product->getView()->productPageFullView());
+$found = $product->initProductByName(str_replace("-", " ", $_GET['p']));
+
+if ($found) echo $page->displayPage($product->getView()->productPageFullView());
+else echo $page->displayPage(['html' => '<p>Product Not Found</p>'])
 ?>

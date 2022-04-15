@@ -172,10 +172,12 @@ class ProductController extends ProductModel
     public function initProductByName($name)
     {
         $productExists = false;
-        $productData = parent::getProductByNameModel($name)[0];
+        $productData = parent::getProductByNameModel($name);
 
         if ($productData) {
+            $productData = $productData[0];
             $productExists = true;
+            
             $this->setId($productData['id'])->setName($productData['name'])->setDescription($productData['description'])
             ->setImage($productData['image'])->setPrice($productData['price'])->setDiscounted($productData['discounted'])->setDiscountPrice($productData['discount_price'])
             ->setStock($productData['stock'])->setActive($productData['active'])->setDiscountEndDatetime($productData['discount_end_datetime'])

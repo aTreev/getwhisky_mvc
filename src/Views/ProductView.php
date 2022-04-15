@@ -24,7 +24,7 @@ class ProductView
             $html.="<p class='text-muted'>".$this->product->getBottleSize()." / ".$this->product->getAlcoholVolume()."</p>";
         }
             $html.="<p class='product-c-price'>£".$this->product->getPrice()."</p>";
-            $html.="<a href='/categories/subcategories/subcategoryvalue/product?p=".str_replace(" ", "-", $this->product->getName())."' class='wrapper-link'><span></span></a>";
+            $html.="<a href='/products/?p=".str_replace(" ", "-", $this->product->getName())."' class='wrapper-link'><span></span></a>";
         $html.="</div>";
 
         return $html;

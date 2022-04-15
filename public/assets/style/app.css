@@ -7,6 +7,7 @@
     --btn-hover-colour: #95b0c2;
     --btn-delete-red: #db4c3c; 
     --border-colour: #dee2e6;
+    --text-muted: #6c757d;
 }
 body {
     background-color: #f7f7f7!important;

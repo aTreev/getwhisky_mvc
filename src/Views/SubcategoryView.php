@@ -18,14 +18,14 @@ class SubcategoryView
     {
         $html = "";
         $html.="<div class='subcategory-menu' category='".$this->subcategory->getCategoryId()."'>";
-            $html.="<a href='/categories/subcategories?s=".$this->subcategory->getId()."' class='subcategory-menu-heading'>".$this->subcategory->getName()."</a>";
+            $html.="<a href='/products/subcategories/?s=".$this->subcategory->getId()."' class='subcategory-menu-heading'>".$this->subcategory->getName()."</a>";
             // Break after 6 and add a view all >
             $i = 0;
             foreach($this->subcategory->getValues() as $subcatValue) {
                 $html.=$subcatValue->getView()->menu();
                 $i++;
                 if ($i == 6) { 
-                    $html.="<a href='/categories/subcategories?s=".$this->subcategory->getId()."'>See all ".$this->subcategory->getName()." &#8250; </a>";
+                    $html.="<a href='/products/subcategories/?s=".$this->subcategory->getId()."'>See all ".$this->subcategory->getName()." &#8250; </a>";
                     break;
                 }
             }
@@ -45,7 +45,7 @@ class SubcategoryView
         $title = ucwords($this->subcategory->getCategoryName())." ".ucwords($this->subcategory->getName());
 
         $html.= SharedView::backwardsNavigation(array(
-            ['url' => "/categories/?c=".$this->subcategory->getCategoryId()."", 'pageName' => ucwords($this->subcategory->getCategoryName())],
+            ['url' => "/products/categories/?c=".$this->subcategory->getCategoryId()."", 'pageName' => ucwords($this->subcategory->getCategoryName())],
             ['url' => '', 'pageName' => ucwords($this->subcategory->getCategoryName())." ".ucwords($this->subcategory->getName())]
         ));
 

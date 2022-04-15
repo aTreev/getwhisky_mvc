@@ -16,7 +16,7 @@ class SubcategoryValueView
 
     public function menu() {
         if ($this->subcategoryValue->getProductCount() == 0) return "";
-        return "<a href='/categories/subcategories/subcategoryvalue?s=".$this->subcategoryValue->getId()."'>".$this->subcategoryValue->getName()."</a>";
+        return "<a href='/products/subcategoryvalues?s=".$this->subcategoryValue->getId()."'>".$this->subcategoryValue->getName()."</a>";
 
     }
 
@@ -38,12 +38,14 @@ class SubcategoryValueView
         $style = "/assets/style/category-pages.css";
         $script = "/assets/js/category-pages.js";
 
+        // Backwards Navigation
         $html.=SharedView::backwardsNavigation(array(
-            ['url' => "/categories/?c=".$this->subcategoryValue->getCategoryId(), 'pageName' => ucwords($this->subcategoryValue->getCategoryName())],
-            ['url' => "/categories/subcategories?s=".$this->subcategoryValue->getSubcategoryId(), 'pageName' => ucwords($this->subcategoryValue->getSubcategoryName())],
+            ['url' => "/products/categories/?c=".$this->subcategoryValue->getCategoryId(), 'pageName' => ucwords($this->subcategoryValue->getCategoryName())],
+            ['url' => "/products/subcategories/?s=".$this->subcategoryValue->getSubcategoryId(), 'pageName' => ucwords($this->subcategoryValue->getSubcategoryName())],
             ['url' => '', 'pageName' => ucwords($this->subcategoryValue->getName())]
         ));
 
+        // Banner Image
         $html.=SharedView::bannerImage([
             'header' => ucwords($this->subcategoryValue->getName()), 
             'text' => $this->subcategoryValue->getDescription(), 

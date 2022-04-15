@@ -9,5 +9,7 @@ class OrderView
     {
         $this->order = $order;
     }
+
+    
 }
 ?>

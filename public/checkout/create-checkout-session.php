@@ -37,7 +37,7 @@ startCheckout($addressid, $page, $orderid);
 
 function startCheckout($addressid, $page, $orderid)
 {
-    $deliveryCharge = constant("delivery_cost");
+    $deliveryCharge = 0;
     $freeDeliveryThreshold = constant("free_delivery_threshold");
     $line_items = [];
 
@@ -47,6 +47,7 @@ function startCheckout($addressid, $page, $orderid)
     }
     // add delivery fee if basket total less than threshold
     if ($page->getCart()->getCartTotal() < $freeDeliveryThreshold) {
+        $deliveryCharge = constant("delivery_cost");
         array_push($line_items,['price_data' => ['currency' => 'gbp', 'product_data' => ['name' => "Delivery fee",],'unit_amount' => $deliveryCharge*100,],'quantity' => 1,]);
     }
 

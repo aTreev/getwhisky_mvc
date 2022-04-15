@@ -24,7 +24,7 @@ class OrderModel {
         return $resultset;
     }
 
-    protected function createorderModel($id, $paymentIntent, $userid, $total, $deliveryCost, $deliveryRecipient, $deliveryLine1, $deliveryLine2, $deliveryCity, $deliveryCounty, $deliveryPostcode)
+    protected function createorderModel($id, $paymentIntent, $userid, $total, $discountTotal, $deliveryCost, $deliveryRecipient, $deliveryLine1, $deliveryLine2, $deliveryCity, $deliveryCounty, $deliveryPostcode)
     {
         self::$DatabaseConnection = DatabaseConnection::getInstance();
         $processingStatus = 1;
@@ -35,6 +35,7 @@ class OrderModel {
             `user_id`, 
             `status_id`, 
             `total`, 
+            `discount_total`,
             `delivery_cost`, 
             `delivery_recipient`, 
             `delivery_line1`, 
@@ -43,9 +44,9 @@ class OrderModel {
             `delivery_county`, 
             `delivery_postcode`
         )
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);";
         $this->stmt = self::$DatabaseConnection->prepare($this->sql);
-        $this->stmt->bind_param("sssiddssssss", $id, $paymentIntent, $userid, $processingStatus, $total, $deliveryCost, $deliveryRecipient, $deliveryLine1, $deliveryLine2, $deliveryCity, $deliveryCounty, $deliveryPostcode);
+        $this->stmt->bind_param("sssidddssssss", $id, $paymentIntent, $userid, $processingStatus, $total, $discountTotal, $deliveryCost, $deliveryRecipient, $deliveryLine1, $deliveryLine2, $deliveryCity, $deliveryCounty, $deliveryPostcode);
         $this->stmt->execute();
         return $this->stmt->affected_rows;
     }
@@ -59,6 +60,39 @@ class OrderModel {
         $this->stmt->bind_param("ssssdi", $orderid, $productid, $productName, $productImage, $pricePaid, $quantity);
         $this->stmt->execute();
         return $this->stmt->affected_rows;
+    }
+
+
+    protected function getUserOrder($orderid, $userid, $style=MYSQLI_ASSOC)
+    {
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
+
+        $this->sql = 
+        "SELECT orders.*, order_status.name  AS 'status_label'
+        FROM orders 
+        JOIN order_status
+        ON orders.status_id = order_status.id
+        WHERE (orders.id = ? AND orders.user_id = ?);";
+        
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
+        $this->stmt->bind_param("ss", $orderid, $userid);
+        $this->stmt->execute();
+        $result = $this->stmt->get_result();
+        $resultset = $result->fetch_all($style);
+        return $resultset;
+    }
+
+    protected function getOrderItems($orderid, $style=MYSQLI_ASSOC)
+    {
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
+
+        $this->sql = "SELECT * FROM `order_items` WHERE `order_id` = ?";
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
+        $this->stmt->bind_param("s", $orderid);
+        $this->stmt->execute();
+        $result = $this->stmt->get_result();
+        $resultset = $result->fetch_all($style);
+        return $resultset;
     }
 }
 ?>

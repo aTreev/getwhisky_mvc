@@ -1,6 +1,7 @@
 <?php
 namespace Getwhisky\Views;
 
+use Getwhisky\Controllers\AddressController;
 use Getwhisky\Controllers\CheckoutController;
 
 class CheckoutView
@@ -46,12 +47,19 @@ class CheckoutView
                     $html.="<div class='info'>";
                         $html.="<p>Free delivery on orders over £".constant("free_delivery_threshold").". For all other orders a flat delivery fee of £".constant("delivery_cost")." will be applied during checkout.</p>";
                     $html.="</div>";
+
+
                     // User addresses
-                    $html.="<div class='address-items'>";
-                    foreach($userAddresses as $address) {
-                        $html.=$address->getView()->deliveryItemView();
-                    }            
-                    $html.="</div>";
+                    if (!empty($userAddresses)) {
+                        $html.="<div class='address-items'>";
+                        foreach($userAddresses as $address) {
+                            $html.=$address->getView()->deliveryItemView();
+                        }          
+                        $html.="</div>";
+                    } else {
+                        $html.="<p class='mt-4 text-muted'>You have no saved addresses! click the button below to create an address.</p>";
+                    }
+        
                     // Options
                     $html.="<div class='options'>";
                         // Add new address button
@@ -103,7 +111,7 @@ class CheckoutView
         $html.="</div>";
 
         $html.="<div class='add-address-root'>";
-            $html.=$userAddresses[0]->getView()->createAddressForm();
+            $html.=(new AddressController())->getView()->createAddressForm();
         $html.="</div>";
 
         //$html.=$this->checkout->getUser()->getAddresses()[0]->getView()->createAddressForm();
@@ -118,12 +126,74 @@ class CheckoutView
     public function orderConfirmationPage()
     {
         $html = "";
-        $title = "";
-        $style = "";
+        $title = "Thank you!";
+        $style = "/assets/style/order-confirmation-page.css";
         $script = "";
 
-        $html.=$_GET['order'];
+        $order = $this->checkout->getOrder();
+        $user = $this->checkout->getUser();
 
+        $html.="<div class='order-confirmation-root'>";
+
+            // Left
+            $html.="<div class='left'>";
+                $html.="<div class='header'>";
+                    $html.="<h2>Thank you, {$user->getFirstName()}!</h2>";
+                    $html.="<p>Your order has been placed.</p>";
+                $html.="</div>";
+
+                $html.="<div class='shipping'>";
+                    $html.="<h5>Delivery address</h5>";
+                    $html.="<p>{$order->getDeliveryRecipient()}</p>";
+                    $html.="<p>{$order->getDeliveryLine1()}</p>";
+                    $html.="<p>{$order->getDeliveryLine2()}</p>";
+                    $html.="<p>{$order->getDeliveryCity()}, {$order->getDeliveryPostcode()}</p>";
+                    $html.="<p>{$order->getDeliveryCounty()}</p>";
+                $html.="</div>";
+
+                $html.="<div class='info'>";
+                    $html.="<p>A confirmation email has been sent to {$user->getEmail()}<br><i>(Implementation pending)</i></p>";
+                    $html.="<p>Have any questions about your order?<br>Pop us an email at <a href='mailto:".constant("support_email")."'>".constant("support_email")."</a></p>";
+                $html.="</div>";
+            $html.="</div>";
+            
+            $html.="<div class='right'>";
+                // header
+                $html.="<div class='header'>";
+                    $html.="<h5>Items to be delivered</h5>";
+                $html.="</div>";
+                // Order items
+                $html.="<div class='order-items'>";
+                    foreach($order->getItems() as $item) {
+                        // Item
+                        $html.="<div class='item'>";
+                            // Left details
+                            $html.="<div class='details-left'>";
+                                // Image
+                                $html.="<img src='{$item['product_image']}'>";
+                                // Details
+                                $html.="<div class='center-details'>";
+                                    $html.="<p style='font-weight: 500;'>{$item['product_name']}</p>";
+                                    $html.="<p class='qty'>Quantity: {$item['quantity']}</p>";
+                                    $html.="<p>";
+                                $html.="</div>";
+                            $html.="</div>";
+                            // Price
+                            $html.="<p style='font-weight: 500;'>£{$item['price_paid']}</p>";
+                        $html.="</div>";
+                    }
+                $html.="</div>";
+
+                $html.="<div class='order-summary'>";
+                    $html.="<div class='detail-item'><p>Shipping</p><p>£{$order->getDeliveryCost()}</p></div>";
+                    if ($order->getDiscountTotal() != 0) $html.="<div class='detail-item'><p>Discounts</p><p>£{$order->getDiscountTotal()}</p></div>";
+                    $finalTotal = number_format($order->getTotal() + $order->getDeliveryCost(), 2, ".", "");
+                    $html.="<div class='detail-item'><p>Total</p><p>£{$finalTotal}</p></div>";
+                $html.="</div>";
+
+            $html.="</div>";
+
+        $html.="</div>";
         return [
             'html' => $html,
             'title' => $title,

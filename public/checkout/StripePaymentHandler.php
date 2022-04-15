@@ -70,7 +70,7 @@ function fulfill_order($session)
 
   // Create new order
   $order = new OrderController();
-  $order->createOrder($orderid, $paymentIntent, $userid, $cart->getCartTotal(), $deliveryCost, $address->getRecipientName(), $address->getLine1(), $address->getLine2(), $address->getCity(), $address->getCounty(), $address->getPostcode());
+  $order->createOrder($orderid, $paymentIntent, $userid, $cart->getCartTotal(), $cart->getCartDiscounts(), $deliveryCost, $address->getRecipientName(), $address->getLine1(), $address->getLine2(), $address->getCity(), $address->getCounty(), $address->getPostcode());
 
   // Add cart items to order
   foreach($cart->getItems() as $item) {

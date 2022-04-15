@@ -1,11 +1,8 @@
 add review system?
-Implement global cart system
-Implement cart notification system (insufficient stock auto removal)
-Implement add to cart
-Implement shipp test API
-Complete cart section, update, delete
-Implement user addresses with auto address lookup -- getaddress.io
 Implement shipping cost calculator if possible
 Create order/invoice system
-Integrate Stripe checkout
+Add discount display on category pages (ProductView)
+Fix checkout delivery CSS make responsive
+Add a registration page to delivery if user not signed in - also transfer cart
+Create user order history
  
