@@ -11,6 +11,7 @@ class OrderController extends OrderModel
     private $status;
     private $total;
     private $discountTotal;
+    private $datetimePlaced;
 
     private $deliveryCost;
     private $deliveryRecipient;
@@ -30,6 +31,7 @@ class OrderController extends OrderModel
     private function setStatus($status) { $this->status = $status; return $this; }
     private function setTotal($total) { $this->total = $total; return $this; }
     private function setDiscountTotal($discount) { $this->discountTotal = $discount; return $this; }
+    private function setDatetimePlaced($dt) { $this->datetimePlaced = $dt; }
     private function setDeliveryCost($cost) { $this->deliveryCost = $cost; return $this; }
     private function setDeliveryRecipient($recipient) { $this->deliveryRecipient = $recipient; return $this; }
     private function setDeliveryLine1($line1) { $this->deliveryLine1 = $line1; return $this; }
@@ -45,6 +47,7 @@ class OrderController extends OrderModel
     public function getStatus() { return $this->status; }
     public function getTotal() { return $this->total; }
     public function getDiscountTotal() { return $this->discountTotal; }
+    public function getDatetimePlaced() { return $this->datetimePlaced; }
     public function getDeliveryCost() { return $this->deliveryCost; }
     public function getDeliveryRecipient() { return $this->deliveryRecipient; }
     public function getDeliveryLine1() { return $this->deliveryLine1; }
@@ -59,6 +62,11 @@ class OrderController extends OrderModel
     public function getOrderIds()
     {
         return parent::getOrderIdsModel();
+    }
+
+    public function getUserOrderIds($userid)
+    {
+        return parent::getUserOrderIdsModel($userid);
     }
 
 

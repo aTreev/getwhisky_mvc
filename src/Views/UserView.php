@@ -239,5 +239,22 @@ class UserView
             'title' => $title,
         ];
     }
+
+    public function orderPage()
+    {
+        $html = "";
+        $title = "My orders | Getwhisky";
+        $script = "";
+        $style = "";
+
+        $html.=sprintf('%08d', 111);
+
+        return [
+            'html' => $html,
+            'title' => $title,
+            'style' => $style,
+            'script' => $script
+        ];
+    }
 }
 ?>

@@ -82,6 +82,19 @@ class OrderModel {
         return $resultset;
     }
 
+    protected function getUserOrderIdsModel($userid, $style=MYSQLI_ASSOC)
+    {
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
+
+        $this->sql = "SELECT `id` FROM `orders` WHERE `user_id` = ? ORDER BY `date_placed` DESC;";
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
+        $this->stmt->bind_param("s", $userid);
+        $this->stmt->execute();
+        $result = $this->stmt->get_result();
+        $resultset = $result->fetch_all($style);
+        return $resultset;
+    }
+
     protected function getOrderItems($orderid, $style=MYSQLI_ASSOC)
     {
         self::$DatabaseConnection = DatabaseConnection::getInstance();

@@ -1,3 +1,16 @@
+@media screen and (min-width: 736px) {
+  .registration-container {
+    border-top-left-radius: 0!important;
+    border-bottom-left-radius: 0!important;
+    }
+    .login-container {
+        border-top-right-radius: 0!important;
+        border-bottom-right-radius: 0!important;
+    }  
+}
+
+
+
 @media screen and (max-width: 736px) {
     .checkout-reg-container {
         flex-direction: column;
@@ -8,8 +21,14 @@
         margin-top: -1px!important;
         margin-left: 0px!important;
         margin-bottom: 100px;
+        border-top-left-radius: 0!important;
+        border-top-right-radius: 0!important;
     }
 
+    .login-container {
+        border-bottom-left-radius: 0!important;
+        border-bottom-right-radius: 0!important;
+    }
     .registration-container, .login-container {
         width: 100%!important;
     }

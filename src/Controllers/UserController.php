@@ -21,7 +21,7 @@ class UserController extends UserModel
     private $userView;
 
     private $addresses = [];
-
+    private $orders = [];
     public function __construct() 
     {
         $this->id = -1;
@@ -68,6 +68,7 @@ class UserController extends UserModel
     public function getPassResetKey() { return $this->passResetKey; }
     public function getView() { return $this->userView = new UserView($this); }
     public function getAddresses() { return $this->addresses; }
+    public function getOrders() { return $this->orders; }
 
     /*********
      * Authenticates a user by checking if the passed session
@@ -112,6 +113,8 @@ class UserController extends UserModel
 		$data=parent::getUserByEmailModel($email);
 		if(count($data)==1) {
 			$user=$data[0];
+			$haveuser=true;
+
 			$this->setId($user["id"]);
 			$this->setFirstname($user["first_name"]);
 			$this->setSurname($user["surname"]);
@@ -123,8 +126,9 @@ class UserController extends UserModel
             $this->setVerified($user['verified']);
             $this->setPassResetKey($user['password_reset_key']);
             $this->userhash->initHash($user["user_password"]);
+
             $this->getUserAddresses();
-			$haveuser=true;
+            $this->getUserOrders();
 		} 
 		return $haveuser;
 	}
@@ -138,6 +142,7 @@ class UserController extends UserModel
 		$haveuser=false;
 		$data=parent::getUserByIdModel($id);
 		if(count($data)==1) {
+			$haveuser=true;
 			$user=$data[0];
 			$this->setId($user["id"]);
 			$this->setFirstname($user["first_name"]);
@@ -150,8 +155,9 @@ class UserController extends UserModel
             $this->setVerified($user['verified']);
             $this->setPassResetKey($user['password_reset_key']);
             $this->userhash->initHash($user["user_password"]);
+
             $this->getUserAddresses();
-			$haveuser=true;
+            $this->getUserOrders();
 		} 
 		return $haveuser;
 	}
@@ -206,6 +212,19 @@ class UserController extends UserModel
             $addressContr = new AddressController();
             $addressContr->initAddressById($address['id'], $this->getId());
             array_push($this->addresses, $addressContr);
+        }
+    }
+
+    public function getUserOrders()
+    {
+        $orderData = (new OrderController())->getUserOrderIds($this->getId());
+
+        if (!$orderData) return false;
+
+        foreach($orderData as $order) {
+            $orderContr = new OrderController();
+            $orderContr->initOrder($order['id'], $this->getId());
+            array_push($this->orders, $orderContr);
         }
     }
 }

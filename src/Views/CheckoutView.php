@@ -216,7 +216,7 @@ class CheckoutView
 
         $html.="<div class='d-flex flex-wrap w-100 checkout-reg-container'>";
 
-            $html.="<div class='login-container p-5 bg-white rounded border mt-5 w-50' style='margin-left:-1px;'>";
+            $html.="<div class='login-container p-4 bg-white rounded border mt-5 w-50'>";
                     $html.="<h1 class='fs-3 mb-0'>Existing Customers</h1>";
                     $html.="<p class='text-muted'>Login with your account credentials</p>";
                     
@@ -233,7 +233,7 @@ class CheckoutView
                     $html.="</form>";
             $html.="</div>";
 
-            $html.="<div class='registration-container col p-5 mt-5 bg-white rounded border w-50' style='margin-left:-1px;'>";
+            $html.="<div class='registration-container col p-4 mt-5 bg-white rounded border w-50' style='margin-left:-1px;'>";
                 $html.="<h1 class='mb-0 fs-3'>New Customer</h1>";
                 $html.="<p class='text-muted'>Enter your details below</p>";
 
