@@ -23,7 +23,7 @@ class CartItemView
 
             // Details
             $html.="<div class='cart-item-details-container'>";
-                $html.="<a href='/categories/subcategories/subcategoryvalue/product?p=".$product->getName()."'>";
+                $html.="<a href='/products/?p=".$product->getName()."'>";
                 $html.="<img src='".$product->getImage()."' />";
                 $html.="</a>";
                 $html.="<div class='cart-item-details'>";

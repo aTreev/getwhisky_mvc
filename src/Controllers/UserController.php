@@ -171,8 +171,8 @@ class UserController extends UserModel
     public function regUser($email, $password, $firstname,$surname, $dob) 
     {
         $uniqueIdGen = new UniqueIdGenerator();
-        $userid = $uniqueIdGen->setIdProperties(parent::getUserIds())->getUniqueId();
-        $verificationKey = $uniqueIdGen->setIdProperties(parent::getExistingVerificationKeys())->getUniqueId();
+        $userid = $uniqueIdGen->properties(parent::getUserIds())->getUniqueId();
+        $verificationKey = $uniqueIdGen->properties(parent::getExistingVerificationKeys())->getUniqueId();
 
         $insert=0;
 		$messages="";

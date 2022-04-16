@@ -140,6 +140,7 @@ class CheckoutView
                 $html.="<div class='header'>";
                     $html.="<h2>Thank you, {$user->getFirstName()}!</h2>";
                     $html.="<p>Your order has been placed.</p>";
+                    $html.="<p>A confirmation email has been sent to {$user->getEmail()}<br><i>(Implementation pending)</i></p>";
                 $html.="</div>";
 
                 $html.="<div class='shipping'>";
@@ -152,7 +153,6 @@ class CheckoutView
                 $html.="</div>";
 
                 $html.="<div class='info'>";
-                    $html.="<p>A confirmation email has been sent to {$user->getEmail()}<br><i>(Implementation pending)</i></p>";
                     $html.="<p>Have any questions about your order?<br>Pop us an email at <a href='mailto:".constant("support_email")."'>".constant("support_email")."</a></p>";
                 $html.="</div>";
             $html.="</div>";
@@ -162,6 +162,7 @@ class CheckoutView
                 $html.="<div class='header'>";
                     $html.="<h5>Items to be delivered</h5>";
                 $html.="</div>";
+
                 // Order items
                 $html.="<div class='order-items'>";
                     foreach($order->getItems() as $item) {
@@ -173,7 +174,8 @@ class CheckoutView
                                 $html.="<img src='{$item['product_image']}'>";
                                 // Details
                                 $html.="<div class='center-details'>";
-                                    $html.="<p style='font-weight: 500;'>{$item['product_name']}</p>";
+                                    $productName = ucwords($item['product_name']);
+                                    $html.="<p style='font-weight: 500;'>{$productName}</p>";
                                     $html.="<p class='qty'>Quantity: {$item['quantity']}</p>";
                                     $html.="<p>";
                                 $html.="</div>";
@@ -183,7 +185,8 @@ class CheckoutView
                         $html.="</div>";
                     }
                 $html.="</div>";
-
+                
+                // Order summary
                 $html.="<div class='order-summary'>";
                     $html.="<div class='detail-item'><p>Shipping</p><p>£{$order->getDeliveryCost()}</p></div>";
                     if ($order->getDiscountTotal() != 0) $html.="<div class='detail-item'><p>Discounts</p><p>£{$order->getDiscountTotal()}</p></div>";
@@ -194,6 +197,20 @@ class CheckoutView
             $html.="</div>";
 
         $html.="</div>";
+        
+        return [
+            'html' => $html,
+            'title' => $title,
+            'style' => $style,
+            'script' => $script
+        ];
+    }
+
+
+    public function checkoutRegistrationPage()
+    {
+        $html = $title = $style = $script = "";
+
         return [
             'html' => $html,
             'title' => $title,

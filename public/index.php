@@ -26,11 +26,12 @@ echo $page->displayPage([
         <li>User address system</li>
         <li>Cart notifications</li>
         <li>Stripe checkout</li>
+        <li>Order creation on backend</li>
+        <li>Order confirmation page</li>
     </ul>
     <p style='font-weight:500;'>Features yet to be implemented</p>
     <ul style='margin-top:-10px;'>
-        <li>Post checkout order generation</li>
-        <li>User orders</li>
+        <li>User order history</li>
         <li>PDF invoice generation</li>
         <li>Featured / recommended products</li>
         <li>Admin backend</li>

@@ -12,9 +12,12 @@ body {
         flex: 0 0 40%;
 
         .header {
-            padding-bottom: 15px;
+            padding-bottom: 25px;
 
-            p { color: var(--text-muted)}
+            p { 
+                color: var(--text-muted); 
+                margin-bottom: 10px;
+            }
         }
 
         .shipping {
@@ -26,7 +29,7 @@ body {
         }
 
         .info {
-            p { color: var(--text-muted); font-size: 15px; }
+            p { color: var(--text-muted); font-size: 15px; font-weight: 500;}
         }
     }
 

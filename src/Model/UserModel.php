@@ -51,7 +51,7 @@ class UserModel
         if($this->stmt->affected_rows!=1) {
             $errors="";
             if(strpos($this->stmt->error,'email')) {
-                $errors.="Email address exists<br />";
+                $errors.="Email address already exists<br />";
             }
             return $errors;
         } else {

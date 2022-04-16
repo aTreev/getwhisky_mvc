@@ -1,6 +1,8 @@
 <?php
 namespace Getwhisky\Views;
 
+use Getwhisky\Controllers\AddressController;
+
 class UserView 
 {
     private $user;
@@ -13,18 +15,21 @@ class UserView
 
     public function register()
     {
+        $title = "Registration | Getwhisky";
+        $script = "/assets/js/registration.js";
         $html = 
         "
         <div class='col m-auto p-5 mt-5 bg-white rounded border' style='max-width:700px;'>
-            <h1 class='mb-3 fs-3'>Sign up</h1>
-            <form action='reguser.php' method='post'>
+            <h1 class='mb-0 fs-3'>New Customer</h1>
+            <p class='text-muted'>Enter your details below</p>
+            <form id='regForm'>
                 <div class='mb-3'>
                     <label for='email'>Email Address</label>
                     <input type='email' class='form-control' name='email' id='email'>
                 </div>
                 <div class='mb-3'>
                     <label for='first-name'>First name</label>
-                    <input type='text' class='form-control' name='first-name' id='first-name'>
+                    <input type='text' class='form-control' name='firstname' id='first-name'>
                 </div>
                 <div class='mb-3'>
                     <label for='surname'>Surname</label>
@@ -38,11 +43,15 @@ class UserView
                     <label for='password'>Password</label>
                     <input type='password' class='form-control' name='password' id='password'>
                 </div> 
-                <input type='submit' class='btn btn-primary' value='Submit'>
+                <div class='mb-3'>
+                    <label for='repeat-password'>Repeat Password</label>
+                    <input type='password' class='form-control' name='repeat_password' id='repeat_password'>
+                </div> 
+                <input type='submit' class='btn btn-primary' id='reg_submit' value='Submit'>
             </form>
         </div>
         ";
-        return ['html' => $html, 'title' => 'Registration | Getwhisky'];
+        return ['html' => $html, 'title' => 'Registration | Getwhisky', 'script' => $script];
     }
 
     public function login()
@@ -55,14 +64,14 @@ class UserView
 
         <div class='login-form col p-3'>
             <h1 class='fs-3 pb-2'>Login</h1>
-            <form action='processlogin.php' method='post' id='login-form'>
+            <form id='login-form'>
                 <div class='mb-3'>
-                    <label for='email'>Email Address</label>
-                    <input type='email' class='form-control' name='email' id='email'>
+                    <label for='login_email'>Email Address</label>
+                    <input type='email' class='form-control' name='email' id='login_email'>
                 </div>
                 <div class='mb-3'>
-                    <label for='password'>Password</label>
-                    <input type='password' class='form-control' name='password' id='password'>
+                    <label for='login_password'>Password</label>
+                    <input type='password' class='form-control' name='password' id='login_password'>
                 </div> 
                 <p class='mb-3'>New to Getwhisky? <a href='/register'>Sign up here</a></p>
                 <input type='submit' class='btn btn-primary' value='Submit'>
@@ -206,9 +215,14 @@ class UserView
                 $html.="</div>";
 
                 $html.="<div class='user-address-root'>";
+
+                if (empty($this->user->getAddresses())) {
+                    $html.="<p class='text-muted ps-4'>You currently have no saved addresses!</p>";
+                }
                 foreach ($this->user->getAddresses() as $address) {
                     $html.=$address->getView()->addressItem();
                 }
+
                 $html.="</div>";
                 $html.="<div class='add-address-btn'>";
                     $html.="<p>Add new address +</p>";
@@ -217,7 +231,7 @@ class UserView
 
         $html.="</div>";
 
-        $html.= $this->user->getAddresses()[0]->getView()->createAddressForm();
+        $html.= (new AddressController())->getView()->createAddressForm();
         return [
             'html' => $html,
             'script' => $script,

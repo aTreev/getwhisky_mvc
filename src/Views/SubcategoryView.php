@@ -92,7 +92,7 @@ class SubcategoryView
                 $html.="<div class='distillery-item'>";
                     $html.="<img src='".$value->getThumbnail()."' />";
                     $html.="<p>".$value->getName()."</p>";
-                    $html.="<a href='/categories/subcategories/subcategoryvalue/?s=".$value->getId()."'><span class='wrapper-link'></span></a>";
+                    $html.="<a href='/products/subcategoryvalues/?s=".$value->getId()."'><span class='wrapper-link'></span></a>";
                 $html.="</div>";
             }
             

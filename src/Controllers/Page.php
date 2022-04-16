@@ -2,6 +2,7 @@
 namespace Getwhisky\Controllers;
 
 use Getwhisky\Util\UniqueIdGenerator;
+use Getwhisky\Util\Util;
 
 $path = realpath("C:/") ? "C:/wamp64/www/getwhisky-mvc" : "/var/www/getwhisky-mvc";
 require_once "$path/src/constants.php";
@@ -9,7 +10,8 @@ require_once "$path/src/constants.php";
 /******************
  * The page class
  * This class handles authentication
- * and contains/controls state of classes & objects throughout the site
+ * and contains/controls state of classes & objects that are persistant
+ * throughout the site. E.g. categories & cart
  ******************************/
 class Page {
     private int $requiredAccessLevel;
@@ -64,13 +66,22 @@ class Page {
         // check for and attempt to authenticate with session
         if ((isset($_SESSION['userid']) && $_SESSION['userid']!='' )) {
             $this->setAuthenticated($this->getUser()->authBySession($_SESSION['userid'], session_id()));
+            // If auth end guest session
             if ($this->isAuthenticated()) $_SESSION['guest'] = false;
         } 
         
         // If we're still on a guest session at this point set the global user object's
         // userid to the guest-id. This allows the global user cart to be initialized for
         // the guest session.
-        if (isset($_SESSION['userid']) && $_SESSION['guest'] == true) {
+        if (isset($_SESSION['guest']) && $_SESSION['guest'] == true) {
+            // Check if guest userid is in cookie
+            if (isset($_COOKIE['guest_session_userid']) && Util::valStr($_COOKIE['guest_session_userid'])) {
+                // set session userid to cookie
+                $_SESSION['userid'] = Util::sanStr($_COOKIE['guest_session_userid']);
+            } else {
+                // set 30 day cookie to new generated guest userid
+                setcookie("guest_session_userid", $_SESSION['userid'],time()+60*60*24*30);
+            }
             $this->getUser()->setGuestId($_SESSION['userid']);
         }
         

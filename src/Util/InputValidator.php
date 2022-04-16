@@ -29,7 +29,8 @@ class InputValidator
 
     private $patterns = array(
         'postcode' => "/^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/",
-        'mobile' => "/((\+44(\s\(0\)\s|\s0\s|\s)?)|0)7\d{3}(\s)?\d{6}/"
+        'mobile' => "/((\+44(\s\(0\)\s|\s0\s|\s)?)|0)7\d{3}(\s)?\d{6}/",
+        'date' => "/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/"
     );
     
     /********
@@ -59,7 +60,7 @@ class InputValidator
 
     /*************
      * Sanitizes the value using the Util class
-     * @param string $type - type of sanitization to be used string|integer|float
+     * @param string $type - type of sanitization to be used string|integer|float|email
      */
     public function sanitize($type)
     {
