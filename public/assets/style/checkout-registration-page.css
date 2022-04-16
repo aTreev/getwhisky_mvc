@@ -1,0 +1,16 @@
+@media screen and (max-width: 736px) {
+    .checkout-reg-container {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .registration-container {
+        margin-top: -1px!important;
+        margin-left: 0px!important;
+        margin-bottom: 100px;
+    }
+
+    .registration-container, .login-container {
+        width: 100%!important;
+    }
+}

@@ -1,5 +1,6 @@
 <?php
 
+use Getwhisky\Controllers\CheckoutController;
 use Getwhisky\Controllers\Page;
 use Getwhisky\Util\Util;
 
@@ -7,7 +8,13 @@ $path = realpath("C:/") ? "C:/wamp64/www/getwhisky-mvc" : "/var/www/getwhisky-mv
 require_once "$path/vendor/autoload.php";
 
 $page = new Page();
-echo $page->displayPage();
+// Redirect if logged in
+if ($page->getUser()->getAccessLevel() > 0) header("Location: /checkout/");
+
+// Create new checkout
+$checkout = new CheckoutController(null, $page->getCart());
+
+echo $page->displayPage($checkout->getView()->checkoutRegistrationPage());
 
 
 ?>

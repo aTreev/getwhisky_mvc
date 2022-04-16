@@ -39,7 +39,7 @@ function validate(form, options={})
 
         // If field not valid add feedback to form and set valid to false
         if (!valid.valid) {
-            feedback(form.querySelector(`[name=${inputName}`), valid.message);
+            feedback(form.querySelector(`[name=${inputName}]`), valid.message);
             formValid = false;
         }
     }
@@ -85,14 +85,16 @@ function check(inputName, value, required, type, max)
 
 
 /**********
+ * Adds feedback to a form input.
+ * Requires the input to have a unique ID
  * @input input - the input receiving feedback
  * @message string - the message appended to the input
  **********/
 function feedback(input, message)
 {
-    $(`#feedback-${input.getAttribute("name")}`).remove();
+    $(`#feedback-${input.getAttribute("id")}`).remove();
     input.style.borderColor = "red";
-    input.insertAdjacentHTML("afterend", `<div class='form-feedback text-danger' id='feedback-${input.getAttribute("name")}'>${message}</div>`);
+    input.insertAdjacentHTML("afterend", `<div class='form-feedback text-danger' id='feedback-${input.getAttribute("id")}'>${message}</div>`);
     $(".form-feedback")[0].scrollIntoView({block: "end", inline: "nearest"});
 }
 

@@ -198,15 +198,14 @@ class Page {
      * 
      * Takes optional page title
      ******************************************/
-    public function displayPage($view=['html', 'script', 'style', 'title']) 
+    public function displayPage($view) 
     {
         $dynamicMenu = $this->dynamicMenu();
         $productMenu = $this->productMenu();
         if (array_key_exists('html',$view)) $viewHtml = $view['html']; else $viewHtml = "";
-        if (array_key_exists('script',$view)) $viewScript = "<script defer src='".$view['script']."'></script>"; else $viewScript = "";
         if (array_key_exists('style',$view)) $viewStyle = "<link rel='stylesheet' href='".$view['style']."' />"; else $viewStyle = "";
         if (array_key_exists('title',$view)) $viewTitle = $view['title']; else $viewTitle = "Getwhisky";
-        
+        //if (array_key_exists('script',$view)) $viewScript = "<script defer src='".$view['script']."'></script>"; else $viewScript = "";
         
         $html = "
         <!doctype html>
@@ -260,9 +259,19 @@ class Page {
             <script src='/assets/js/classes/notification.js'></script>
             <script src='/assets/js/form-functions.js'></script>
             <script src='/assets/js/ajax-functions.js'></script>
-            <script src='/assets/js/app.js'></script>
-            $viewScript
-            <script>
+            <script src='/assets/js/app.js'></script>";
+            // inject scripts
+            if (array_key_exists('script',$view)) {
+                if (!is_array($view['script'])) {
+                    $html.="<script defer src='".$view['script']."'></script>";
+                } else {
+                    foreach($view['script'] as $script) {
+                        $html.="<script defer src='".$script."'></script>";
+                    }
+                }
+            }
+
+            $html.="<script>
                 document.onreadystatechange = function() {
                     if(document.readyState==='complete') {
                         prepareApp();

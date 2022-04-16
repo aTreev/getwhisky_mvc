@@ -209,41 +209,65 @@ class CheckoutView
 
     public function checkoutRegistrationPage()
     {
-        $html = $title = $style = $script = "";
+        $html = "";
+        $title = "Checkout sign in | Getwhisky";
+        $style = "/assets/style/checkout-registration-page.css";
+        $script = ["/assets/js/registration.js", "/assets/js/login-page.js"];
 
-        $html.="<div class='col m-auto p-5 mt-5 bg-white rounded border' style='max-width:700px;'>";
-            $html.="<h1 class='mb-0 fs-3'>New Customer</h1>";
-            $html.="<p class='text-muted'>Enter your details below</p>";
+        $html.="<div class='d-flex flex-wrap w-100 checkout-reg-container'>";
 
-            $html.="<form id='regForm'>";
-                $html.="<div class='mb-3'>";
-                    $html.="<label for='email'>Email Address</label>";
-                    $html.="<input type='email' class='form-control' name='email' id='email'>";
-                $html.="</div>";
-                $html.="<div class='mb-3'>";
-                    $html.="<label for='first-name'>First name</label>";
-                    $html.="<input type='text' class='form-control' name='firstname' id='first-name'>";
-                $html.="</div>";
-                $html.="<div class='mb-3'>";
-                    $html.="<label for='surname'>Surname</label>";
-                    $html.="<input type='text' class='form-control' name='surname' id='surname'>";
-                $html.="</div>";
-                $html.="<div class='mb-3'>";
-                    $html.="<label for='dob'>Date of birth</label>";
-                    $html.="<input type='date' class='form-control' name='dob' id='dob'>";
-                $html.="</div>";
-                $html.="<div class='mb-3'>";
-                    $html.="<label for='password'>Password</label>";
-                    $html.="<input type='password' class='form-control' name='password' id='password'>";
-                $html.="</div>";
-                $html.="<div class='mb-3'>";
-                    $html.="<label for='repeat-password'>Repeat Password</label>";
-                    $html.="<input type='password' class='form-control' name='repeat_password' id='repeat_password'>";
-                $html.="</div>";
-                $html.="<input type='submit' class='btn btn-primary' id='reg_submit' value='Submit'>";
-            $html.="</form>";
-            
+            $html.="<div class='login-container p-5 bg-white rounded border mt-5 w-50' style='margin-left:-1px;'>";
+                    $html.="<h1 class='fs-3 mb-0'>Existing Customers</h1>";
+                    $html.="<p class='text-muted'>Login with your account credentials</p>";
+                    
+                    $html.="<form id='login-form'>";
+                        $html.="<div class='mb-3'>";
+                            $html.="<label for='login_email'>Email Address</label>";
+                            $html.="<input type='email' class='form-control' name='email' id='login_email'>";
+                        $html.="</div>";
+                        $html.="<div class='mb-3'>";
+                            $html.="<label for='login_password'>Password</label>";
+                            $html.="<input type='password' class='form-control' name='password' id='login_password'>";
+                        $html.="</div>";
+                        $html.="<input type='submit' class='btn btn-primary' value='Submit'>";
+                    $html.="</form>";
+            $html.="</div>";
+
+            $html.="<div class='registration-container col p-5 mt-5 bg-white rounded border w-50' style='margin-left:-1px;'>";
+                $html.="<h1 class='mb-0 fs-3'>New Customer</h1>";
+                $html.="<p class='text-muted'>Enter your details below</p>";
+
+                $html.="<form id='regForm'>";
+                    $html.="<div class='mb-3'>";
+                        $html.="<label for='email'>Email Address</label>";
+                        $html.="<input type='email' class='form-control' name='email' id='email'>";
+                    $html.="</div>";
+                    $html.="<div class='mb-3'>";
+                        $html.="<label for='first-name'>First name</label>";
+                        $html.="<input type='text' class='form-control' name='firstname' id='first-name'>";
+                    $html.="</div>";
+                    $html.="<div class='mb-3'>";
+                        $html.="<label for='surname'>Surname</label>";
+                        $html.="<input type='text' class='form-control' name='surname' id='surname'>";
+                    $html.="</div>";
+                    $html.="<div class='mb-3'>";
+                        $html.="<label for='dob'>Date of birth</label>";
+                        $html.="<input type='date' class='form-control' name='dob' id='dob'>";
+                    $html.="</div>";
+                    $html.="<div class='mb-3'>";
+                        $html.="<label for='password'>Password</label>";
+                        $html.="<input type='password' class='form-control' name='password' id='password'>";
+                    $html.="</div>";
+                    $html.="<div class='mb-3'>";
+                        $html.="<label for='repeat-password'>Repeat Password</label>";
+                        $html.="<input type='password' class='form-control' name='repeat_password' id='repeat_password'>";
+                    $html.="</div>";
+                    $html.="<input type='submit' class='btn btn-primary' id='reg_submit' value='Submit'>";
+                $html.="</form>";
+            $html.="</div>";
+
         $html.="</div>";
+
         return [
             'html' => $html,
             'title' => $title,

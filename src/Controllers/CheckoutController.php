@@ -7,7 +7,7 @@ use Getwhisky\Views\CheckoutView;
 class CheckoutController extends CheckoutModel
 {
 
-    private UserController $user;
+    private  $user;
     private CartController $cart;
     private CheckoutView $checkoutView;
 
