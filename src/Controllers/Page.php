@@ -92,41 +92,35 @@ class Page {
         }
     }
 
-    public function login($email, $password, $autoRedirect=false) 
+    public function login($email, $password, $location) 
     {
         $authenticated = 0;
-        $location = "";
+        $redirect = ($location == "checkout") ? "/checkout/" : "/user/account/";
+
+        // Get guest session userid and cart
+        $guestid = $_SESSION['userid'];
+        $cart = $this->getCart();
+
         // Generate a new session_id
 		session_regenerate_id();
 
 		if($this->getUser()->authByLogin($email,$password)) {
+            // Transfer cart from guest session to user account if it has items
+            if (!empty($cart->getItems())) $this->getCart()->transferCart($guestid, $this->getUser()->getId(), $cart->getId());
+            
             // User authenticated by login Auth = true
 			$authenticated = 1;
             // set the DB session to newly generated session_id
 			$this->getUser()->storeSession($this->getUser()->getId(),session_id());
-            // Set session['userid'] to 
+            // Set session['userid'] to userid
 			$_SESSION['userid']=$this->getUser()->getId();
 			$_SESSION['last_activity'] = time(); // init inactivity timer
 
-			// userlevel logic here
-			switch($this->getUser()->getAccessLevel()) {
-				case 1:
-					$location = 'user/suspended';
-					break;
-				case 2:
-					$location = 'user/account';
-					break;
-				case 3:
-					$location = 'admin/home';
-					break;
-			}
 		} 
-        // auto redirect if set to true and authenticated
-        if ($authenticated && $autoRedirect) header("Location: $location");
-        // return values for use in JavaScript
-		return ['authenticated' => $authenticated, 'redirect_location' => $location];
-    }
 
+        // return values for use in JavaScript
+		return ['authenticated' => $authenticated, 'redirectLocation' => $redirect];
+    }
 
     public function logout() 
     {

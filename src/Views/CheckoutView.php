@@ -211,6 +211,39 @@ class CheckoutView
     {
         $html = $title = $style = $script = "";
 
+        $html.="<div class='col m-auto p-5 mt-5 bg-white rounded border' style='max-width:700px;'>";
+            $html.="<h1 class='mb-0 fs-3'>New Customer</h1>";
+            $html.="<p class='text-muted'>Enter your details below</p>";
+
+            $html.="<form id='regForm'>";
+                $html.="<div class='mb-3'>";
+                    $html.="<label for='email'>Email Address</label>";
+                    $html.="<input type='email' class='form-control' name='email' id='email'>";
+                $html.="</div>";
+                $html.="<div class='mb-3'>";
+                    $html.="<label for='first-name'>First name</label>";
+                    $html.="<input type='text' class='form-control' name='firstname' id='first-name'>";
+                $html.="</div>";
+                $html.="<div class='mb-3'>";
+                    $html.="<label for='surname'>Surname</label>";
+                    $html.="<input type='text' class='form-control' name='surname' id='surname'>";
+                $html.="</div>";
+                $html.="<div class='mb-3'>";
+                    $html.="<label for='dob'>Date of birth</label>";
+                    $html.="<input type='date' class='form-control' name='dob' id='dob'>";
+                $html.="</div>";
+                $html.="<div class='mb-3'>";
+                    $html.="<label for='password'>Password</label>";
+                    $html.="<input type='password' class='form-control' name='password' id='password'>";
+                $html.="</div>";
+                $html.="<div class='mb-3'>";
+                    $html.="<label for='repeat-password'>Repeat Password</label>";
+                    $html.="<input type='password' class='form-control' name='repeat_password' id='repeat_password'>";
+                $html.="</div>";
+                $html.="<input type='submit' class='btn btn-primary' id='reg_submit' value='Submit'>";
+            $html.="</form>";
+            
+        $html.="</div>";
         return [
             'html' => $html,
             'title' => $title,

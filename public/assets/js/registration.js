@@ -2,7 +2,6 @@ function prepareRegistration()
 {
     const location = (window.location.href.includes("checkout")) ? "checkout" : "registrationPage";
 
-    console.log(location);
     const regForm = $("#regForm");
     const passwordField = $("#password");
     const repeatPasswordField = $("#repeat_password");
@@ -32,24 +31,21 @@ function prepareRegistration()
             if (result.invalid) {
                 Object.entries(result.invalid).forEach(entry => {
                     const [key, value] = entry;
-                    console.log(value.input);
                     feedback(regForm[0].querySelector(`[name=${value.input}]`), value.message);
                 });
                 submitBtn.val("Submit");   
-
             }
 
-            if (result.error) {
-                new Notification(false, result.error);
+            if (result.success == 0) {
+                new Notification(false, result.message);
                 submitBtn.val("Submit");
             }
 
-            if (result.success) {
+            if (result.success == 1) {
                 window.location.href = result.redirectLocation;
             }
         });
     
-        
     });
     
 }

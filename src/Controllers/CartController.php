@@ -150,6 +150,17 @@ class CartController extends CartModel
         }
     }
 
+    /** 
+    * Transfers a cart from the guest session to the user's account
+    * @param string $guestid the guest session userid
+    * @param string $userid the logged in user's id
+    * @param string $cartid the ID of the cart to be transfered
+    */
+    public function transferCart($guestid, $userid, $cartid)
+    {
+        parent::deleteCurrentCart($userid);
+        parent::transferCart($guestid, $cartid, $userid);
+    }
 
     /******
      * Retrieves and returns the total number of items

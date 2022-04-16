@@ -79,5 +79,27 @@ class CartModel
         $this->stmt->execute();
         return $this->stmt->affected_rows;
     }
+
+    protected function deleteCurrentCart($userid)
+    {
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
+
+        $this->sql = "DELETE FROM `cart` WHERE `user_id` = ? AND checked_out = 0;";
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
+        $this->stmt->bind_param("s", $userid);
+        $this->stmt->execute();
+        return $this->stmt->affected_rows;
+    }
+
+    protected function transferCart($guestid, $cartid, $userid)
+    {
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
+
+        $this->sql = "UPDATE `cart` SET `user_id` = ? WHERE user_id = ? AND id = ?;";
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
+        $this->stmt->bind_param("sss", $userid, $guestid, $cartid);
+        $this->stmt->execute();
+        return $this->stmt->affected_rows;
+    }
 }
 ?>

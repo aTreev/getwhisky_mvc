@@ -11,21 +11,20 @@ if (isset($_POST['email']) && Util::valEmail($_POST['email']) && isset($_POST['p
     $page = new Page(0, true);
     $email = Util::sanEmail($_POST['email']);
     $password = Util::sanStr($_POST['password']);
+    $message = "";
 
     // Attempt login
-    $result=$page->login($email, $password);
+    $result=$page->login($email, $password, util::sanStr($_POST['origin']));
 
     // Auth fail send message
-    if (!$result['authenticated']) {
-        echo json_encode(['authenticated' => 0,'message' => "Invalid email or password"]); 
-        return;
-    } 
+    if (!$result['authenticated']) $message = "Invalid email or password";
+    
 
-    // Login success check origin and send correct redirect URL
-    $origin = util::sanStr($_POST['origin']);
-    $url = ($origin == "checkout") ? "/checkout/" : "/user/account/";
-
-    echo json_encode(['authenticated' => 1,'redirectLocation' => $url]);
+    echo json_encode([
+        'authenticated' => $result['authenticated'],
+        'redirectLocation' => $result['redirectLocation'],
+        'message' => $message
+    ]);
     
 
 }

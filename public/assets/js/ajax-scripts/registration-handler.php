@@ -45,14 +45,12 @@ $result = $page->getUser()->regUser($email, $password, $firstName, $surname, $do
 
 // return errors if registration failed
 if (!$result['insert']) {
-    echo json_encode(['error' => $result['messages']]);
+    echo json_encode(['success' => 0, 'message' => $result['messages']]);
     return;
 }
 // Login
-$page->login($email, $password);
+$login = $page->login($email, $password, Util::sanStr($_POST['origin']));
 
 // Get registration origin and send redirect url for correct location
-$origin = Util::sanStr($_POST['origin']);
-$url = ($origin == "checkout") ? "/checkout/" : "/user/account/";
-echo json_encode(['success' => 1, 'redirectLocation' => $url]);
+echo json_encode(['success' => 1, 'redirectLocation' => $login['redirectLocation']]);
 ?>
