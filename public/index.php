@@ -48,12 +48,21 @@ echo $page->displayPage([
         
     </ul>
     <p style='margin-top:10px;'>You may test the authentication by logging in with the following button:</p>
-    <form method='post' action='processlogin.php'>
         <input type='hidden' id='email' name='email' value='johndoe@example.com'>
         <input type='hidden' id='password' name='password' value='Pa££w0rd'>
-        <button type='submit' class='btn btn-success'>Click here to log in</button>
-    </form>
+        <button type='submit' id='quick-login' class='btn btn-success'>Click here to log in</button>
     <p style='margin-top:20px;font-weight:500;'>After logging in please see the whisky category for an example of a working category</p>
+    <script defer>
+        $('#quick-login').click(function(){
+            let testAccountData = new FormData();
+            testAccountData.append('email', 'johndoe@example.com');
+            testAccountData.append('password', 'Pa££w0rd');
+
+            login(testAccountData, 'loginPage').then(function(result){
+                window.location.href = result.redirectLocation;
+            });
+        });
+    </script>
     "
 ]);
 

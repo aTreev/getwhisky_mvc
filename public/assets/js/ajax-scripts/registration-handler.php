@@ -13,7 +13,7 @@ $validator = new InputValidator();
 
 $email = $validator->inputName("email")->value($_POST['email'])->sanitize("email")->required()->maxLen(80)->getResult();
 $firstName = $validator->inputName("firstname")->value($_POST['firstname'])->sanitize("string")->required()->maxLen(40)->getResult();
-$surname = $validator->inputName("surname")->value($_POST['firstname'])->sanitize("string")->required()->maxLen(40)->getResult();
+$surname = $validator->inputName("surname")->value($_POST['surname'])->sanitize("string")->required()->maxLen(40)->getResult();
 $dob = $validator->inputName("dob")->value($_POST['dob'])->sanitize("string")->match("date")->maxLen(10)->getResult();
 $password = $validator->inputName("password")->value($_POST['password'])->sanitize("string")->maxLen(72)->getResult();
 $repeatPassword = $validator->inputName("repeat_password")->value($_POST['repeat_password'])->sanitize("string")->maxLen(72)->getResult();

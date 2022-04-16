@@ -95,7 +95,7 @@ class Page {
     public function login($email, $password, $location) 
     {
         $authenticated = 0;
-        $redirect = ($location == "checkout") ? "/checkout/" : "/user/account/";
+        $redirect = ($location == "checkout") ? "/checkout" : "/user/account";
 
         // Get guest session userid and cart
         $guestid = $_SESSION['userid'];

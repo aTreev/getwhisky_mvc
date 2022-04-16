@@ -115,12 +115,12 @@ class CategoryView
         $html = "";
         foreach($this->category->getSubcategories() as $subcategory) {
             $html.="<div class='filter-item'>";
-                $html.="<a class='subcategory-heading' href='/categories/subcategories/?s=".$subcategory->getId()."'>".ucwords($subcategory->getName())."</a>";
+                $html.="<a class='subcategory-heading' href='/products/subcategories/?s=".$subcategory->getId()."'>".ucwords($subcategory->getName())."</a>";
                 $html.="<div class='subcategory-links'>";
                 foreach($subcategory->getValues() as $value) {
                     if ($value->getProductCount() > 0) {
                         $html.="<div >";
-                            $html.="<a href='/categories/subcategories/subcategoryvalue/?s=".$value->getId()."'>".ucwords($value->getName())." (".$value->getProductCount().")</a>";
+                            $html.="<a href='/products/subcategoryvalues/?s=".$value->getId()."'>".ucwords($value->getName())." (".$value->getProductCount().")</a>";
                         $html.="</div>";
                     }
                 }

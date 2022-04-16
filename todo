@@ -1,6 +1,7 @@
 add review system?
 Implement shipping cost calculator if possible
 Create order/invoice system
+reduce product stock on successful order
 Implement emailing system
 Add discount display on category pages (ProductView)
 Fix checkout delivery CSS make responsive
