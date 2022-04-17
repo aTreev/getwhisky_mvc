@@ -31,7 +31,7 @@ class OrderController extends OrderModel
     private function setStatus($status) { $this->status = $status; return $this; }
     private function setTotal($total) { $this->total = $total; return $this; }
     private function setDiscountTotal($discount) { $this->discountTotal = $discount; return $this; }
-    private function setDatetimePlaced($dt) { $this->datetimePlaced = $dt; }
+    private function setDatetimePlaced($dt) { $this->datetimePlaced = $dt; return $this; }
     private function setDeliveryCost($cost) { $this->deliveryCost = $cost; return $this; }
     private function setDeliveryRecipient($recipient) { $this->deliveryRecipient = $recipient; return $this; }
     private function setDeliveryLine1($line1) { $this->deliveryLine1 = $line1; return $this; }
@@ -70,10 +70,11 @@ class OrderController extends OrderModel
     }
 
 
-    public function createOrder($id, $paymentIntent, $userid, $total, $discountTotal, $deliveryCost, $deliveryRecipient, $deliveryLine1, $deliveryLine2, $deliveryCity, $deliveryCounty, $deliveryPostcode)
+    public function createOrder($paymentIntent, $userid, $total, $discountTotal, $deliveryCost, $deliveryRecipient, $deliveryLine1, $deliveryLine2, $deliveryCity, $deliveryCounty, $deliveryPostcode)
     {
-        parent::createorderModel($id, $paymentIntent, $userid, $total, $discountTotal, $deliveryCost, $deliveryRecipient, $deliveryLine1, $deliveryLine2, $deliveryCity, $deliveryCounty, $deliveryPostcode);
-        
+        parent::createorderModel($paymentIntent, $userid, $total, $discountTotal, $deliveryCost, $deliveryRecipient, $deliveryLine1, $deliveryLine2, $deliveryCity, $deliveryCounty, $deliveryPostcode);
+        $id = $this->getMostRecentOrder($userid)[0]['id'];
+
         $this->setId($id)
         ->setStripePaymentIntent($paymentIntent)
         ->setUserid($userid)
@@ -86,8 +87,14 @@ class OrderController extends OrderModel
         ->setDeliveryCity($deliveryCity)
         ->setDeliveryCounty($deliveryCounty)
         ->setDeliveryPostcode($deliveryPostcode);
+
+        return $id;
     }
 
+    public function getMostRecentOrder($userid) 
+    {
+        return parent::getMostRecentOrderModel($userid);
+    }
 
     public function addItemToOrder($productid, $productName, $productImage, $pricePaid, $quantity)
     {
@@ -111,6 +118,7 @@ class OrderController extends OrderModel
             ->setStatus($data['status_label'])
             ->setTotal(number_format($data['total'], 2, '.', ' '))
             ->setDiscountTotal(number_format($data['discount_total'], 2, '.', ' '))
+            ->setDatetimePlaced($data['date_placed'])
             ->setDeliveryCost(number_format($data['delivery_cost'], 2, '.', ' '))
             ->setDeliveryRecipient($data['delivery_recipient'])
             ->setDeliveryLine1($data['delivery_line1'])

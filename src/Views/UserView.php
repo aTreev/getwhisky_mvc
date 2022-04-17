@@ -2,6 +2,7 @@
 namespace Getwhisky\Views;
 
 use Getwhisky\Controllers\AddressController;
+use Getwhisky\Controllers\OrderController;
 
 class UserView 
 {
@@ -246,9 +247,9 @@ class UserView
         $title = "My orders | Getwhisky";
         $script = "";
         $style = "";
-
-        $html.=sprintf('%08d', 111);
-
+        $orderContr = new OrderController();
+        $id = $orderContr->getMostRecentOrder($this->user->getId())[0]['id'];
+        $html.=$id;
         return [
             'html' => $html,
             'title' => $title,

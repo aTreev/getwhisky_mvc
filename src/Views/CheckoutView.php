@@ -139,7 +139,7 @@ class CheckoutView
             $html.="<div class='left'>";
                 $html.="<div class='header'>";
                     $html.="<h2>Thank you, {$user->getFirstName()}!</h2>";
-                    $html.="<p>Your order has been placed.</p>";
+                    $html.="<p>Your order has been placed #".sprintf('%08d', $order->getId()).".</p>";
                     $html.="<p>A confirmation email has been sent to {$user->getEmail()}<br><i>(Implementation pending)</i></p>";
                 $html.="</div>";
 

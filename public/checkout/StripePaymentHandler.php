@@ -55,7 +55,6 @@ function fulfill_order($session)
   // Retrieve required data from stripe metadata
   $userid = $session->metadata->userid;
   $addressid = $session->metadata->addressid;
-  $orderid = $session->metadata->orderid;
   $deliveryCost = $session->metadata->deliveryCost;
   // Get stripe payment_intent
   $paymentIntent = $session->payment_intent;
@@ -70,7 +69,7 @@ function fulfill_order($session)
 
   // Create new order
   $order = new OrderController();
-  $order->createOrder($orderid, $paymentIntent, $userid, $cart->getCartTotal(), $cart->getCartDiscounts(), $deliveryCost, $address->getRecipientName(), $address->getLine1(), $address->getLine2(), $address->getCity(), $address->getCounty(), $address->getPostcode());
+  $order->createOrder($paymentIntent, $userid, $cart->getCartTotal(), $cart->getCartDiscounts(), $deliveryCost, $address->getRecipientName(), $address->getLine1(), $address->getLine2(), $address->getCity(), $address->getCounty(), $address->getPostcode());
 
   // Add cart items to order
   foreach($cart->getItems() as $item) {

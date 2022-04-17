@@ -26,8 +26,8 @@ $found = $addressController->initAddressById($addressid, $page->getUser()->getId
 if (!$found) die("Invalid address supplied");
 
 // Generate an orderid here, pass it as metadata to the stripe webhook and use it as a get parameter in the success page
-$orderid = (new UniqueIdGenerator())->properties((new OrderController())->getOrderIds(), 10)->getUniqueId();
-startCheckout($addressid, $page, $orderid);
+//$orderid = (new UniqueIdGenerator())->properties((new OrderController())->getOrderIds(), 10)->getUniqueId();
+startCheckout($addressid, $page);
 
 
 
@@ -35,7 +35,7 @@ startCheckout($addressid, $page, $orderid);
 
 
 
-function startCheckout($addressid, $page, $orderid)
+function startCheckout($addressid, $page)
 {
     $deliveryCharge = 0;
     $freeDeliveryThreshold = constant("free_delivery_threshold");
@@ -67,10 +67,9 @@ function startCheckout($addressid, $page, $orderid)
         'metadata' => [
             'userid' => $page->getUser()->getId(),
             'addressid' => $addressid,
-            'orderid' => $orderid,
             'deliveryCost' => $deliveryCharge
         ],
-        'success_url' => $DOMAIN . "/checkout/success?order=$orderid",
+        'success_url' => $DOMAIN . "/checkout/success",
         'cancel_url' => $DOMAIN . '/basket',
         ]);
     header("HTTP/1.1 303 See Other");

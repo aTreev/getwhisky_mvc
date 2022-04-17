@@ -23,14 +23,14 @@ class OrderModel {
         $resultset = $result->fetch_all($style);
         return $resultset;
     }
+    //return parent::createorderModel($paymentIntent, $userid, $total, $discountTotal, $deliveryCost, $deliveryRecipient, $deliveryLine1, $deliveryLine2, $deliveryCity, $deliveryCounty, $deliveryPostcode);
 
-    protected function createorderModel($id, $paymentIntent, $userid, $total, $discountTotal, $deliveryCost, $deliveryRecipient, $deliveryLine1, $deliveryLine2, $deliveryCity, $deliveryCounty, $deliveryPostcode)
+    protected function createorderModel($paymentIntent, $userid, $total, $discountTotal, $deliveryCost, $deliveryRecipient, $deliveryLine1, $deliveryLine2, $deliveryCity, $deliveryCounty, $deliveryPostcode)
     {
         self::$DatabaseConnection = DatabaseConnection::getInstance();
         $processingStatus = 1;
         $this->sql = 
         "INSERT INTO orders (
-            `id`, 
             `stripe_payment_intent`, 
             `user_id`, 
             `status_id`, 
@@ -44,13 +44,25 @@ class OrderModel {
             `delivery_county`, 
             `delivery_postcode`
         )
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);";
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
         $this->stmt = self::$DatabaseConnection->prepare($this->sql);
-        $this->stmt->bind_param("sssidddssssss", $id, $paymentIntent, $userid, $processingStatus, $total, $discountTotal, $deliveryCost, $deliveryRecipient, $deliveryLine1, $deliveryLine2, $deliveryCity, $deliveryCounty, $deliveryPostcode);
+        $this->stmt->bind_param("ssidddssssss", $paymentIntent, $userid, $processingStatus, $total, $discountTotal, $deliveryCost, $deliveryRecipient, $deliveryLine1, $deliveryLine2, $deliveryCity, $deliveryCounty, $deliveryPostcode);
         $this->stmt->execute();
-        return $this->stmt->affected_rows;
+        return $this->stmt->error;
     }
 
+    protected function getMostRecentOrderModel($userid, $style=MYSQLI_ASSOC)
+    {
+        self:: $DatabaseConnection = DatabaseConnection::getInstance();
+
+        $this->sql = "SELECT `id`, `date_placed` FROM `orders` WHERE `user_id` = ? ORDER BY `date_placed` DESC LIMIT 1;";
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
+        $this->stmt->bind_param("s", $userid);
+        $this->stmt->execute();
+        $result = $this->stmt->get_result();
+        $resultset = $result->fetch_all($style);
+        return $resultset;
+    }
     protected function addItemToOrderModel($orderid, $productid, $productName, $productImage, $pricePaid, $quantity)
     {
         self::$DatabaseConnection = DatabaseConnection::getInstance();

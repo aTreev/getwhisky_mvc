@@ -10,14 +10,20 @@ require_once "$path/vendor/autoload.php";
 // Logic start
 $page = new Page(2);
 
-$orderid = (Util::valStr($_GET['order'])) ? Util::sanStr($_GET['order']) : "-1";
-// Check for order
-$order = new OrderController;
-$exists = $order->initOrder($orderid, $page->getUser()->getId());
+$orderContr = new OrderController();
+$orderData = $orderContr->getMostRecentOrder($page->getUser()->getId());
 
-if ($exists) {
-    $checkout = new CheckoutController($page->getUser(), $page->getCart(), $order);
+// Check for recent order 
+// Page expiry set to 1 hour
+if ($orderData && (time() - strtotime($orderData[0]['date_placed']) < 3600)) {
+    $orderContr->initOrder($orderData[0]['id'], $page->getUser()->getId());
+
+    $checkout = new CheckoutController($page->getUser(), $page->getCart(), $orderContr);
     echo $page->displayPage($checkout->getView()->orderConfirmationPage()); 
+} else {
+    header("Location: /");
 }
+
+
 
 ?>
