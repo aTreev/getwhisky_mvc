@@ -299,3 +299,113 @@
         }
     }
 }
+
+/*************
+* ORDER PAGE SCSS
+******************/
+.user-order-root {
+    padding: 0px 20px;
+    
+    p {
+        margin-bottom: 0;
+    }
+
+    .order-item {
+        margin-bottom: 20px;
+
+        .order-item-header {
+            background: #f1f2f1;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            border: 1px solid var(--border-colour);
+            @media screen and (max-width:736px) { flex-direction: column-reverse; gap: 20px; }
+
+            p {
+                color: var(--text-muted-darker);
+            }
+
+            .right {
+                width:40%;
+                display: flex;
+                justify-content: flex-end;
+                @media screen and (max-width:736px) { justify-content: flex-start; width:100%; }
+
+                p {
+                    font-weight: 500;
+                    text-transform: uppercase;
+                    font-size: 13px;
+                    letter-spacing: 0.08em;
+                }
+            }
+
+            .left {
+                width: 60%;
+                display:flex;
+                justify-content: space-between;
+                @media screen and (max-width:736px) { width: 100%; }
+
+                .title {
+                    font-weight: 500;
+                    text-transform: uppercase;
+                    font-size: 13px;
+                    letter-spacing: 0.08em;
+                }
+            }
+        }
+
+        .items {
+            margin-top: -1px;
+            border: 1px solid var(--border-colour);
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            padding-bottom: 15px;
+            padding:0px 20px 20px 20px;
+
+            .item {
+                margin-top: 20px;
+                display: flex;
+                justify-content: space-between;
+
+                .left {
+                    display: flex;
+
+                    .item-details {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+    
+                        .item-name {
+                            color: var(--text-muted-link);
+                            text-decoration: none;
+                            &:hover {
+                                text-decoration: underline;
+                            }
+                        }
+        
+                        .item-qty {
+                            color: var(--text-muted);
+                        }
+                    }
+                }
+
+                .right {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    p {
+                        color:var(--text-muted);
+                        .title {
+                            font-weight: 500;
+                        }
+                    }
+                }
+                
+                
+            }
+        }
+    }
+}

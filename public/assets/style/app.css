@@ -8,6 +8,8 @@
     --btn-delete-red: #db4c3c; 
     --border-colour: #dee2e6;
     --text-muted: #6c757d;
+    --text-muted-darker: #596168;
+    --text-muted-link:rgb(94, 162, 185) ;
 }
 body {
     background-color: #f7f7f7!important;
@@ -161,7 +163,9 @@ header {
 * Includes wrappers, overlays, scroll disables and
 * a class to break out of the bootstrap container
 ***/
-
+.wrapper-link-container {
+    position: relative;
+}
 .wrapper-link {
     position: absolute;
     width: 100%;

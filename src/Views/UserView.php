@@ -246,10 +246,101 @@ class UserView
         $html = "";
         $title = "My orders | Getwhisky";
         $script = "";
-        $style = "";
-        $orderContr = new OrderController();
-        $id = $orderContr->getMostRecentOrder($this->user->getId())[0]['id'];
-        $html.=$id;
+        $style = "/assets/style/user-page.css";
+
+        $orders = $this->user->getOrders();
+
+        $html.=SharedView::backwardsNavigation(array(
+            ['url' => "/user/account", 'pageName' => "My account"],
+            ['url' => "", "pageName" => "My Orders"]
+        ));
+
+        $html.="<div class='user-root'>";
+
+            $html.="<!-- Sidebar -->";
+            $html.="<div class='sidebar-container'>";
+                $html.=$this->sidebar();
+            $html.="</div>";
+
+            $html.="<!-- Main content -->";
+            $html.="<div class='main-content'>";
+                $html.="<div class='header'>";
+                    $html.="<h5>My orders</h5>";
+                $html.="</div>";
+
+
+                // Order root
+                $html.="<div class='user-order-root'>";
+
+                foreach($orders as $order) {
+                    // Required variables
+                    $totalWithDelivery = number_format($order->getTotal() + $order->getDeliveryCost(), 2, ".", "");
+
+                    // Order start
+                    $html.="<div class='order-item'>";
+
+                        // Order header
+                        $html.="<div class='order-item-header'>";
+                            // Left -- Order details
+                            $html.="<div class='left'>";
+                                $html.="<div class='order-item-column'>";
+                                    $html.="<p class='title'>Order placed</p>";
+                                    $date = date("d F Y", strtotime($order->getDatetimePlaced()));
+                                    $html.="<p>{$date}</p>";
+                                $html.="</div>";
+                                $html.="<div class='order-item-column'>";
+                                    $html.="<p class='title'>Total</p>";
+                                    $html.="<p>£{$totalWithDelivery}</p>";
+                                $html.="</div>";
+                                $html.="<div>";
+                                    $html.="<p class='title'>Deliver to</p>";
+                                    $html.="<p>{$order->getDeliveryRecipient()}</p>";
+                                $html.="</div>";
+                            $html.="</div>";
+                            // Right -- Order number
+                            $html.="<div class='right'>";
+                                $html.="<p>Order #".sprintf('%08d', $order->getId())."</p>";
+                            $html.="</div>";
+                        $html.="</div>";
+
+                        // Order items
+                        $html.="<div class='items'>";
+                        foreach($order->getItems() as $item) {
+                            // Required variables
+                            $itemName = ucwords($item['product_name']);
+                            $itemSubtotal = number_format($item['price_paid'] * $item['quantity'], "2", ".", "");
+                            $productLink = str_replace(" ", "-", $item['product_name']);
+                            // Item
+                            $html.="<div class='item'>";
+                            // Image / name
+                            $html.="<div class='left'>";
+                                $html.="<div class='wrapper-link-container'>";
+                                $html.="<img src='{$item['product_image']}' style='max-width: 125px;'>";
+                                $html.="<a href='/products/?p={$productLink}'><span class='wrapper-link'></span></a>";
+                                $html.="</div>";
+                                $html.="<div class='item-details'>";
+                                    $html.="<p><a class='item-name' href='/products/?p={$productLink}'>{$itemName}</a></p>";
+                                    $html.="<p class='item-qty'>Quantity: {$item['quantity']}</p>";
+                                $html.="</div>";
+                            $html.="</div>";
+                            // Price / subtotal
+                            $html.="<div class='right'>";
+                                $html.="<p><span class='title'>Price:</span> £{$item['price_paid']}</p>";
+                                $html.="<p><span class='title'>Subotal:</span> £{$itemSubtotal}</p>";
+                            $html.="</div>";
+                            $html.="</div>";
+                        }
+                        $html.="</div>";
+
+                    $html.="</div>";
+                }
+
+                $html.="</div>";
+            
+            $html.="</div>";
+
+        $html.="</div>";
+        
         return [
             'html' => $html,
             'title' => $title,

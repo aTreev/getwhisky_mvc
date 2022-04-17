@@ -1,10 +1,36 @@
-add review system?
-Implement shipping cost calculator if possible
-Create order/invoice system
-reduce product stock on successful order
-Implement emailing system
-Add discount display on category pages (ProductView)
-Fix checkout delivery CSS make responsive
-Add a registration page to delivery if user not signed in - also transfer cart
-Create user order history
- 
+orders
+    Reduce product stock on successful order (paymentHandler)
+    create order invoice system
+    add filter by year to order history
+
+addresses
+    address auto lookup?
+
+products
+    review system
+    product description system
+    discount display on category pages
+    customize product not found page
+    product search system
+
+
+Emails
+    Create emailing class
+    Find email template
+    Implement emailing for wamp/lamp environments
+
+checkout
+    Fix delivery page CSS - make responsive
+
+
+Admin backend
+    Plan product management
+    Plan order management
+    Plan Category & filter management
+
+
+maintainance
+    convert remaining CSS pages to SCSS
+
+Authentication
+    Review and tidy guest user code

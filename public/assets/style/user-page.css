@@ -18,7 +18,7 @@
   margin: 0px 20px 0px 0px;
 }
 .user-root .sidebar-container .sidebar .sidebar-option:hover {
-  background-color: #f0f0f0;
+  background-color: rgb(240, 240, 240);
 }
 .user-root .sidebar-container .sidebar .sidebar-option.active {
   background-color: #a7caff;
@@ -270,6 +270,113 @@
 .add-address-root form label {
   font-weight: 500;
   font-size: 14px;
+}
+
+/*************
+* ORDER PAGE SCSS
+******************/
+.user-order-root {
+  padding: 0px 20px;
+}
+.user-order-root p {
+  margin-bottom: 0;
+}
+.user-order-root .order-item {
+  margin-bottom: 20px;
+}
+.user-order-root .order-item .order-item-header {
+  background: #f1f2f1;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border: 1px solid var(--border-colour);
+}
+@media screen and (max-width: 736px) {
+  .user-order-root .order-item .order-item-header {
+    flex-direction: column-reverse;
+    gap: 20px;
+  }
+}
+.user-order-root .order-item .order-item-header p {
+  color: var(--text-muted-darker);
+}
+.user-order-root .order-item .order-item-header .right {
+  width: 40%;
+  display: flex;
+  justify-content: flex-end;
+}
+@media screen and (max-width: 736px) {
+  .user-order-root .order-item .order-item-header .right {
+    justify-content: flex-start;
+    width: 100%;
+  }
+}
+.user-order-root .order-item .order-item-header .right p {
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+.user-order-root .order-item .order-item-header .left {
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
+}
+@media screen and (max-width: 736px) {
+  .user-order-root .order-item .order-item-header .left {
+    width: 100%;
+  }
+}
+.user-order-root .order-item .order-item-header .left .title {
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+.user-order-root .order-item .items {
+  margin-top: -1px;
+  border: 1px solid var(--border-colour);
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  padding-bottom: 15px;
+  padding: 0px 20px 20px 20px;
+}
+.user-order-root .order-item .items .item {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.user-order-root .order-item .items .item .left {
+  display: flex;
+}
+.user-order-root .order-item .items .item .left .item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.user-order-root .order-item .items .item .left .item-details .item-name {
+  color: var(--text-muted-link);
+  text-decoration: none;
+}
+.user-order-root .order-item .items .item .left .item-details .item-name:hover {
+  text-decoration: underline;
+}
+.user-order-root .order-item .items .item .left .item-details .item-qty {
+  color: var(--text-muted);
+}
+.user-order-root .order-item .items .item .right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.user-order-root .order-item .items .item .right p {
+  color: var(--text-muted);
+}
+.user-order-root .order-item .items .item .right p .title {
+  font-weight: 500;
 }
 
 /*# sourceMappingURL=user-page.css.map */
