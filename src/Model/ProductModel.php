@@ -138,5 +138,16 @@ class ProductModel
         return $this->stmt->affected_rows;
     }
 
+    protected function decrementStockModel($id, $quantity)
+    {
+        self::$DatabaseConnection = DatabaseConnection::getInstance();
+
+        $this->sql = "UPDATE products SET stock = (stock - ?) WHERE id = ?";
+        $this->stmt = self::$DatabaseConnection->prepare($this->sql);
+        $this->stmt->bind_param("ii", $quantity, $id);
+        $this->stmt->execute();
+        return $this->stmt->affected_rows;
+    }
+
 }
 ?>

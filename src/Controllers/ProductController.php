@@ -191,5 +191,12 @@ class ProductController extends ProductModel
 
         return $productExists;
     }
+
+    public function decrementStock($quantity)
+    {
+        if ($this->getStock() - $quantity < 0) $quantity = $this->getStock();
+
+        parent::decrementStockModel($this->getId(), $quantity);
+    }
 }
 ?>

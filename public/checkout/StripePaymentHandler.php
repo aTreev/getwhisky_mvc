@@ -71,10 +71,14 @@ function fulfill_order($session)
   $order = new OrderController();
   $order->createOrder($paymentIntent, $userid, $cart->getCartTotal(), $cart->getCartDiscounts(), $deliveryCost, $address->getRecipientName(), $address->getLine1(), $address->getLine2(), $address->getCity(), $address->getCounty(), $address->getPostcode());
 
-  // Add cart items to order
+  // Loop through cart items
   foreach($cart->getItems() as $item) {
+    // Add cart items to order
     $order->addItemToOrder($item->getProduct()->getId(), $item->getProduct()->getName(), $item->getProduct()->getImage(), $item->getProduct()->getActivePrice(), $item->getQuantity());
+    // Reduce product stock
+    $item->getProduct()->decrementStock($item->getQuantity());
   }
+
 
   // email user
 

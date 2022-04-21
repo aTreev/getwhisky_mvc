@@ -244,7 +244,7 @@ class UserView
     public function orderPage()
     {
         $html = "";
-        $title = "My orders | Getwhisky";
+        $title = "My Orders | Getwhisky";
         $script = "";
         $style = "/assets/style/user-page.css";
 
@@ -275,6 +275,7 @@ class UserView
                 foreach($orders as $order) {
                     // Required variables
                     $totalWithDelivery = number_format($order->getTotal() + $order->getDeliveryCost(), 2, ".", "");
+                    $datePlaced = date("d F Y", strtotime($order->getDatetimePlaced()));
 
                     // Order start
                     $html.="<div class='order-item'>";
@@ -284,16 +285,15 @@ class UserView
                             // Left -- Order details
                             $html.="<div class='left'>";
                                 $html.="<div class='order-item-column'>";
-                                    $html.="<p class='title'>Order placed</p>";
-                                    $date = date("d F Y", strtotime($order->getDatetimePlaced()));
-                                    $html.="<p>{$date}</p>";
+                                    $html.="<p class='title'>Date placed</p>";
+                                    $html.="<p>{$datePlaced}</p>";
                                 $html.="</div>";
                                 $html.="<div class='order-item-column'>";
                                     $html.="<p class='title'>Total</p>";
                                     $html.="<p>£{$totalWithDelivery}</p>";
                                 $html.="</div>";
                                 $html.="<div>";
-                                    $html.="<p class='title'>Deliver to</p>";
+                                    $html.="<p class='title'>Delivery</p>";
                                     $html.="<p>{$order->getDeliveryRecipient()}</p>";
                                 $html.="</div>";
                             $html.="</div>";
@@ -308,6 +308,7 @@ class UserView
                         foreach($order->getItems() as $item) {
                             // Required variables
                             $itemName = ucwords($item['product_name']);
+                            $itemPrice = number_format($item['price_paid'], "2", ".", "");
                             $itemSubtotal = number_format($item['price_paid'] * $item['quantity'], "2", ".", "");
                             $productLink = str_replace(" ", "-", $item['product_name']);
                             // Item
@@ -325,7 +326,7 @@ class UserView
                             $html.="</div>";
                             // Price / subtotal
                             $html.="<div class='right'>";
-                                $html.="<p><span class='title'>Price:</span> £{$item['price_paid']}</p>";
+                                $html.="<p><span class='title'>Price:</span> £{$itemPrice}</p>";
                                 $html.="<p><span class='title'>Subotal:</span> £{$itemSubtotal}</p>";
                             $html.="</div>";
                             $html.="</div>";

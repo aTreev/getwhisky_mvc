@@ -8,10 +8,13 @@ addresses
 
 products
     review system
-    product description system
+    dyanmic product description system
     discount display on category pages
     customize product not found page
     product search system
+
+category pages
+    Fix product filter mobile scroll
 
 
 Emails

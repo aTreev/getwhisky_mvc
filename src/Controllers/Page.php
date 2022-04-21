@@ -131,7 +131,7 @@ class Page {
         session_destroy();
         session_start();
         session_regenerate_id();
-        header('location: /login.php');
+        header('location: /login');
         exit();
     }
 
